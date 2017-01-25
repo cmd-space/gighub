@@ -31,7 +31,7 @@
 				(venues) and bands and/or DJ’s (acts) to perform. Chris heard about GigHub from a buddy and decides to give
 				it a whirl. Logging in Chris is pleased, there he can find open dates at venues, and a list of bands and
 				DJs in the area and ways to contact them. This will make life so much easier for Chris.</p>
-			<p><strong>Interaction Flow:</strong>
+			<p><strong>Interaction Flow:</strong></p>
 			<ol>
 				<li>Chris logs on to GigHub</li>
 				<li>GigHub displays homepage</li>
@@ -45,7 +45,6 @@
 				<li>GigHub relays the message to Fadeys</li>
 				<li>Fadeys says yes, and Chris is pumped</li>
 			</ol>
-			</p>
 		</main>
 	</body>
 </html>

@@ -18,7 +18,7 @@
 		<p><strong>Frustrations & Needs:</strong> When he’s blowing off homework, he looks for concerts or other shows to go to. Typically he listens to indie rock, but has a soft side for heavy metal and EDM. He would like to find somewhere to perform his rap music, or maybe an open mic night for his poetry. It’s frustrating how hard it is to find out about these events around town. Using gighub he would have an easy time finding any venue for any type of show his little heart demands.</p>
 
 		<p><strong>Use Case:</strong> David would likely use gighub to find shows around town to attend and listen to, or possibly find a place where he could perform his raps or poetry to a crowd. He needs the best possible option to discover local (someday countrywide, or dream big and go worldwide) venues with shows, what time the shows are, what kind of show it is, and other general information.</p>
-		<Strong>Interaction Flow:</Strong>
+		<h2><Strong>Interaction Flow:</Strong></h2>
 		<ol>
 			<li>David hops on gighub and creates an account as a fan (can be changed at any time to band, solo performer, or venue)</li>
 			<li>Gighub automatically opens the homepage after login showing other options</li>

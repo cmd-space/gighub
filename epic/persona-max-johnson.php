@@ -28,8 +28,9 @@
 					<li>GigHub loads edit profile page</li>
 					<li>Max clicks on upload new profile picture</li>
 					<li>GigHub opens typical file upload screen</li>
-					<li>Max selects picture from computer (possibly from other social media profiles)</li>
+					<li>Max selects picture from computer</li>
 					<li>Max clicks save changes button</li>
+					<li>GigHub makes API call to cloudinary to store the image</li>
 					<li>GigHub returns back to edit profile page</li>
 					<li>Max adds additional personal/band info to profile</li>
 					<li>Max clicks save button at bottom of edit profile page</li>

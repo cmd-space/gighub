@@ -13,10 +13,10 @@
 			<h1>User Stories</h1>
 		</header>
 		<p>
-			As an <strong>Admin</strong>, I want to be able to view/edit/suspend Artist, Venue, and Fan accounts.<br>
-			As a <strong>Venue</strong>, I want to be able to contact Artists, and advertise my shows to Fans.<br>
-			As an <strong>Artist</strong>, I want to be able to contact Venues, and advertise my shows to Fans.<br>
-			As an <strong>Organizer</strong>, I want to be able to contact Venues and Artists, and advertise my shows to Fans.<br>
+			As an <strong>Admin</strong>, I want to be able to view/edit/suspend Artist, Venue, and Fan accounts.<br><br>
+			As a <strong>Venue</strong>, I want to be able to contact Artists, and advertise my shows to Fans.<br><br>
+			As an <strong>Artist</strong>, I want to be able to contact Venues, and advertise my shows to Fans.<br><br>
+			As an <strong>Organizer</strong>, I want to be able to contact Venues and Artists, and advertise my shows to Fans.<br><br>
 			As a <strong>Fan</strong>, I want to see when my favorite Artists and Venues are hosting events.
 		</p>
 	</body>

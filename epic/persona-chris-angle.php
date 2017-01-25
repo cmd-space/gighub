@@ -43,7 +43,7 @@
 				<li>GigHub pulls up a page to write a message to Fadeys</li>
 				<li>Chris writes a request to utilize Fadeys venue on that date and waits for a reply</li>
 				<li>GigHub relays the message to Fadeys</li>
-				<li>Fadeys says yes, and Chris is pumped </li>
+				<li>Fadeys says yes, and Chris is pumped</li>
 			</ol>
 		</main>
 	</body>

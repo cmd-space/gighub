@@ -22,17 +22,19 @@
 			<p><strong>Use Case:</strong> It’s 4:48pm and Max’s co-worker, Kelly, just told him about this new website; gighub. Max is intrigued, because he thinks this may be the answer to his lack of time and connections. Instead of working past 5pm, he decides to stay at work, but off the clock, and go to gighub. The succinct tag line on the front page of gighub immediately resonates with Max, so he clicks the sign up button and uses oAuth to connect his gighub account to his twitter account: @music2themax. Max then uploads a profile picture, fills out any remaining data in his profile, and begins to search for venues.</p>
 			<p><strong>Interaction Flow:</strong></p>
 				<ol>
-					<li>Click on profile button in upper right corner of screen</li>
-					<li>Click on edit profile button</li>
-					<li>Move to edit profile page</li>
-					<li>Click on upload new profile picture</li>
-					<li>Select picture from computer (possibly from other social media profiles)</li>
-					<li>Click save changes</li>
-					<li>Return back to edit profile page</li>
-					<li>Add additional personal/band info to profile</li>
-					<li>Click save button at bottom of edit profile page</li>
-					<li>Return to personal profile page</li>
-					<li>Click into search bar and begin searching for venues</li>
+					<li>Max clicks on profile button in upper right corner of screen</li>
+					<li>GigHub loads profile page</li>
+					<li>Max clicks on edit profile button</li>
+					<li>GigHub loads edit profile page</li>
+					<li>Max clicks on upload new profile picture</li>
+					<li>GigHub opens typical file upload screen</li>
+					<li>Max selects picture from computer (possibly from other social media profiles)</li>
+					<li>Max clicks save changes button</li>
+					<li>GigHub returns back to edit profile page</li>
+					<li>Max adds additional personal/band info to profile</li>
+					<li>Max clicks save button at bottom of edit profile page</li>
+					<li>GigHub returns to personal profile page</li>
+					<li>Max clicks into search bar and begins searching for venues</li>
 				</ol>
 		</main>
 	</body>

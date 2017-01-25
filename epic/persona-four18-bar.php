@@ -52,8 +52,8 @@
 			<h2>Interaction Flow</h2>
 				<ol>
 					<li>Morrissey opens up GigHub to his venue private portfolio page.</li>
-					<li>on the profile page he sees that there is mail in the inbox.</li>
-					<li>he taps on the inbox icon and the app goes from the profile page to the inbox page.</li>
+					<li>On the profile page he sees that there is mail in the inbox.</li>
+					<li>He taps on the inbox icon and the app goes from the profile page to the inbox page.</li>
 					<li>He taps on the email sent by FigStick.</li>
 					<li>He reads the email and taps the bands profile link.</li>
 					<li>The link jumps from the email message to the bands GigHub public profile page.</li>

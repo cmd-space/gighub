@@ -19,10 +19,12 @@
 
 		<p><strong>Use Case:</strong> David would likely use gighub to find shows around town to attend and listen to, or possibly find a place where he could perform his raps or poetry to a crowd. He needs the best possible option to discover local (someday countrywide, or dream big and go worldwide) venues with shows, what time the shows are, what kind of show it is, and other general information.</p>
 		<p><Strong>Interaction Flow:</Strong></p>
-		<ol>David hops on gighub and creates an account as a fan (can be changed at any time to band, solo performer, or venue)</ol>
-		<ol>Gighub automatically opens the homepage after login showing other options</ol>
-		<ol>David clicks on “shows in my area” and narrows his search down to indie rock bands </ol>
-		<ol>Gighub shows a list of all shows happening tonight (still open or sold out), and upcoming, listed most recent to furthest</ol>
-		<ol>David finds a Dank Meme Dream Team show at memesRus Theatre downtown</ol>
+		<ol>
+			<li>David hops on gighub and creates an account as a fan (can be changed at any time to band, solo performer, or venue)</li>
+			<li>Gighub automatically opens the homepage after login showing other options</li>
+			<li>David clicks on “shows in my area” and narrows his search down to indie rock bands </li>
+			<li>Gighub shows a list of all shows happening tonight (still open or sold out), and upcoming, listed most recent to furthest</li>
+			<li>David finds a Dank Meme Dream Team show at memesRus Theatre downtown</li>
+		</ol>
 	</body>
 </html>

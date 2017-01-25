@@ -8,9 +8,10 @@
 		<title>User Stories</title>
 	</head>
 
-	<title>User Stories</title>
-
 	<body>
+		<header>
+			<h1>User Stories</h1>
+		</header>
 		<p>
 			As an <strong>Admin</strong>, I want to be able to view/edit/suspend Artist, Venue, and Fan accounts.<br>
 			As a <strong>Venue</strong>, I want to be able to contact Artists, and advertise my shows to Fans.<br>

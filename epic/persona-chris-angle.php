@@ -31,6 +31,7 @@
 				(venues) and bands and/or DJ’s (acts) to perform. Chris heard about GigHub from a buddy and decides to give
 				it a whirl. Logging in Chris is pleased, there he can find open dates at venues, and a list of bands and
 				DJs in the area and ways to contact them. This will make life so much easier for Chris.</p>
+			<ol></ol>
 		</main>
 	</body>
 </html>

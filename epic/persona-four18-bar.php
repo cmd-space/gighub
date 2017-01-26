@@ -46,13 +46,14 @@
 
 			<h2>Interaction Flow</h2>
 				<ol>
-					<li>Morrissey get an email notification from GigHub </li>
-					<li>He taps the open mail and reads the contents</li>
-					<li>FigStick wants to play at his venue</li>
-					<li>Morrissey taps on the profile link to FigStick GigHub </li>
-					<li>Morrissey looks at the profile and taps the link to the band's soundcloud</li>
-					<li>He listens to the playlist and goes back to FigStick profile page</li>
-					<li>He looks for the band's contact and decides to email them.  </li>
+					<li>Morrissey opens up GigHub on his iPhone</li>
+					<li>GigHub pulls up his feed since he is already logged in</li>
+					<li>Morrissey sees a band he would like to book at his venue and clicks on their profile</li>
+					<li>GigHub displays the bands profile</li>
+					<li>Morrissey clicks the bands contact info</li>
+					<li>GigHub displays a page with links to an email and a phone number to contact the band</li>
+					<li>Morrissey copies the email address and leaves the app to open up his email and write a booking request to the band</li>
+					<li>The band replies, and Morrissey is stoked</li>
 				</ol>
 		</main>
 	</body>

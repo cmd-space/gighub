@@ -13,23 +13,25 @@
 		</header>
 		<main>
 			<ul>
-				<li>Profile</li>
-				<ul>
-					<li>profileId(PK)</li>
-					<!--	would a FK go here to connect to oAuth entity, since oAuth technically happens before a profile is created?-->
-					<li>profileUser</li>
-					<li>profileLocation</li>
-					<li>profileBio</li>
-					<li>profileUrl</li>
-					<li>profileSoundcloudUser</li>
-				</ul>
-				<li>oAuth</li>
-				<ul>
-					<li>oAuthId(PK)</li>
-					<li>oAuthProfileId(FK)</li>
-					<li>oAuthFacebookId</li>
-					<li>oAuthTwitterId</li>
-				</ul>
+				<li>Profile
+				   <ol>
+					   <li>profileId(PK)</li>
+					   <!--	would a FK go here to connect to oAuth entity, since oAuth technically happens before a profile is created?-->
+					   <li>profileUser</li>
+					   <li>profileLocation</li>
+					   <li>profileBio</li>
+					   <li>profileUrl</li>
+					   <li>profileSoundcloudUser</li>
+				   </ol>
+				</li>
+				<li>oAuth
+				   <ol>
+					   <li>oAuthId(PK)</li>
+					   <li>oAuthProfileId(FK)</li>
+					   <li>oAuthFacebookId</li>
+					   <li>oAuthTwitterId</li>
+				   </ol>
+				</li>
 			</ul>
 		</main>
 	</body>

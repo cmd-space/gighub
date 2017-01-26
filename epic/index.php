@@ -18,7 +18,6 @@
 			<p><a href="persona-four18-bar.php">Venue Persona</a></p>
 			<p><a href="persona-max-johnson.php">Musician Persona</a></p>
 			<p><a href="persona-david-hampton.php">Fan Persona</a></p>
-			<p><a href="persona-chris-angle.php">Organizer Persona</a></p>
 			<h2>User Stories</h2>
 			<p><a href="user-stories.php">User Stories</a></p>
 		</main>

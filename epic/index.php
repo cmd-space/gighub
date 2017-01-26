@@ -20,6 +20,8 @@
 			<p><a href="persona-david-hampton.php">Fan Persona</a></p>
 			<h2>User Stories</h2>
 			<p><a href="user-stories.php">User Stories</a></p>
+			<h2>Conceptual Model</h2>
+			<p><a href="conceptual-model.php">This way to conceptual model</a></p>
 		</main>
 	</body>
 </html>

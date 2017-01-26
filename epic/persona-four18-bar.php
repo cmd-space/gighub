@@ -16,7 +16,7 @@
 		</header>
 		<!--
 		in this section will be the Persona information;
-	--it will include Venue Name, Owners Name, Occupation, Technology, Attitudes/Behaviors, Needs, and Goals
+	it will include Venue Name, Owners Name, Occupation, Technology, Attitudes/Behaviors, Needs, and Goals
 		-->
 		<main>
 			<h2>Persona</h2>
@@ -38,27 +38,21 @@
 				</ul>
 
 			<h2>Use Case</h2>
-			<p>Morrissey has a spot open for friday nights at his venue, he's not to sure what sound he is  looking for so he decided to get on GigHub. He goes to his venues profile page and sees that he has mail in his inbox. He goes into his inbox and see an email from a band FigStick who is looking for a gig.
+			<p>Morrissey has a spot opened up for his friday nights. So he wants to do a live band for fridays. He goes into his email and discovers that he has a notification from GigHub. He opens the email and he sees its from a band FigStick. FigStick is looking for a gig. But Morrissey has never heard of them.
 			</p>
 
-			<p>Morrissey has never heard of the band's music before so he clicks on the band links and it takes him to the band's profile page.
-			</p>
-
-			<p>He scrolls in the profile page to find some information about the band. The band has a sample music box on their page. Morrissey taps play and listens to the band's music.
-			</p>
-			<p>He likes their sound so he taps back to the email page and decide to send an email to the band to set an appointment.
+			<p>He clicks on the link to the bands GigHub account and he explores the the bands profile. He spots that there is a link to the band's soundcloud and decide to tap into and listens to some tracks. He likes what he hears so he backtracks to the profile page to find a contacts list. When he finds the email, he decides to write them.
 			</p>
 
 			<h2>Interaction Flow</h2>
 				<ol>
-					<li>Morrissey opens up GigHub to his venue private portfolio page.</li>
-					<li>On the profile page he sees that there is mail in the inbox.</li>
-					<li>He taps on the inbox icon and the app goes from the profile page to the inbox page.</li>
-					<li>He taps on the email sent by FigStick.</li>
-					<li>He reads the email and taps the bands profile link.</li>
-					<li>The link jumps from the email message to the bands GigHub public profile page.</li>
-					<li>He scrolls down the public profile page and taps on the music box to here a sample.</li>
-					<li>Morrissey taps the "back to email" and decides to write a email back to set up the gig.</li>
+					<li>Morrissey get an email notification from GigHub </li>
+					<li>He taps the open mail and reads the contents</li>
+					<li>FigStick wants to play at his venue</li>
+					<li>Morrissey taps on the profile link to FigStick GigHub </li>
+					<li>Morrissey looks at the profile and taps the link to the band's soundcloud</li>
+					<li>He listens to the playlist and goes back to FigStick profile page</li>
+					<li>He looks for the band's contact and decides to email them.  </li>
 				</ol>
 		</main>
 	</body>

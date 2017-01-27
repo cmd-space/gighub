@@ -17,21 +17,20 @@
 				   <ol>
 					   <li>profileId(PK)</li>
 					   <li>profileOAuthId(FK?)</li>
+						<li>profileOAuthToken</li>
 					   <li>profileUserName</li>
 					   <li>profileLocation</li>
 					   <li>profileBio</li>
 					   <li>profileUrl</li>
 					   <li>profileSoundCloudUser</li>
 						<li>profileImageCloudinaryId</li>
-						<li>profileType</li>
+						<li>profileTypeId(FK)</li>
 				   </ol>
 				</li>
 				<li>OAuth
 				   <ol>
 					   <li>oAuthId(PK)</li>
-					   <li>oAuthProfileId(FK)</li>
-					   <li>oAuthFacebookId</li>
-					   <li>oAuthTwitterId</li>
+					   <li>oAuthServiceName</li>
 				   </ol>
 				</li>
 				<li>Post
@@ -39,10 +38,9 @@
 						<li>postId(PK)</li>
 						<li>postProfileId(FK)</li>
 						<li>postTitle</li>
-						<li>postLocation</li>
+						<li>postLocationAddress</li>
+						<li>postVenueId(FK)</li>
 						<li>postContent</li>
-						<!-- postGoogleMap is still not decided -->
-						<li>postGoogleMap</li>
 						<li>postEventDate</li>
 						<li>postCreatedDate</li>
 						<li>postImageCloudinaryId</li>
@@ -52,6 +50,18 @@
 					<ol>
 						<li>tagId(PK)</li>
 						<li>tagContent</li>
+					</ol>
+				</li>
+				<li>Venue
+					<ol>
+						<li>venueId(PK)</li>
+						<li>venueProfileId(FK)</li>
+						<li>venueName</li>
+						<li>venueStreet1</li>
+						<li>venueStreet2</li>
+						<li>venueCity</li>
+						<li>venueState</li>
+						<li>venueZip</li>
 					</ol>
 				</li>
 				<li>Post Tag
@@ -64,6 +74,12 @@
 					<ol>
 						<li>profileTagTagId(FK)</li>
 						<li>profileTagProfileId(FK)</li>
+					</ol>
+				</li>
+				<li>Profile Type
+					<ol>
+						<li>profileTypeId(PK)</li>
+						<li>profileTypeName</li>
 					</ol>
 				</li>
 <!--				<li>Profile Image-->

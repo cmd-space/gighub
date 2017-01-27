@@ -91,6 +91,8 @@
 <!--					</ol>-->
 <!--				</li>-->
 			</ul>
+			<h2>ERD</h2>
+			<img src="images/gighub.svg" alt="savage">
 		</main>
 	</body>
 </html>

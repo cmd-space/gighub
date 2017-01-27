@@ -13,7 +13,8 @@
 		</header>
 		<main>
 			<h2>System Summary</h2>
-			<p>A place for local venues (bars, dances, concert halls, weddings, birthday parties for clowns and shit) to find acts to perform.  A place for artists and acts to create a “gigfolio” for venues to view and book. When the contract is finalized by the gigger and the giggee the event will be viewable by the fan base in a calendar format. </p>
+			<p>A place for local venues to find acts to perform.  A place for artists and acts to create a “gigfolio” for venues to view and book. When
+				the contract is finalized by the gigger and the giggee the event will be viewable by the fan base in a calendar format. </p>
 			<h2>Persona files</h2>
 			<p><a href="persona-four18-bar.php">Venue Persona</a></p>
 			<p><a href="persona-max-johnson.php">Musician Persona</a></p>

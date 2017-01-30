@@ -82,14 +82,6 @@
 						<li>profileTypeName</li>
 					</ol>
 				</li>
-<!--				<li>Profile Image-->
-<!--					<ol>-->
-<!--						<li>profileImageId(PK)</li>-->
-<!--						<li>profileImageProfileId(FK)</li>-->
-<!--						<li>profileImageUploadFileName</li>-->
-<!--						<li>profileImageUrl</li>-->
-<!--					</ol>-->
-<!--				</li>-->
 			</ul>
 			<h2>ERD</h2>
 			<img src="images/gighub.svg" alt="savage">

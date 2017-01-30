@@ -47,13 +47,63 @@ CREATE TABLE profile (
 	PRIMARY KEY(profileId)
 );
 
--- create the tweet entity
+-- create the post entity
 CREATE TABLE post (
 	-- this is for yet another primary key...
 	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	-- this is for a foreign key; auto_increment is omitted by design
 	postProfileId INT UNSIGNED NOT NULL,
-
+	postVenueId INT UNSIGNED NOT NULL,
+	postContent VARCHAR(669) NOT NULL,
+	postCreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	postEventDate TIMESTAMP DEFAULT NOT NULL,
+	postImageCloudinaryId VARCHAR(128),
+	postLocationAddress VARCHAR(512),
+	postTitle VARCHAR(64),
+	INDEX(postContent),
+	INDEX(postCreatedDate),
+	INDEX(postEventDate),
+	INDEX(postLocationAddress),
+	INDEX(postTitle),
+	UNIQUE(postImageCloudinaryId),
+	FOREIGN KEY(postProfileId) REFERENCES profile(profileId),
+	FOREIGN KEY(postVenueId) REFERENCES venue(venueId),
 	-- and finally create the primary key
 	PRIMARY KEY(postId)
+);
+
+-- create the venue entity
+CREATE TABLE venue (
+	venueId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	venueProfileId INT UNSIGNED NOT NULL,
+	venueCity VARCHAR(64) NOT NULL,
+	venueName VARCHAR(64) NOT NULL,
+	venueState VARCHAR(64) NOT NULL,
+	venueStreet1 VARCHAR(64) NOT NULL,
+	venueStreet2 VARCHAR(64),
+	venueZip INT NOT NULL,
+	INDEX(venueCity),
+	INDEX(venueName),
+	INDEX(venueState),
+	INDEX(venueStreet1),
+	INDEX(venueStreet2),
+	INDEX(venueZip),
+	FOREIGN KEY(venueProfileId) REFERENCES profile(profileId),
+	PRIMARY KEY(venueId)
+);
+
+-- create the tag entity
+CREATE TABLE tag (
+	tagId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	tagContent VARCHAR(64),
+	UNIQUE(tagContent),
+	PRIMARY KEY(tagId)
+);
+
+-- create the profileType entity
+CREATE TABLE profileType (
+	profileTypeId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	profileTypeName VARCHAR(64) NOT NULL,
+	INDEX(profileTypeName),
+	PRIMARY KEY(profileTypeId)
 );

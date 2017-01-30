@@ -12,8 +12,7 @@ DROP TABLE IF EXISTS oAuth;
 -- create the oAuth entity
 CREATE TABLE oAuth (
 	oAuthId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	oAuthServiceName VARCHAR(128) NOT NULL,
-	INDEX(oAuthServiceName),
+	oAuthServiceName VARCHAR(32) NOT NULL,
 	PRIMARY KEY(oAuthId)
 );
 
@@ -26,21 +25,18 @@ CREATE TABLE profile (
 	profileOAuthId INT UNSIGNED NOT NULL,
 	profileTypeId INT UNSIGNED NOT NULL,
 	profileBio VARCHAR(669),
-	profileImageCloudinaryId VARCHAR(128),
+	profileImageCloudinaryId VARCHAR(32),
 	profileLocation VARCHAR(128),
-	profileOAuthToken VARCHAR(256),
-	profileSoundCloudUser VARCHAR(128),
-	profileUrl VARCHAR(512) NOT NULL,
+	profileOAuthToken VARCHAR(64),
+	profileSoundCloudUser VARCHAR(32),
 	profileUserName VARCHAR(64),
 	-- to make something optional, exclude the not null
 	-- to make sure duplicate data cannot exist, create a unique index
-	INDEX(profileBio),
-	INDEX(profileImageCloudinaryId),
 	INDEX(profileLocation),
+	INDEX(profileOAuthId),
 	INDEX(profileSoundCloudUser),
+	INDEX(profileTypeId),
 	UNIQUE(profileUserName),
-	UNIQUE(profileOAuthToken),
-	UNIQUE(profileUrl),
 	FOREIGN KEY(profileOAuthId) REFERENCES oAuth(oAuthId),
 	FOREIGN KEY(profileTypeId) REFERENCES profileType(profileTypeId),
 	-- this officiates the primary key for the entity
@@ -54,16 +50,15 @@ CREATE TABLE post (
 	-- this is for a foreign key; auto_increment is omitted by design
 	postProfileId INT UNSIGNED NOT NULL,
 	postVenueId INT UNSIGNED NOT NULL,
-	postContent VARCHAR(669) NOT NULL,
+	postContent VARCHAR(255) NOT NULL,
 	postCreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	postEventDate TIMESTAMP DEFAULT NOT NULL,
-	postImageCloudinaryId VARCHAR(128),
-	postLocationAddress VARCHAR(512),
+	postEventDate DATETIME NOT NULL,
+	postImageCloudinaryId VARCHAR(32),
 	postTitle VARCHAR(64),
 	INDEX(postContent),
-	INDEX(postCreatedDate),
 	INDEX(postEventDate),
-	INDEX(postLocationAddress),
+	INDEX(postProfileId),
+	INDEX(postVenueId),
 	INDEX(postTitle),
 	UNIQUE(postImageCloudinaryId),
 	FOREIGN KEY(postProfileId) REFERENCES profile(profileId),
@@ -76,17 +71,15 @@ CREATE TABLE post (
 CREATE TABLE venue (
 	venueId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	venueProfileId INT UNSIGNED NOT NULL,
-	venueCity VARCHAR(64) NOT NULL,
+	venueCity VARCHAR(100) NOT NULL,
 	venueName VARCHAR(64) NOT NULL,
-	venueState VARCHAR(64) NOT NULL,
+	venueState CHAR(2) NOT NULL,
 	venueStreet1 VARCHAR(64) NOT NULL,
 	venueStreet2 VARCHAR(64),
-	venueZip INT NOT NULL,
+	venueZip VARCHAR(10) NOT NULL,
 	INDEX(venueCity),
 	INDEX(venueName),
-	INDEX(venueState),
-	INDEX(venueStreet1),
-	INDEX(venueStreet2),
+	INDEX(venueProfileId),
 	INDEX(venueZip),
 	FOREIGN KEY(venueProfileId) REFERENCES profile(profileId),
 	PRIMARY KEY(venueId)
@@ -104,6 +97,25 @@ CREATE TABLE tag (
 CREATE TABLE profileType (
 	profileTypeId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	profileTypeName VARCHAR(64) NOT NULL,
-	INDEX(profileTypeName),
 	PRIMARY KEY(profileTypeId)
+);
+
+-- create the profileTag entity
+CREATE TABLE profileTag (
+	profileTagProfileId INT UNSIGNED NOT NULL,
+	profileTagTagId INT UNSIGNED NOT NULL,
+	INDEX(profileTagProfileId),
+	INDEX(profileTagTagId),
+	FOREIGN KEY(profileTagProfileId) REFERENCES profile(profileId),
+	FOREIGN KEY(profileTagTagId) REFERENCES tag(tagId)
+);
+
+-- create the postTag entity
+CREATE TABLE postTag (
+	postTagPostId INT UNSIGNED NOT NULL,
+	postTagTagId INT UNSIGNED NOT NULL,
+	INDEX(postTagPostId),
+	INDEX(postTagTagId),
+	FOREIGN KEY(postTagPostId) REFERENCES post(postId),
+	FOREIGN KEY(postTagTagId) REFERENCES tag(tagId)
 );

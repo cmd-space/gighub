@@ -19,7 +19,7 @@ class Tag implements \JsonSerializable {
 	private $tagId;
 	/**
 	 *textual content of this tag
-	 * @var string $tagContent;
+	 * @var string $tagContent
 	 **/
 	private $tagContent;
 
@@ -30,7 +30,7 @@ class Tag implements \JsonSerializable {
 	 * @param string $newTagContent string containing actual tag data
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (eg strings too long, negative integers)
-	 * @throw \TypeError if data types violate hints
+	 * @throws \TypeError if data types violate hints
 	 * @throws \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newTagId = null, string $newTagContent){

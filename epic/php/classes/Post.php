@@ -170,5 +170,43 @@ class Post implements \JsonSerializable {
 		$this->postContent = $newPostContent;
 	}
 
+	/**
+	 * accessor method for post created date
+	 *
+	 * @return \DateTime value of post created date
+	 */
+	public function getPostCreatedDate() {
+		return($this->postCreatedDate);
+	}
+
+	/**
+	 * mutator method for post created date
+	 *
+	 * @param \DateTime|string|null $newPostCreatedDate post date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newPostCreatedDate is not a valid object or string
+	 * @throws /\RangeException if $newPostCreatedDate is a date that does exist
+	 */
+	public function setPostCreatedDate($newPostCreatedDate=null) {
+		//base case: if the date is null, use the current date and time
+		if($newPostCreatedDate ===null) {
+			$this->postCreatedDate = new \DateTime();
+			return;
+		}
+		//store the post created date
+		try {
+			$newPostCreatedDate = self::validateDateTime($newPostCreatedDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->postCreatedDate = $newPostCreatedDate;
+	}
+
+
+
+
+
+
 
 }

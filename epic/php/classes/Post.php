@@ -9,47 +9,47 @@ require_once ("auto_load.php");
  *
  */
 class Post implements \JsonSerializable {
-	use ValidateDate;
+	use validateDate;
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId
-	 */
+	 **/
 	private $postId;
 	/**
 	 * id of Profile that sent this Post;
 	 * this is a foreign key
 	 * @var int $postProfileId
-	 */
+	 **/
 	private $postProfileId;
 	/**
 	 *id of the Profile that uses Venue
 	 * @var int $postVenueId
-	 */
+	 **/
 	private $postVenueId;
 	/**
 	 * actual textual content of this Post
 	 * @var string $postContent
-	 */
+	 **/
 	private $postContent;
 	/**
 	 * date and time this Post was sent, in PHP DateTime object
 	 * @var \DateTime $postCreatedDate
-	 */
+	 **/
 	private $postCreatedDate;
 	/**
 	 *date and time created for the event, in PHP DateTime object
 	 * @var \DateTime $postEventDate
-	 */
+	 **/
 	private $postEventDate;
 	/**
 	 *image posted from Cloudinary datadase
-	 * @var int $postImageCloudinaryId
-	 */
+	 * @var string $postImageCloudinaryId
+	 **/
 	private $postImageCloudinaryId;
 	/**
 	 *title of the post being created
 	 * @var string $postTitle
-	 */
+	 **/
 	private $postTitle;
 
 	/**
@@ -57,7 +57,7 @@ class Post implements \JsonSerializable {
 	 *
 	 *
 	 * @return int|null value of post id
-	 */
+	 **/
 	public function getPostId() {
 		return ($this->postId);
 	}
@@ -67,7 +67,7 @@ class Post implements \JsonSerializable {
 	 * @param int|null $newPostId new value of post id
 	 * @throws |RangeException if $newPostId is not positive
 	 * @throws |TypeError if $newPostId is not an integer
-	 */
+	 **/
 	public function setPostId(int $newPostId = null) {
 		// base case: if the post id is null, this is a new post without a mySQL assigned (yet)
 		if($newPostId === null) {
@@ -88,7 +88,7 @@ class Post implements \JsonSerializable {
 	 * accessor method for post profile id
 	 *
 	 * @return int value of post profile id
-	 */
+	 **/
 	public function getPostProfileId() {
 		return($this->postProfileId);
 	}
@@ -99,7 +99,7 @@ class Post implements \JsonSerializable {
 	 * @param int $newPostProfileId new value of tweet profile id
 	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if $newProfileId is not an integer
-	 */
+	 **/
 	public function setPostProfileId(int $newPostProfileId) {
 
 		//verify the profile id is positive
@@ -126,7 +126,7 @@ class Post implements \JsonSerializable {
 	 * @param int $newPostVenueId new value of post venue id
 	 * @throws \RangeException if $newVenueId is not positive
 	 * @throws \TypeError if $newVenueId is not an integer
-	 */
+	 **/
 	public function setPostVenueId(int $newPostVenueId) {
 
 		//verify the venue id is positive
@@ -141,7 +141,7 @@ class Post implements \JsonSerializable {
 	 * accessor method for post content
 	 *
 	 * @return string value of post content
-	 */
+	 **/
 	public function getPostContent() {
 		return($this->postContent);
 	}
@@ -153,7 +153,7 @@ class Post implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if  $newPostContent is not a string or insecure
 	 * @throws \RangeException if $newPostContent is > 140 characters
 	 * @throws \TypeError if $newPostContent is not a string
-	 */
+	 **/
 	public function setPostContent(string $newPostContent) {
 		//verify the post content is secure
 		$newPostContent = trim($newPostContent);
@@ -174,7 +174,7 @@ class Post implements \JsonSerializable {
 	 * accessor method for post created date
 	 *
 	 * @return \DateTime value of post created date
-	 */
+	 **/
 	public function getPostCreatedDate() {
 		return($this->postCreatedDate);
 	}
@@ -185,7 +185,7 @@ class Post implements \JsonSerializable {
 	 * @param \DateTime|string|null $newPostCreatedDate post date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newPostCreatedDate is not a valid object or string
 	 * @throws /\RangeException if $newPostCreatedDate is a date that does exist
-	 */
+	 **/
 	public function setPostCreatedDate($newPostCreatedDate=null) {
 		//base case: if the date is null, use the current date and time
 		if($newPostCreatedDate ===null) {
@@ -202,6 +202,47 @@ class Post implements \JsonSerializable {
 		}
 		$this->postCreatedDate = $newPostCreatedDate;
 	}
+
+	/**
+	 * accessor method for post event date
+	 *
+	 * @return \DateTime value of post event date
+	 **/
+	public function getPostEventDate() {
+		return($this->postEventDate);
+	}
+
+	/**
+	 * mutator method for post event date
+	 *
+	 * @param \DateTime|string|null $newPostEventDate post event date is not a valid object or string
+	 * @throws \InvalidArgumentException if $newPostEventDate is not a valid object or string
+	 * @throws \RangeException if $newPostEvent is a date that does not exist
+	 **/
+	public function setPostEventDate($newPostEventDate = null) {
+		//base case: if the ate is null, use the current date and time
+		if($newPostEventDate === null) {
+			$this->postEventDate = new \DateTime();
+			return;
+		}
+		// store the post event date
+		try {
+			$newPostEventDate = self::validateDateTime($newPostEventDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument ->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->postEventDate = $newPostEventDate;
+	}
+
+	/**
+	 *
+	 *
+	 **/
+
+
+
 
 
 

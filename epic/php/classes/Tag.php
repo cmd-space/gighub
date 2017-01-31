@@ -89,4 +89,34 @@ Class CreateTag implements \JsonSerializable {
 	 *
 	 * @return string value of tag content
 	 **/
+	public function getTagContent() {
+		return($this->tagContent);
+	}
+
+	/**
+	 * mutator method for tag content
+	 *
+	 * @param string $newTagContent new value of tag content
+	 * @throws \InvalidArgumentException if $newTagContent is insecure
+	 * @throws \RangeException if $newTagContent is > 64 characters
+	 * @throws \TypeError if $newTagContent is not a string
+	 **/
+	public function setTagContent(string $newTagContent) {
+		// verify the content is secure
+		$newTagContent = trim($newTagContent);
+		$newTagContent = filter_var($newTagContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTagContent) === true) {
+			throw(new \InvalidArgumentException("tag content is insecure or empty"));
+		}
+
+		// verify the tag content will fit in the database
+		if(strlen($newTagContent) > 64) {
+			throw(new \RangeException("tag content too large"));
+		}
+
+		// store the tag content
+		$this->tagContent = $newTagContent;
+	}
+
+
 }

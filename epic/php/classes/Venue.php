@@ -94,4 +94,18 @@ class Venue implements \JsonSerializable {
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
+	/**
+	 * accessor method for venue id
+	 *
+	 * @return int|null value of venue id
+	 **/
+	public function getVenueId() {
+		return($this->venueId);
+	}
+
+	/** mutator method for venue id
+	 *
+	 * @param int|null $newVenueId new value of venue id
+	 * @throws \RangeException
+	 **/
 }

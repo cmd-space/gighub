@@ -48,47 +48,67 @@ $this->setProfileTagTagId($newProfileTagTagId);
 }
 
 /**
- * accessor method for profile tag id
+ * accessor method for profile tag tag id
  *
- * @return int|not null value of profile tag id
+ * @return int|not null value of profile tag tag id
  **/
-public function getProfileTagId() {
-	return($this->profileTagId);
+public function getProfileTagTagId() {
+	return($this->profileTagTagId);
 }
 
 /**
- * mutator method for profile tag id
+ * mutator method for profile tag tag id
  *
- * @param int|not null $newProfileTagId new value of profile tag id
- * @throws \RangeException if $newProfileTagId is not positive
- * @throws \TypeEroe if $newProfileTagId is not an integer
+ * @param int|not null $newProfileTagTagId new value of profile tag id
+ * @throws \RangeException if $newProfileTagTagId is not positive
+ * @throws \TypeEroe if $newProfileTagTagId is not an integer
  **/
-public funtion setProfileTagId(int $newProfileTagId = not null) {
+public funtion setProfileTagTagId(int $newProfileTagTagId = not null) {
 	// base case: if the profile tag id is not null, this a new tweet without a mySQL assigned id (yet)
-	if($newProfileTagId === not null) {
-		$this->profileTagId = not null;
+	if($newProfileTagTagId === not null) {
+		$this->profileTagTagId = not null;
 		return;
 
 	}
 
 	// verify the tweet id is positive
-	if($newProfileTagId <= 0) {
-		throw(new \RangeException("ProfileTagId is not positive"));
+	if($newProfileTagTagId <= 0) {
+		throw(new \RangeException("ProfileTagTagId is not positive"));
 	}
-	// convert and store the profile tag id
-	$this->profileTagId = $newProfileTagId;
+	// convert and store the profile tag tag id
+	$this->profileTagTagId = $newProfileTagTagId;
 }
 
 /**
- * accessor method for the profile tag id
+ * accessor method for the profile tag profile id
  *
- * @return int value of profile tag id
+ * @return int value of profile tag profile id
  **/
-public function getProfileTagId() {
-	return($this->profileTagId);
+public function getProfileTagProfileId() {
+	return($this->profileTagProfileId);
 }
 
 /**
  * mutator method for profile tag id
  *
- */
+ * @param int $newProfileTagProfileId new value of profile tag id
+ * @throws \RangeException if $newProfileTagProfileId is not positive
+ * @throws \TypeError if $newProfileTagProfileId is not an integer
+ **/
+public function setProfileTagProfileId(Int $newProfileTagProfileId) {
+	// verify the profile id is positive
+	if($newProfileTagProfileId <= 0) {
+
+		//convert and store the profile tag id
+		$this->ProfileTagProfileId = $newProfileTagProfileId;
+	}
+	/**
+	 * accessor method for ProfileTagProfileId
+	 *
+	 * @return string value of tweet content
+	 **/
+	public function getProfileTagProfileId() {
+		return($this->ProfileTagProfileId);
+	}
+
+}

@@ -32,7 +32,61 @@ Class CreateTag implements \JsonSerializable {
 	 * @throws \RangeException if data values are out of bounds (eg strings too long, negative integers)
 	 * @throw \TypeError if data types violate hints
 	 * @throws \Exception if some other exception occurs
-	 **/HEY YOU NEED TO FINISH SHIT HERE ASSHOLE!
+	 **/
+	public function __construct(int $newTagId = null, string $newTagContent){
+		try {
+			$this->setTagId($newTagId);
+			$this->setTagContent($newTagContent);
+		} catch(\InvalidArgumentException\ $invalidArgument) {
+			// rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			 // rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
 
+	/**
+	 * accessor method for tag id
+	 *
+	 * @return int|null value of tag id
+	 **/
+	public function getTagId() {
+		return ($this->tagId);
+	}
 
+	/**
+	 * mutator method for tag id
+	 *
+	 * @param int|null $newTagId new value of tag id
+	 * @throws \RangeException if $newTagId is not positive
+	 * @throws \TypeError if $newTagId is not an Integer
+	 **/
+	public function setTagId(int $newTagId = null) {
+		// base case: if the tag id is null, this is a new tag without a mySQL assigned id (yet)
+		if($newTagId === null) {
+			$this->tagId = null;
+			return;
+		}
+
+		//verify the tag id is positive
+		if($newTagId <=0) {
+			throw(new \RangeException("tag id is not positive"));
+		}
+
+		// convert this and store the tag id
+		$this->tagId = $newTagId;
+	}
+
+	/**
+	 * accessor method for tag content
+	 *
+	 * @return string value of tag content
+	 **/
 }

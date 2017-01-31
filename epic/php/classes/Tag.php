@@ -11,7 +11,7 @@ require_once("autoload.php");
  * @version 1.0
  **/
 
-class CreateTag implements \JsonSerializable {
+class Tag implements \JsonSerializable {
 	/**
 	 * id for this Tag; this is the primary key
 	 * @var int $tagId

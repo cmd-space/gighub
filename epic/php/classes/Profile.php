@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Mcrane2\Profile;
+namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
 /**

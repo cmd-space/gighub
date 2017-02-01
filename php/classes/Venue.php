@@ -75,12 +75,12 @@ class Venue implements \JsonSerializable {
 			$this->setVenueId($newVenueId);
 			$this->setVenueProfileId($newVenueId);
 			$this->setVenueName($newVenueName);
-			$this->setVenueStreet($newVenueStreet1);
+			$this->setVenueStreet1($newVenueStreet1);
 			$this->setVenueStreet2($newVenueStreet2);
 			$this->setVenueCity($newVenueCity);
 			$this->setVenueState($newVenueState);
 			$this->setVenueZip($newVenueZip);
-		} catch(\InvalidArgumentException\ $invalidArgument) {
+		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -89,7 +89,7 @@ class Venue implements \JsonSerializable {
 		} catch(\TypeError $typeError) {
 			// rethrow the exception to the caller
 			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
-		} catch(Exception $exception) {
+		} catch(\Exception $exception) {
 			// rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
@@ -203,9 +203,9 @@ class Venue implements \JsonSerializable {
 		 * @throws \TypeError if $newVenueStreet1 is not a string
 		 **/
 	public function setVenueStreet1(string $newVenueStreet1) {
-	// verify the !!!! is secure
+	// verify the venue street 2 is secure
 	$newVenueStreet1 = trim($newVenueStreet1);
-		$new!!!! = filter_var($newVenueStreet1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newVenueStreet1 = filter_var($newVenueStreet1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newVenueStreet1) === true) {
 		throw(new \InvalidArgumentException("venue street 1 is empty or insecure"));
 		}
@@ -318,7 +318,7 @@ class Venue implements \JsonSerializable {
 	}
 
 		// store the venue state content
-		$this->venueStatee = $newVenueState;
+		$this->venueState = $newVenueState;
 	}
 
 	/**

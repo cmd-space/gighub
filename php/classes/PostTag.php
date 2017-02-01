@@ -7,8 +7,8 @@ require_once("autoload.php");
  * @author Brandon Steider <bsteider@cnm.edu>
  * @version 3.0.0
  **/
-class postTag implements \JsonSerializable {
-	use ValidateDate;
+class PostTag implements \JsonSerializable {
+
 	/**
 	 * id for this postTag; this is a foreign key
 	 * @var int $postTagId
@@ -26,10 +26,10 @@ class postTag implements \JsonSerializable {
 	private $postTagPostId;
 	/**
 	 * actual textual content of this postTag
-	 * @var \DateTime $postTagPostId
+	 * @var int $postTagPostId
 	 **/
 
-public function __construct(int $newPostTagId = null, int $newPostTagTagId, string $newPostTagPostId) {
+public function __construct(int $newPostTagId = null, int $newPostTagTagId, int $newPostTagPostId) {
 	try {
 		$this->setPostTagId($newPostTagId);
 		$this->setPostTagTagId($newPostTagTagId);
@@ -56,6 +56,30 @@ public function __construct(int $newPostTagId = null, int $newPostTagTagId, stri
 public function getPostTagId() {
 	return($this->postTagId);
 }
+
+	/**
+	 * mutator method for post tag id
+	 *
+	 * @param int|null $newPostTagId new value of profile id
+	 * @throws \RangeException if $newPostTagId is not positive
+	 * @throws \TypeError if $newPostTagId is not an integer
+	 **/
+	public function setPostTagId(int $newPostTagId = null) {
+		// base case: if the profile id is null, this is a new profile without a mySQL assigned id (yet)
+		if($newPostTagId === null) {
+			$this->postTagId = null;
+			return;
+		}
+
+		// verify that the post tag id is positive
+		if($newPostTagId <= 0) {
+			throw(new \RangeException("post tag id is not positive... enough"));
+		}
+
+		// convert and store the post tag id
+		$this->postTagId = $newPostTagId;
+	}
+
 /**
  * mutator method for post tag tag id
  *
@@ -63,12 +87,7 @@ public function getPostTagId() {
  * @throws \RangeException if $newPostTagTagId is not positive
  * @throws \TypeError if $newPostTagTagId is not an integer
  **/
-public function setPostTagTagId(int $newPostTagId = null) {
-	// base case: if the post tag tag id is null, this a new post tag without a mySQL assigned id (yet)
-	if($newPostTagTagId === null) {
-		$this->postTagTagId = null;
-		return;
-	}
+public function setPostTagTagId(int $newPostTagTagId = null) {
 	// verify the post tag tag id is positive
 	if($newPostTagTagId <= 0) {
 		throw(new \RangeException("post tag tag id is not positive"));
@@ -92,11 +111,22 @@ public function getPostTagPostId() {
  **/
 public function setPostTagPostId(int $newPostTagPostId) {
 	// verify the post tag post id is positive
-	if($newPostTagPostId <=0) {
+	if($newPostTagPostId <= 0) {
 		throw(new \RangeException("post tag post id is not positive"));
 	}
 	// convert and store the post tag post id
 	$this->postTagPostId = $newPostTagPostId;
 }
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return mixed data which can be serialized by <b>json_encode</b>,
+	 * which is a value of any type other than a resource.
+	 * @since 5.4.0
+	 */
+	function jsonSerialize() {
+		// TODO: Implement jsonSerialize() method.
+	}
 }
 

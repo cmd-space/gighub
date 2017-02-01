@@ -7,7 +7,7 @@ require_once("autoload.php");
  * ask later what comments to put here regarding gighub
  * @author Brandon Steider <bsteider@cnm.edu>
  **/
-class ProfileTag implements \JsonSerialize {
+class ProfileTag implements \JsonSerializable {
 	/**
 	 * id for this ProfileTag; this is the foreign key
 	 * @var int $ProfileTag
@@ -22,16 +22,16 @@ class ProfileTag implements \JsonSerialize {
 	/**
 	 *constructor for this ProfileTag
 	 *
-	 * @param int|not null $ProfileTagProfileId
-	 * @param int $ProfileTagTagId
+	 * @param int|null $newProfileTagProfileId
+	 * @param int $newProfileTagTagId
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newProfileTagId = null, int $newProfileTagProfileId) {
+	public function __construct(int $newProfileTagTagId = null, int $newProfileTagProfileId) {
 		try {
-			$this->setProfileTagId($newProfileTagId);
+			$this->setProfileTagTagId($newProfileTagTagId);
 			$this->setProfileTagTagId($newProfileTagTagId);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the caller
@@ -51,7 +51,7 @@ class ProfileTag implements \JsonSerialize {
 	/**
 	 * accessor method for profile tag tag id
 	 *
-	 * @return int|not null value of profile tag tag id
+	 * @return int|null value of profile tag tag id
 	 **/
 	public function getProfileTagTagId() {
 		return ($this->profileTagTagId);
@@ -103,25 +103,15 @@ class ProfileTag implements \JsonSerialize {
 			//convert and store the profile tag id
 			$this->ProfileTagProfileId = $newProfileTagProfileId;
 		}
-		/**
-		 * accessor method for ProfileTagProfileId
-		 *
-		 * @return string value of tweet content
-		 **/
-		public
-		function getProfileTagProfileId() {
-			return ($this->ProfileTagProfileId);
-		}
+	}
 
 		/**
 		 * formats the state variables for JSON serialization
 		 *
 		 * @return array resulting state variables to serialize
 		 **/
-		public
-		function jsonSerialize() {
+		public function jsonSerialize() {
 			$fields = get_object_vars($this);
 			return ($fields);
 		}
-	}
 }

@@ -143,6 +143,28 @@ class OAuth implements \JsonSerializable {
 	}
 
 	/**
+	 * deletes this OAuth from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) {
+		// enforce the oAuthId is not null (i.e., don't delete an oAuth that hasn't been inserted)
+		if($this->oAuthId === null) {
+			throw(new \PDOException("unable to delete an oAuth that is a figment of your imagination"));
+		}
+
+		// create query template
+		$query = "DELETE FROM oAuth WHERE oAuthId = :oAuthId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholder in the template
+		$parameters = ["oAuthId" => $this->oAuthId];
+		$statement->execute($parameters);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

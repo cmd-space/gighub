@@ -3,10 +3,12 @@ namespace Edu\Cnm\GigHub;
 
 require_once ("auto_load.php");
 /**
+ * Post class
  *
+ * this class is the basis for post creating and fuction for GigHub social networking site
  *
  * @author Joseph Ramirez <jramirez98@cnm.edu>
- *
+ * @version 1.0.0
  */
 class Post implements \JsonSerializable {
 	use \ValidateDate;
@@ -339,19 +341,16 @@ class Post implements \JsonSerializable {
 			//store the post title
 			$this->postTitle = $newPostTitle;
 		}
-
-
 	}
 
-
-
-
-
-
-
-
-
-
-
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
+	}
 
 }

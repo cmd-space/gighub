@@ -58,6 +58,49 @@ class Profile implements \JsonSerializable {
 	private $profileUserName;
 
 	/**
+	 * constructor for this Profile
+	 *
+	 * @param int|null $newProfileId id of this Profile or null if a new Profile
+	 * @param int $newProfileOAuthId id of the OAuth that created this Profile
+	 * @param int $newProfileTypeId id of the Type for this Profile
+	 * @param string $newProfileBio string containing actual bio data for this Profile
+	 * @param string $newProfileImageCloudinaryId string containing actual Cloudinary image id data for this Profile
+	 * @param string $newProfileLocation string containing actual Location data for this Profile
+	 * @param string $newProfileOAuthToken string containing actual OAuth Token data for this Profile
+	 * @param string $newProfileSoundCloudUser string containing actual SoundCloud username for this Profile
+	 * @param string $newProfileUserName string containing actual User Name for this Profile
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (i.e. strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Error if some other exception occurs
+	 **/
+	public function __construct(int $newProfileId = null, int $newProfileOAuthId, int $newProfileTypeId, string $newProfileBio, string $newProfileImageCloudinaryId, string $newProfileLocation, string $newProfileOAuthToken, string $newProfileSoundCloudUser, string $newProfileUserName) {
+		try {
+			$this->setProfileId($newProfileId);
+			$this->setProfileOAuthId($newProfileOAuthId);
+			$this->setProfileTypeId($newProfileTypeId);
+			$this->setProfileBio($newProfileBio);
+			$this->setProfileImageCloudinaryId($newProfileImageCloudinaryId);
+			$this->setProfileLocation($newProfileLocation);
+			$this->setProfileOAuthToken($newProfileOAuthToken);
+			$this->setProfileSoundCloudUser($newProfileSoundCloudUser);
+			$this->setProfileUserName($newProfileUserName);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			// rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Error($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	 * accessor method for profile id
 	 *
 	 * @return int|null value of profile id
@@ -343,6 +386,8 @@ class Profile implements \JsonSerializable {
 		// store the profile user name content
 		$this->profileUserName = $newProfileUserName;
 	}
+
+
 
 	/**
 	 * formats the state variables for JSON serialization

@@ -5,15 +5,15 @@ DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS venue;
 DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS profileType;
-DROP TABLE IF EXISTS profileOAuth;
+DROP TABLE IF EXISTS oAuth;
 
 -- the CREATE TABLE function is a function that takes tons of arguments to layout the table's schema
 
 -- create the oAuth entity
-CREATE TABLE profileOAuth (
-	profileOAuthId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	profileOAuthServiceName VARCHAR(32) NOT NULL,
-	PRIMARY KEY(profileOAuthId)
+CREATE TABLE oAuth (
+	oAuthId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	oAuthServiceName VARCHAR(32) NOT NULL,
+	PRIMARY KEY(oAuthId)
 );
 
 -- create the profileType entity
@@ -44,7 +44,7 @@ CREATE TABLE profile (
 	INDEX(profileSoundCloudUser),
 	INDEX(profileTypeId),
 	UNIQUE(profileUserName),
-	FOREIGN KEY(profileOAuthId) REFERENCES profileOAuth(profileOAuthId),
+	FOREIGN KEY(profileOAuthId) REFERENCES oAuth(oAuthId),
 	FOREIGN KEY(profileTypeId) REFERENCES profileType(profileTypeId),
 	-- this officiates the primary key for the entity
 	PRIMARY KEY(profileId)

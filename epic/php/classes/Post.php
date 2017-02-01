@@ -9,7 +9,7 @@ require_once ("auto_load.php");
  *
  */
 class Post implements \JsonSerializable {
-	use validateDate;
+	use \ValidateDate;
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId
@@ -151,7 +151,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @param string $newPostContent new value of post content
 	 * @throws \InvalidArgumentException if  $newPostContent is not a string or insecure
-	 * @throws \RangeException if $newPostContent is > 140 characters
+	 * @throws \RangeException if $newPostContent is > 255 characters
 	 * @throws \TypeError if $newPostContent is not a string
 	 **/
 	public function setPostContent(string $newPostContent) {
@@ -163,7 +163,7 @@ class Post implements \JsonSerializable {
 			throw(new \InvalidArgumentException("what are trying to say?"));
 		}
 		//verify the post content will fit in the database
-		if(strlen($newPostContent) > 140) {
+		if(strlen($newPostContent) > 255) {
 			throw(new \RangeException("your talkn to much!")):
 		}
 		//store the post content
@@ -237,9 +237,39 @@ class Post implements \JsonSerializable {
 	}
 
 	/**
+	 *accessor method for image Cloudinary id
 	 *
-	 *
+	 * @return string value of image cloudinary image
 	 **/
+	public function getPostImageCloudinaryId() {
+		return($this->postImageCloudinaryId);
+	}
+
+	/**
+	 * mutator method for post image cloudinary id
+	 *
+	 * @param string $newPostImageCloudinaryId new value of Cloudinary id content
+	 * @throws \InvalidArgumentException if $newPostImageCloudinaryId is not a string or insecure
+	 * @throws \RangeException if $newPostImageCloudinaryId is > 32 characters
+	 * @throws \TypeError if $newPostImageCloudinaryId is not a string
+	 **/
+	public function setPostImageCloudinaryId (string $newPostImageCloudinaryId) {
+		// verify the post image cloudinary id is secure
+		$newPostImageCloudinaryId = trim($newPostImageCloudinaryId);
+		$newPostImageCloudinaryId = filter_var($newPostImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostImageCloudinaryId) ===true) {
+			throw(new \InvalidArgumentException("image id is empty or insecure"));
+		}
+		//verify the post image cloudinary id will fit in the database
+		if(strlen($newPostImageCloudinaryId)> 32) {
+			throw(new \RangeException("this is not one-size fits all, the content is to big"));
+		}
+		//store the post image cloudinary id
+		$this->postImageCloudinaryId = $newPostImageCloudinaryId;
+
+	}
+
+
 
 
 

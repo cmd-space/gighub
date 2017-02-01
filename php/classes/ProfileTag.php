@@ -12,12 +12,13 @@ class ProfileTag implements \JsonSerialize {
 	 * id for this ProfileTag; this is the foreign key
 	 * @var int $ProfileTag
 	 **/
-	private $ProfileTagTagId;
+	private $profileTagTagId;
 	/**
 	 * this is a foreign key
 	 * @var int $ProfileTagProfileId
 	 */
-	private $ProfileTagProfileId;
+	private $profileTagProfileId;
+
 	/**
 	 *constructor for this ProfileTag
 	 *
@@ -29,95 +30,98 @@ class ProfileTag implements \JsonSerialize {
 	 * @throws \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newProfileTagId = null, int $newProfileTagProfileId) {
-	try {
-$this->setProfileTagId($newProfileTagId);
-$this->setProfileTagTagId($newProfileTagTagId);
-} catch(\InvalidArgumentException $invalidArgument){
-		//rethrow the exception to the caller
-		throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
-} catch(\RangeException $range) {
-		// rethrow the exception to the caller
-		throw(new \RangeException($range->getMessage(), 0, $range));
-} catch(\TypeError $typeError) {
-	// rethrow the exception to the caller
-	throw(new \TypeError($typeError->getMessage(), 0, $typeError));
-} catch(\Exception $exception) {
-	// rethrow the exception to the caller
-	throw(new \Exception($exception->getMessage(), 0, $exception));
-}
-}
-
-/**
- * accessor method for profile tag tag id
- *
- * @return int|not null value of profile tag tag id
- **/
-public function getProfileTagTagId() {
-	return($this->profileTagTagId);
-}
-
-/**
- * mutator method for profile tag tag id
- *
- * @param int|null $newProfileTagTagId new value of profile tag id
- * @throws \RangeException if $newProfileTagTagId is not positive
- * @throws \TypeError if $newProfileTagTagId is not an integer
- **/
-public function setProfileTagTagId(int $newProfileTagTagId) {
-	// base case: if the profile tag id is not null, this a new tweet without a mySQL assigned id (yet)
-	if($newProfileTagTagId === null) {
-		$this->profileTagTagId = null;
-		return;
-
+		try {
+			$this->setProfileTagId($newProfileTagId);
+			$this->setProfileTagTagId($newProfileTagTagId);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
 	}
 
-	// verify the tweet id is positive
-	if($newProfileTagTagId <= 0) {
-		throw(new \RangeException("ProfileTagTagId is not positive"));
-	}
-	// convert and store the profile tag tag id
-	$this->profileTagTagId = $newProfileTagTagId;
-}
-
-/**
- * accessor method for the profile tag profile id
- *
- * @return int value of profile tag profile id
- **/
-public function getProfileTagProfileId() {
-	return($this->profileTagProfileId);
-}
-
-/**
- * mutator method for profile tag id
- *
- * @param int $newProfileTagProfileId new value of profile tag id
- * @throws \RangeException if $newProfileTagProfileId is not positive
- * @throws \TypeError if $newProfileTagProfileId is not an integer
- **/
-public function setProfileTagProfileId(Int $newProfileTagProfileId) {
-	// verify the profile id is positive
-	if($newProfileTagProfileId <= 0) {
-
-		//convert and store the profile tag id
-		$this->ProfileTagProfileId = $newProfileTagProfileId;
-	}
 	/**
-	 * accessor method for ProfileTagProfileId
+	 * accessor method for profile tag tag id
 	 *
-	 * @return string value of tweet content
+	 * @return int|not null value of profile tag tag id
+	 **/
+	public function getProfileTagTagId() {
+		return ($this->profileTagTagId);
+	}
+
+	/**
+	 * mutator method for profile tag tag id
+	 *
+	 * @param int|null $newProfileTagTagId new value of profile tag id
+	 * @throws \RangeException if $newProfileTagTagId is not positive
+	 * @throws \TypeError if $newProfileTagTagId is not an integer
+	 **/
+	public function setProfileTagTagId(int $newProfileTagTagId) {
+		// base case: if the profile tag id is not null, this a new tweet without a mySQL assigned id (yet)
+		if($newProfileTagTagId === null) {
+			$this->profileTagTagId = null;
+			return;
+
+		}
+
+		// verify the tweet id is positive
+		if($newProfileTagTagId <= 0) {
+			throw(new \RangeException("ProfileTagTagId is not positive"));
+		}
+		// convert and store the profile tag tag id
+		$this->profileTagTagId = $newProfileTagTagId;
+	}
+
+	/**
+	 * accessor method for the profile tag profile id
+	 *
+	 * @return int value of profile tag profile id
 	 **/
 	public function getProfileTagProfileId() {
-		return($this->ProfileTagProfileId);
+		return ($this->profileTagProfileId);
 	}
 
 	/**
-	 * formats the state variables for JSON serialization
+	 * mutator method for profile tag id
 	 *
-	 * @return array resulting state variables to serialize
+	 * @param int $newProfileTagProfileId new value of profile tag id
+	 * @throws \RangeException if $newProfileTagProfileId is not positive
+	 * @throws \TypeError if $newProfileTagProfileId is not an integer
 	 **/
-	public function jsonSerialize() {
-		$fields = get_object_vars($this);
-		return($fields);
+	public function setProfileTagProfileId(Int $newProfileTagProfileId) {
+		// verify the profile id is positive
+		if($newProfileTagProfileId <= 0) {
+
+			//convert and store the profile tag id
+			$this->ProfileTagProfileId = $newProfileTagProfileId;
+		}
+		/**
+		 * accessor method for ProfileTagProfileId
+		 *
+		 * @return string value of tweet content
+		 **/
+		public
+		function getProfileTagProfileId() {
+			return ($this->ProfileTagProfileId);
+		}
+
+		/**
+		 * formats the state variables for JSON serialization
+		 *
+		 * @return array resulting state variables to serialize
+		 **/
+		public
+		function jsonSerialize() {
+			$fields = get_object_vars($this);
+			return ($fields);
+		}
 	}
 }

@@ -30,6 +30,18 @@ class PostTag implements \JsonSerializable {
 	 **/
 	private $PostTagDate;
 
-public function __construct()
+public function __construct(int $newPostTagId = null, int $newPostTagTagId, string $newPostTagPostId) {
+	try {
+		$this->setPostTagId($newPostTagId);
+		$this->setPostTagTagId($newPostTagTagId);
+		$this->setPostTagPostId($newPostTagPostId);
+	} catch(\InvalidArgumentException $invalidArgument) {
+		//rethrow the exception to the calller
+		throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+	} catch(\RangeException $range) {
+		// rethrow the exception to the caller
+		throw(new \RangeException($range->getMessage(), 0, $range));
+	}
+}
 }
 

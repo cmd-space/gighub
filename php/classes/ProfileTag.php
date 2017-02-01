@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\bsteider\ProfileTag;
+namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
 
@@ -7,7 +7,7 @@ require_once("autoload.php");
  * ask later what comments to put here regarding gighub
  * @author Brandon Steider <bsteider@cnm.edu>
  **/
-Class ProfileTag implements \JsonSerializable {
+class ProfileTag implements \JsonSerialize {
 	/**
 	 * id for this ProfileTag; this is the foreign key
 	 * @var int $ProfileTag
@@ -28,9 +28,9 @@ Class ProfileTag implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newProfileTagId = null, int $newProfileTagProfileId);
+	public function __construct(int $newProfileTagId = null, int $newProfileTagProfileId) {
 	try {
-$this->setProfileTagId($newProfileTagid);
+$this->setProfileTagId($newProfileTagId);
 $this->setProfileTagTagId($newProfileTagTagId);
 } catch(\InvalidArgumentException $invalidArgument){
 		//rethrow the exception to the caller
@@ -59,14 +59,14 @@ public function getProfileTagTagId() {
 /**
  * mutator method for profile tag tag id
  *
- * @param int|not null $newProfileTagTagId new value of profile tag id
+ * @param int|null $newProfileTagTagId new value of profile tag id
  * @throws \RangeException if $newProfileTagTagId is not positive
- * @throws \TypeEroe if $newProfileTagTagId is not an integer
+ * @throws \TypeError if $newProfileTagTagId is not an integer
  **/
-public funtion setProfileTagTagId(int $newProfileTagTagId = not null) {
+public function setProfileTagTagId(int $newProfileTagTagId) {
 	// base case: if the profile tag id is not null, this a new tweet without a mySQL assigned id (yet)
-	if($newProfileTagTagId === not null) {
-		$this->profileTagTagId = not null;
+	if($newProfileTagTagId === null) {
+		$this->profileTagTagId = null;
 		return;
 
 	}
@@ -111,4 +111,13 @@ public function setProfileTagProfileId(Int $newProfileTagProfileId) {
 		return($this->ProfileTagProfileId);
 	}
 
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
+	}
 }

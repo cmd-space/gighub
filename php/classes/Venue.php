@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Dconley6\Venue;
+namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
 

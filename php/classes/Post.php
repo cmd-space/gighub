@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Jramirez98\Post;
+namespace Edu\Cnm\GigHub;
 
 require_once ("auto_load.php");
 /**

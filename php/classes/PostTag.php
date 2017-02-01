@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Bsteider\PostTag;
+namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
 

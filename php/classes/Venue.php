@@ -106,6 +106,103 @@ class Venue implements \JsonSerializable {
 	/** mutator method for venue id
 	 *
 	 * @param int|null $newVenueId new value of venue id
-	 * @throws \RangeException
+	 * @throws \RangeException if $newVenueId is not positive
+	 * @throws \TypeError if $newVenueId is not an integer
 	 **/
+	public function setVenueId(int $newVenueId = null) {
+		// base case: if the venue id is null, this is a new venue without a mySQL assigned (yet)
+		if($newVenueId === null) {
+			$this->venueId = null;
+			return;
+		}
+
+		// verify venue id is positive
+		if($newVenueId <=0) {
+			throw(new \RangeException("venue id is not positive"));
+		}
+
+		// convert and store the venue id
+		$this->venueId = $newVenueId;
+	}
+
+	/**
+	 * accessor method for venue profile id
+	 *
+	 * @return int value of the venue profile id
+	 **/
+	public function getVenueProfileId() {
+		return($this->venueProfileId);
+	}
+
+	/**
+	 * mutator method for venue profile id
+	 *
+	 * @param int $newVenueProfileId
+	 * @throws \RangeException if $newVenueProfileId is not positive
+	 * @throws \TypeError if $newVenueId is not an integer
+	 **/
+	public function  setVenueProfileId(int $newVenueProfileId) {
+		// verify the new profile id is positive
+		if($newVenueProfileId <= 0) {
+			throw(new \RangeException("venue profile id is not positive"));
+		}
+
+		// convert and store the profile id
+		$this->venueProfileId = $newVenueProfileId;
+	}
+
+	/**
+	 * accessor method for venue name
+	 *
+	 * @return string value of the venue name
+	 **/
+	public function getVenueName() {
+		return($this->venueName);
+	}
+
+	/**
+	 * accessor method for venue street 1
+	 *
+	 * @return string value of the venue street 1
+	 **/
+	public function getVenueStreet1() {
+		return($this->venueStreet1);
+	}
+
+	/**
+	 * accessor method for venue street 2 (if any)
+	 *
+	 * @return string value of the venue street 2 (if any)
+	 **/
+	public function getVenueStreet2() {
+		return($this->venueStreet2);
+	}
+
+	/**
+	 * accessor method for venue city
+	 *
+	 * @return string value of the venue city
+	 **/
+	public function getVenueCity() {
+		return($this->venueCity);
+	}
+
+	/**
+	 * accessor method for venue state
+	 *
+	 * @return string value of the venue state
+	 **/
+	public function getVenueState() {
+		return($this->venueState);
+	}
+
+	/**
+	 * accessor method for venue zip
+	 *
+	 * @return string value of the venue zip
+	 **/
+	public function getVenueZip() {
+		return($this->venueZip);
+	}
+
 }

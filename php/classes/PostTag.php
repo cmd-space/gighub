@@ -7,28 +7,27 @@ require_once("autoload.php");
  * @author Brandon Steider <bsteider@cnm.edu>
  * @version 3.0.0
  **/
-class PostTag implements \JsonSerializable {
+class postTag implements \JsonSerializable {
 	use ValidateDate;
 	/**
-	 * id for this PostTag; this is a foreign key
+	 * id for this postTag; this is a foreign key
 	 * @var int $postTagId
 	 **/
 	private $postTagId;
 	/**
 	 * id for this Post Tag; this is a foreign key
-	 * @var int $PostTagId
+	 * @var int $postTagId
 	 **/
-	private $PostTagTagId
+	private $postTagTagId;
 	/**
 	 * actual textual content of this PostTag
 	 * @var \DateTime $PostTagDate
 	 **/
 	private $postTagPostId;
 	/**
-	 * actual textual content of this PostTag
+	 * actual textual content of this postTag
 	 * @var \DateTime $postTagPostId
 	 **/
-	private $PostTagDate;
 
 public function __construct(int $newPostTagId = null, int $newPostTagTagId, string $newPostTagPostId) {
 	try {

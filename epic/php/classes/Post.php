@@ -53,6 +53,47 @@ class Post implements \JsonSerializable {
 	private $postTitle;
 
 	/**
+	 *construct for this post
+	 *
+	 * @param int|null $newPostId id of this post or null it a new post
+	 * @param int $newPostProfileId id of the profile that sent this post
+	 * @param int $newPostVenueId id of the venue that sent this post
+	 * @param string $newPostContent string containing actual post data
+	 * @param string $newPostImageCloudinaryId string containing image post data
+	 * @param string $newPostTitle string containing the title of the post
+	 * @param \DateTime|string|null $newPostCreatedDate date and time Post was sent or null if set to current date and time
+	 * @param \DateTime|string|null $newPostEventDate date and time event is set or null if set to current date and time
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings to long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occur
+	 **/
+	public function __construct(int $newPostId = null, int $newPostProfileId, int $newPostVenueId, string $newPostContent, string $newPostImageCloudinaryId, string $newPostTitle, $newPostCreatedDate = null, $newPostEventDate = null) {
+		try {
+			$this->setPostId($newPostId);
+			$this->setPostProfileId($newPostProfileId);
+			$this->setPostVenueId($newPostVenueId);
+			$this->setPostContent($newPostContent);
+			$this->setPostCreatedDate($newPostCreatedDate);
+			$this->setPostEventDate($newPostEventDate);
+			$this->setPostImageCloudinaryId($newPostImageCloudinaryId);
+			$this->setPostTitle($newPostTitle);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			//rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		}catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception-getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	 * accessor method for post id
 	 *
 	 *
@@ -266,6 +307,39 @@ class Post implements \JsonSerializable {
 		}
 		//store the post image cloudinary id
 		$this->postImageCloudinaryId = $newPostImageCloudinaryId;
+
+		/**
+		 * accessor method for post title
+		 *
+		 * @return string value of post title
+		 */
+		public function getPostTitle() {
+			return($this->postTitle);
+		}
+
+		/**
+		 * mutator method for post title
+		 *
+		 * @param string $newPostTitle new value of post title content
+		 * @throws \InvalidArgumentException if $newPostTitle is not a string or insecure
+		 * @throws \RangeException if $newPostTitle is not > 64 characters
+		 * @throws \TypeError if $newPostTitle is not a string
+		 */
+		public function setPostTitle(string $newPostTitle) {
+			//verify the post title is secure
+			$newPostTitle = trim($newPostTitle);
+			$newPostTitle = filter_var($newPostTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+			if(empty($newPostTitle) === true) {
+				throw(new \InvalidArgumentException("fill this out and make sure its safe"));
+			}
+			//verify the post title will fit in the database
+			if(strlen($newPostTitle) > 64) {
+				throw(new \RangeException("shorten your name"));
+			}
+			//store the post title
+			$this->postTitle = $newPostTitle;
+		}
+
 
 	}
 

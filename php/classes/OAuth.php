@@ -118,6 +118,31 @@ class OAuth implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this OAuth into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo) {
+		// enforce the oAuthId is null (i.e., don't insert an oAuth that already exists)
+		if($this->oAuthId !== null) {
+			throw(new \PDOException("OAuth already exists, silly!"));
+		}
+
+		// create query template
+		$query = "INSERT INTO oAuth(oAuthId, oAuthServiceName) VALUES(:oAuthId, :oAuthServiceName)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholders in the template
+		$parameters = ["oAuthId" => $this->oAuthId, "oAuthServiceName" => $this->oAuthServiceName];
+		$statement->execute($parameters);
+
+		// update the null oAuthId with what mySQL just gave us
+		$this->oAuthId = intval($pdo->lastInsertId());
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

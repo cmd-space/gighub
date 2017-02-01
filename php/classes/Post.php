@@ -200,7 +200,7 @@ class Post implements \JsonSerializable {
 	public function setPostContent(string $newPostContent) {
 		//verify the post content is secure
 		$newPostContent = trim($newPostContent);
-		$newPostContent = trim($newPostContent,
+		$newPostContent = filter_var($newPostContent,
 		FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostContent) === true) {
 			throw(new \InvalidArgumentException("what are trying to say?"));
@@ -300,15 +300,16 @@ class Post implements \JsonSerializable {
 		// verify the post image cloudinary id is secure
 		$newPostImageCloudinaryId = trim($newPostImageCloudinaryId);
 		$newPostImageCloudinaryId = filter_var($newPostImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPostImageCloudinaryId) ===true) {
+		if(empty($newPostImageCloudinaryId) === true) {
 			throw(new \InvalidArgumentException("image id is empty or insecure"));
 		}
 		//verify the post image cloudinary id will fit in the database
-		if(strlen($newPostImageCloudinaryId)> 32) {
+		if(strlen($newPostImageCloudinaryId) > 32) {
 			throw(new \RangeException("this is not one-size fits all, the content is to big"));
 		}
 		//store the post image cloudinary id
 		$this->postImageCloudinaryId = $newPostImageCloudinaryId;
+	}
 
 		/**
 		 * accessor method for post title

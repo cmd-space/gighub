@@ -1,7 +1,8 @@
 <?php
 namespace Edu\Cnm\GigHub;
 
-require_once ("auto_load.php");
+require_once("autoload.php");
+
 /**
  * Post class
  *
@@ -11,7 +12,7 @@ require_once ("auto_load.php");
  * @version 1.0.0
  */
 class Post implements \JsonSerializable {
-	use \ValidateDate;
+	use ValidateDate;
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId
@@ -89,7 +90,7 @@ class Post implements \JsonSerializable {
 		} catch(\TypeError $typeError) {
 			// rethrow the exception to caller
 			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
-		}catch(\Exception $exception) {
+		} catch(\Exception $exception) {
 			// rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
@@ -104,6 +105,7 @@ class Post implements \JsonSerializable {
 	public function getPostId() {
 		return ($this->postId);
 	}
+
 	/**
 	 * mutator method for post id
 	 *
@@ -115,11 +117,11 @@ class Post implements \JsonSerializable {
 		// base case: if the post id is null, this is a new post without a mySQL assigned (yet)
 		if($newPostId === null) {
 			$this->postId = null;
-				return;
+			return;
 		}
 
 		//verify the post id is positive
-		if ($newPostId <= 0) {
+		if($newPostId <= 0) {
 			throw(new \RangeException("check yo self foo"));
 		}
 
@@ -133,7 +135,7 @@ class Post implements \JsonSerializable {
 	 * @return int value of post profile id
 	 **/
 	public function getPostProfileId() {
-		return($this->postProfileId);
+		return ($this->postProfileId);
 	}
 
 	/**
@@ -146,7 +148,7 @@ class Post implements \JsonSerializable {
 	public function setPostProfileId(int $newPostProfileId) {
 
 		//verify the profile id is positive
-		if($newPostProfileId<= 0) {
+		if($newPostProfileId <= 0) {
 			throw(new \RangeException("do you know what you are doing?"));
 		}
 
@@ -160,7 +162,7 @@ class Post implements \JsonSerializable {
 	 * @return int value of post venue id
 	 **/
 	public function getPostVenueId() {
-		return($this->postVenueId);
+		return ($this->postVenueId);
 	}
 
 	/**
@@ -186,7 +188,7 @@ class Post implements \JsonSerializable {
 	 * @return string value of post content
 	 **/
 	public function getPostContent() {
-		return($this->postContent);
+		return ($this->postContent);
 	}
 
 	/**
@@ -200,14 +202,13 @@ class Post implements \JsonSerializable {
 	public function setPostContent(string $newPostContent) {
 		//verify the post content is secure
 		$newPostContent = trim($newPostContent);
-		$newPostContent = filter_var($newPostContent,
-		FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newPostContent = filter_var($newPostContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostContent) === true) {
 			throw(new \InvalidArgumentException("what are trying to say?"));
 		}
 		//verify the post content will fit in the database
 		if(strlen($newPostContent) > 255) {
-			throw(new \RangeException("your talkn to much!")):
+			throw(new \RangeException("your talkn to much!"));
 		}
 		//store the post content
 		$this->postContent = $newPostContent;
@@ -219,7 +220,7 @@ class Post implements \JsonSerializable {
 	 * @return \DateTime value of post created date
 	 **/
 	public function getPostCreatedDate() {
-		return($this->postCreatedDate);
+		return ($this->postCreatedDate);
 	}
 
 	/**
@@ -229,9 +230,9 @@ class Post implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newPostCreatedDate is not a valid object or string
 	 * @throws /\RangeException if $newPostCreatedDate is a date that does exist
 	 **/
-	public function setPostCreatedDate($newPostCreatedDate=null) {
+	public function setPostCreatedDate($newPostCreatedDate = null) {
 		//base case: if the date is null, use the current date and time
-		if($newPostCreatedDate ===null) {
+		if($newPostCreatedDate === null) {
 			$this->postCreatedDate = new \DateTime();
 			return;
 		}
@@ -252,7 +253,7 @@ class Post implements \JsonSerializable {
 	 * @return \DateTime value of post event date
 	 **/
 	public function getPostEventDate() {
-		return($this->postEventDate);
+		return ($this->postEventDate);
 	}
 
 	/**
@@ -272,7 +273,7 @@ class Post implements \JsonSerializable {
 		try {
 			$newPostEventDate = self::validateDateTime($newPostEventDate);
 		} catch(\InvalidArgumentException $invalidArgument) {
-			throw(new \InvalidArgumentException($invalidArgument ->getMessage(), 0, $invalidArgument));
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
@@ -285,7 +286,7 @@ class Post implements \JsonSerializable {
 	 * @return string value of image cloudinary image
 	 **/
 	public function getPostImageCloudinaryId() {
-		return($this->postImageCloudinaryId);
+		return ($this->postImageCloudinaryId);
 	}
 
 	/**
@@ -296,7 +297,7 @@ class Post implements \JsonSerializable {
 	 * @throws \RangeException if $newPostImageCloudinaryId is > 32 characters
 	 * @throws \TypeError if $newPostImageCloudinaryId is not a string
 	 **/
-	public function setPostImageCloudinaryId (string $newPostImageCloudinaryId) {
+	public function setPostImageCloudinaryId(string $newPostImageCloudinaryId) {
 		// verify the post image cloudinary id is secure
 		$newPostImageCloudinaryId = trim($newPostImageCloudinaryId);
 		$newPostImageCloudinaryId = filter_var($newPostImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -311,37 +312,36 @@ class Post implements \JsonSerializable {
 		$this->postImageCloudinaryId = $newPostImageCloudinaryId;
 	}
 
-		/**
-		 * accessor method for post title
-		 *
-		 * @return string value of post title
-		 */
-		public function getPostTitle() {
-			return($this->postTitle);
-		}
+	/**
+	 * accessor method for post title
+	 *
+	 * @return string value of post title
+	 */
+	public function getPostTitle() {
+		return ($this->postTitle);
+	}
 
-		/**
-		 * mutator method for post title
-		 *
-		 * @param string $newPostTitle new value of post title content
-		 * @throws \InvalidArgumentException if $newPostTitle is not a string or insecure
-		 * @throws \RangeException if $newPostTitle is not > 64 characters
-		 * @throws \TypeError if $newPostTitle is not a string
-		 */
-		public function setPostTitle(string $newPostTitle) {
-			//verify the post title is secure
-			$newPostTitle = trim($newPostTitle);
-			$newPostTitle = filter_var($newPostTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-			if(empty($newPostTitle) === true) {
-				throw(new \InvalidArgumentException("fill this out and make sure its safe"));
-			}
-			//verify the post title will fit in the database
-			if(strlen($newPostTitle) > 64) {
-				throw(new \RangeException("shorten your name"));
-			}
-			//store the post title
-			$this->postTitle = $newPostTitle;
+	/**
+	 * mutator method for post title
+	 *
+	 * @param string $newPostTitle new value of post title content
+	 * @throws \InvalidArgumentException if $newPostTitle is not a string or insecure
+	 * @throws \RangeException if $newPostTitle is not > 64 characters
+	 * @throws \TypeError if $newPostTitle is not a string
+	 */
+	public function setPostTitle(string $newPostTitle) {
+		//verify the post title is secure
+		$newPostTitle = trim($newPostTitle);
+		$newPostTitle = filter_var($newPostTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostTitle) === true) {
+			throw(new \InvalidArgumentException("fill this out and make sure its safe"));
 		}
+		//verify the post title will fit in the database
+		if(strlen($newPostTitle) > 64) {
+			throw(new \RangeException("shorten your name"));
+		}
+		//store the post title
+		$this->postTitle = $newPostTitle;
 	}
 
 	/**
@@ -351,7 +351,7 @@ class Post implements \JsonSerializable {
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		return($fields);
+		return ($fields);
 	}
 
 }

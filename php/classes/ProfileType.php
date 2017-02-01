@@ -25,6 +25,32 @@ class ProfileType implements \JsonSerializable {
 	private $profileTypeName;
 
 	/**
+	 * constructor for profile type class
+	 *
+	 * @param int|null $newProfileTypeId id of this profile type or null it a new profile type id
+	 * @param string $newProfileTypeName string containing actual profile type data
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e,g,. strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 **/
+	public function __construct(int $newProfileTypeID = null, string $newProfileTypeName) {
+		try {
+			$this->setProfileTypeId($newProfileTypeID);
+			$this->setProfileTypeName($newProfileTypeName);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		}catch(\TypeError $typeError) {
+			//rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		}catch(\Exception $exception) {
+			//rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	 * accessor method for profile type id
 	 *
 	 * @return int|null value of profile type id
@@ -79,7 +105,7 @@ class ProfileType implements \JsonSerializable {
 			throw(new \InvalidArgumentException("Name content is empty"));
 		}
 		//store the profile type name
-		return($this->proileTypeName);
+		return($this->profileTypeName);
 	}
 
 	/**

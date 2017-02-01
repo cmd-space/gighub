@@ -37,7 +37,7 @@ class Tag implements \JsonSerializable {
 		try {
 			$this->setTagId($newTagId);
 			$this->setTagContent($newTagContent);
-		} catch(\InvalidArgumentException\ $invalidArgument) {
+		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -118,5 +118,14 @@ class Tag implements \JsonSerializable {
 		$this->tagContent = $newTagContent;
 	}
 
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
+	}
 
 }

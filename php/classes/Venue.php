@@ -161,12 +161,62 @@ class Venue implements \JsonSerializable {
 	}
 
 	/**
+	 * mutator method for venue name
+	 *
+	 * @param string $newVenueName new value of venue name
+	 * @throws \InvalidArgumentException if $newVenueName is insecure
+	 * @throws \RangeException if venueName is > 64 characters
+	 * @throws \TypeError if $newVenueName is not a string
+	 **/
+	public function setVenueName(string $newVenueName) {
+		// verify the !!!! is secure
+		$newVenueName = trim($newVenueName);
+		$newVenueName = filter_var($newVenueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newVenueName) === true) {
+			throw(new \InvalidArgumentException("venue name is empty or insecure"));
+		}
+
+		// verify the !!!!! content will fit into the database
+		if(strlen($newVenueName) > 64) {
+			throw(new \RangeException("venue name content too large"));
+		}
+
+		// store the !!!! content
+		$this->venueName = $newVenueName;
+	}
+
+	/**
 	 * accessor method for venue street 1
 	 *
 	 * @return string value of the venue street 1
 	 **/
 	public function getVenueStreet1() {
 		return($this->venueStreet1);
+	}
+
+		/**
+		 * mutator method for venue street 1
+		 *
+		 * @param string $newVenueStreet1 new value of venueStreet1
+		 * @throws \InvalidArgumentException if $newVenueStreet1 is insecure
+		 * @throws \RangeException if venueStreet1 is > 64 characters
+		 * @throws \TypeError if $newVenueStreet1 is not a string
+		 **/
+	public function setVenueStreet1(string $newVenueStreet1) {
+	// verify the !!!! is secure
+	$newVenueStreet1 = trim($newVenueStreet1);
+		$new!!!! = filter_var($newVenueStreet1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newVenueStreet1) === true) {
+		throw(new \InvalidArgumentException("venue street 1 is empty or insecure"));
+		}
+
+		// verify the venue street 1 content will fit into the database
+		if(strlen($newVenueStreet1) > 64) {
+		throw(new \RangeException("venue street 1 content too large"));
+	}
+
+		// store the !!!! content
+		$this->venueStreet1 = $newVenueStreet1;
 	}
 
 	/**
@@ -178,6 +228,31 @@ class Venue implements \JsonSerializable {
 		return($this->venueStreet2);
 	}
 
+		/**
+		 * mutator method for venue street 2
+		 *
+		 * @param string $newVenueStreet2 new value of venue street 2
+		 * @throws \InvalidArgumentException if $newVenueStreet2 is insecure
+		 * @throws \RangeException if venueStreet2 is > 64 characters
+		 * @throws \TypeError if $newVenueStreet2 is not a string
+		 **/
+	public function setVenueStreet2(string $newVenueStreet2) {
+	// verify the venue street 2 is secure
+	$newVenueStreet2 = trim($newVenueStreet2);
+		$newVenueStreet2 = filter_var($newVenueStreet2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newVenueStreet2) === true) {
+		throw(new \InvalidArgumentException("venue street 2 is empty or insecure"));
+		}
+
+		// verify the venue street 2 content will fit into the database
+		if(strlen($newVenueStreet2) > 64) {
+		throw(new \RangeException("venue street 2 content too large"));
+	}
+
+		// store the venueStreet2 content
+		$this->venueStreet2 = $newVenueStreet2;
+	}
+
 	/**
 	 * accessor method for venue city
 	 *
@@ -185,6 +260,31 @@ class Venue implements \JsonSerializable {
 	 **/
 	public function getVenueCity() {
 		return($this->venueCity);
+	}
+
+		/**
+		 * mutator method for venue city
+		 *
+		 * @param string $newVenueCity new value of venue city
+		 * @throws \InvalidArgumentException if $newVenueCity is insecure
+		 * @throws \RangeException if venueCity is > 100 characters
+		 * @throws \TypeError if $newVenueCity is not a string
+		 **/
+	public function setVenueCity(string $newVenueCity) {
+	// verify the venue city is secure
+	$newVenueCity = trim($newVenueCity);
+		$newVenueCity = filter_var($newVenueCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newVenueCity) === true) {
+		throw(new \InvalidArgumentException("venue city is empty or insecure"));
+		}
+
+		// verify the venue city content will fit into the database
+		if(strlen($newVenueCity) > 100) {
+		throw(new \RangeException("venue city content too large"));
+	}
+
+		// store the venue city content
+		$this->venueCity = $newVenueCity;
 	}
 
 	/**
@@ -196,6 +296,31 @@ class Venue implements \JsonSerializable {
 		return($this->venueState);
 	}
 
+		/**
+		 * mutator method for venue state
+		 *
+		 * @param string $newVenueState new value of venue state
+		 * @throws \InvalidArgumentException if $newVenueState is insecure
+		 * @throws \RangeException if venueState is > 2 characters
+		 * @throws \TypeError if $newVenueState is not a string
+		 **/
+	public function setVenueState(string $newVenueState) {
+	// verify the venue state is secure
+	$newVenueState = trim($newVenueState);
+		$newVenueState = filter_var($newVenueState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newVenueState) === true) {
+		throw(new \InvalidArgumentException("venue state is empty or insecure"));
+		}
+
+		// verify the venue state content will fit into the database
+		if(strlen($newVenueState) > 2) {
+		throw(new \RangeException("venue state content too large"));
+	}
+
+		// store the venue state content
+		$this->venueStatee = $newVenueState;
+	}
+
 	/**
 	 * accessor method for venue zip
 	 *
@@ -204,5 +329,40 @@ class Venue implements \JsonSerializable {
 	public function getVenueZip() {
 		return($this->venueZip);
 	}
+
+		/**
+		 * mutator method for venue zip
+		 *
+		 * @param string $newVenueZip new value of venue zip
+		 * @throws \InvalidArgumentException if $newVenueZip is insecure
+		 * @throws \RangeException if venueZip is > 10 characters
+		 * @throws \TypeError if $new!!!!!! is not a string
+		 **/
+	public function setVenueZip(string $newVenueZip) {
+	// verify the venue zip is secure
+	$newVenueZip = trim($newVenueZip);
+		$newVenueZip = filter_var($newVenueZip, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newVenueZip) === true) {
+		throw(new \InvalidArgumentException("venue zip is empty or insecure"));
+		}
+
+		// verify the venue zip content will fit into the database
+		if(strlen($newVenueZip) > 10) {
+		throw(new \RangeException("venue zip content too large"));
+	}
+
+		// store the venue zip content
+		$this->venueZip = $newVenueZip;
+	}
+
+		/**
+		 * formats the state variables for JSON serialization
+		 *
+		 * @return array resulting state variables to serialize
+		 **/
+	public function jsonSerialize() {
+	$fields = get_object_vars($this);
+	return($fields);
+}
 
 }

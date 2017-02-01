@@ -5,12 +5,12 @@ require_once("autoload.php");
 /**
  * Profile OAuth class
  *
- * oAuth class which allows users to sign up on GigHub.
+ * OAuth class which allows users to sign up on GigHub.
  *
  * @author Mason Crane <cmd-space.com>
  * @version 1.0.0
  **/
-class oAuth implements \JsonSerializable {
+class OAuth implements \JsonSerializable {
 	/**
 	 * id for this OAuth; this is the primary key
 	 * @var int $oAuthId
@@ -21,6 +21,35 @@ class oAuth implements \JsonSerializable {
 	 * @var string $oAuthServiceName
 	 **/
 	private $oAuthServiceName;
+
+	/**
+	 * constructor for this OAuth
+	 *
+	 * @param int|null $newOAuthId id of this OAuth or null if a new OAuth
+	 * @param string $newOAuthServiceName string containing actual Service Name data for this OAuth
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 **/
+	public function __construct(int $newOAuthId = null, string $newOAuthServiceName) {
+		try {
+			$this->setOAuthId($newOAuthId);
+			$this->setOAuthServiceName($newOAuthServiceName);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			// rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
 
 	/**
 	 * accessor method for oAuth id

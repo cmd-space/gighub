@@ -457,6 +457,13 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the Profile by profile location content
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $profile
+	 */
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

@@ -1,8 +1,9 @@
 <?php
+namespace Edu\Cnm\GigHub;
 /**
  * Trait to validate a mySQL date
  *
- * This train will inject a private method to validate a mySQL style date. It will convert a string representation to a DateTime object or throw an exception.
+ * This trait will inject a private method to validate a mySQL style date. It will convert a string representation to a DateTime object or throw an exception.
  *
  * @author Mason Crane <cmd-space.com>
  **/

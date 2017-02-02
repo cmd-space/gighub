@@ -143,25 +143,33 @@ class OAuth implements \JsonSerializable {
 	}
 
 	/**
-	 * deletes this OAuth from mySQL
+	 * get ALL the oAuths
 	 *
 	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of oAuths found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
+	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public function delete(\PDO $pdo) {
-		// enforce the oAuthId is not null (i.e., don't delete an oAuth that hasn't been inserted)
-		if($this->oAuthId === null) {
-			throw(new \PDOException("unable to delete an oAuth that is a figment of your imagination"));
-		}
-
+	public static function getAllOAuths(\PDO $pdo) {
 		// create query template
-		$query = "DELETE FROM oAuth WHERE oAuthId = :oAuthId";
+		$query = "SELECT oAuthId, oAuthServiceName FROM oAuth";
 		$statement = $pdo->prepare($query);
+		$statement->execute();
 
-		// bind the member variables to the placeholder in the template
-		$parameters = ["oAuthId" => $this->oAuthId];
-		$statement->execute($parameters);
+		// build an array of oAuths
+		$oAuths = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$oAuth = new OAuth($row["oAuthId"], $row["oAuthServiceName"]);
+				$oAuths[$oAuths->key()] = $oAuth;
+				$oAuths->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($oAuths);
 	}
 
 	/**

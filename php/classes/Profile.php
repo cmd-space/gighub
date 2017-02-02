@@ -435,6 +435,28 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
+	 * updates this Profile in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function update(\PDO $pdo) {
+		// enforce that profileId is not null (i.e., don't update a tweet that doesn't exist
+		if($this->profileId === null) {
+			throw(new \PDOException("unable to update a profile that doesn't exist. CASH ME OUtSIDE! HOW BOW DAT?"));
+		}
+
+		// create query template
+		$query = "UPDATE profile SET profileBio = :profileBio, profileImageCloudinaryId = :profileImageCloudinaryId, profileLocation = :profileLocation, profileOAuthToken = :profileOAuthToken, profileSoundCloudUser = :profileSoundCloudUser, profileUserName = :profileUsername WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholders in the template
+		$parameters = ["profileBio" => $this->profileBio, "profileImageCloudinaryId" => $this->profileImageCloudinaryId, "profileLocation" => $this->profileLocation, "profileOAuthToken" => $this->profileOAuthToken, "profileSoundCloudUser" => $this->profileSoundCloudUser, "profileUserName" => $this->profileUserName, "profileId" => $this->profileId];
+		$statement->execute($parameters);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

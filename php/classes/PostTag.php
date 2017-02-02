@@ -117,6 +117,43 @@ public function setPostTagPostId(int $newPostTagPostId) {
 	// convert and store the post tag post id
 	$this->postTagPostId = $newPostTagPostId;
 }
+	/**
+	 * this is
+	 * the
+	 * PDO
+	 * placeholder
+	 * so i know where to look
+	 * when i screw the pooch
+	 * good luck.
+	 **/
+
+	/**
+	 * inserts this post tag into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) {
+		// ensure the object exists before inserting
+		if($this->postTagId === null || $this->postTagId === null) {
+			throw(new |PDOException("not a valid postTag"));
+
+		}
+		// create query template
+		$query = "INSERT INTO 'tag(postTagId, ProfileTagId) VALUES(:postTagId, :profileTagId)";
+		$statement - $pdo-prepare($query);
+		// bind the member variables to the place holders in the template
+		$parameters = ["postTagId" => $this->postTagId, "profileTagId" => $this->postTagId];
+		$statement->execute($parameters);
+	}
+	/**
+	 * deletes this post tag from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \Type/Error if $pdo is not a PDO connection object
+	 */
 
 	/**
 	 * Specify data which should be serialized to JSON

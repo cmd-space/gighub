@@ -6,7 +6,7 @@ require_once("autoload.php");
 /**
  * Post class
  *
- * this class is the basis for post creating and fuction for GigHub social networking site
+ * this class is the basis for post creating and function for GigHub social networking site
  *
  * @author Joseph Ramirez <jramirez98@cnm.edu>
  * @version 1.0.0
@@ -345,6 +345,49 @@ class Post implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this post into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) {
+		//enforce the postId is null (i.e., don't insert a post that already exists)
+		if($this->postId !== null) {
+			throw(new \PDOException("This is a fake"));
+		}
+
+		//create query template
+		$query = "INSERT INTO post( postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle) VALUES( :postProfileId, :postVenueId, :postContent, :postCreatedDate, :postEventDate, :postImageCloudinaryId, :postTitle)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
+		$formattedDate = $this->postCreatedDate->format("Y-m-d H:i:s");
+		$parameters = ["postProfileId"=> $this-> postProfileId, "postVenueId"=> $this-> postVenueId, "postContent"=> $this-> postContent, "postEventDate"=> $this-> postEventDate, "postImageCloudinaryId"=> $this-> postImageCloudinaryId, "postTitle"=> $this-> postTitle, "postCreatedDate"=> $this-> $formattedDate];
+		$statement->execute($parameters);
+
+		//update the null postId with what mySQL just gave us
+		$this->postId = intval($pdo->LastInsertId());
+	}
+
+	/**
+	 *  updates this post in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySql related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection
+	 **/
+	public function update(\PDO $pdo) {
+		//enforce the postId is not null (i.e., don't update a post that hasn't been inserted)
+		if($this->postId === null) {
+			throw(new \PDOException("What comes first? the post or the update?"));
+		}
+		// create query template
+		$query = "UPDATE post SET postProfileId = :postProfileId, postVenueId= :postVenueId, postContent = :postContent, postCreatedDate = :postCreatedDate, postEventDate = :postEventDate, postImageCloudinaryId = :postImageCloudinaryId, postTitle = :postTitle"
+	}
+
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
@@ -353,5 +396,4 @@ class Post implements \JsonSerializable {
 		$fields = get_object_vars($this);
 		return ($fields);
 	}
-
 }

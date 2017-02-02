@@ -119,6 +119,110 @@ class Tag implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this tag into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) {
+		// enforce the venueId is null (i.e., don't insert a venue that already exists)
+		if($this->tagId !== null) {
+			throw(new \PDOException("not a new tag"));
+		}
+
+		// create query template
+		$query = "INSERT INTO tag(tagContent) VALUES(:tagContent)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["tagContent" => $this->tagContent];
+		$statement->execute($parameters);
+
+		// update the null venueId with what mySQL just gave us
+		$this->tagContent = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * gets the tag by tagId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $tagId tag id to search for
+	 * @return Venue|null Venue found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getTagByTagId(\PDO $pdo, int $tagId) {
+		// sanitize the venueId before searching
+		if($tagId <= 0) {
+			throw(new \PDOException("tag id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT tagId, tagContent FROM tag WHERE tagId = :tagId";
+		$statement = $pdo->prepare($query);
+
+		// bind the venue id to the place holder in the template
+		$parameters = ["tagId" => $tagId];
+		$statement->execute($parameters);
+
+		// grab the venue from mySQL
+		try {
+			$tag = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$tag = new Venue($row["tagId"], $row["tagContent"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($tag);
+	}
+
+	/**
+	 * gets the  tag by content
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $tagContent tag content to search for
+	 * @return \SplFixedArray SplFixedArray of Tags found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getTagByTagContent(\PDO $pdo, string $tagContent) {
+		// sanitize the description before searching
+		$tagContent = trim($tagContent);
+		$tagContent = filter_var($tagContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($tagContent) === true) {
+			throw(new \PDOException("tag content is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT tagId, tagContent FROM tag WHERE tagContent LIKE :tagContent";
+		$statement = $pdo->prepare($query);
+
+		// bind the tag content to the place holder in the template
+		$tagContent = "%$tagContent%";
+		$parameters = ["tagContent" => $tagContent];
+		$statement->execute($parameters);
+
+		// build an array of tags
+		$tags = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tag = new Tag($row["tagId"], $row["tagContent"]);
+				$tags[$tags->key()] = $tag;
+				$tags->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($tags);
+	}
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

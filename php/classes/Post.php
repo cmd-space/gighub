@@ -371,6 +371,28 @@ class Post implements \JsonSerializable {
 	}
 
 	/**
+	 * deletes this post from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection objective
+	 * @throws \PDOException wen mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) {
+		//enforce the postId is not null (i.e., don't delete a post that hasn't been inserted)
+		if($this->postId ===null) {
+			throw(new \PDOException("you cant delete whats not there"));
+		}
+
+		//create query template
+		$query = "DELETE FROM post WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holder in the template
+		$parameters = ["postId" => $this->postId];
+		$statement->execute($parameters);
+	}
+
+	/**
 	 *  updates this post in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
@@ -383,8 +405,17 @@ class Post implements \JsonSerializable {
 			throw(new \PDOException("What comes first? the post or the update?"));
 		}
 		// create query template
-		$query = "UPDATE post SET postProfileId = :postProfileId, postVenueId= :postVenueId, postContent = :postContent, postCreatedDate = :postCreatedDate, postEventDate = :postEventDate, postImageCloudinaryId = :postImageCloudinaryId, postTitle = :postTitle"
+		$query = "UPDATE post SET postProfileId = :postProfileId, postVenueId= :postVenueId, postContent = :postContent, postCreatedDate = :postCreatedDate, postEventDate = :postEventDate, postImageCloudinaryId = :postImageCloudinaryId, postTitle = :postTitle WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->postCreatedDate->format("Y-m-d H:i:s");
+
+		$parameters = ["postProfileId"=> $this-> postProfileId, "postVenueId"=> $this-> postVenueId, "postContent"=> $this-> postContent, "postEventDate"=> $this-> postEventDate, "postImageCloudinaryId"=> $this-> postImageCloudinaryId, "postTitle"=> $this-> postTitle, "postCreatedDate"=> $this-> $formattedDate];
+		$statement->execute($parameters);
 	}
+
+
 
 
 	/**

@@ -460,8 +460,83 @@ class Profile implements \JsonSerializable {
 	 * gets the Profile by profile location content
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $profile
+	 * @param string $profileLocation profile location content to search for
+	 * @return \SplFixedArray SplFixedArray of Profiles found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
 	 */
+	public static function getProfileByLocationContent(\PDO $pdo, string $profileLocation) {
+		// sanitize the search string before searching
+		$profileLocation = trim($profileLocation);
+		$profileLocation = filter_var($profileLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileLocation) === true) {
+			throw(new \PDOException("profile location content is error, error, error"));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName FROM profile WHERE profileLocation LIKE :profileLocation";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile location content to the placeholder in the template
+		$profileLocation = "%$profileLocation%";
+		$parameters = ["profileLocation" => $profileLocation];
+		$statement->execute($parameters);
+
+		// build an array of profiles
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($profiles);
+	}
+
+	/**
+	 * gets the Profile by SoundCloud user
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $profileSoundCloudUser SoundCloud user content to search for
+	 * @return \SplFixedArray SplFixedArray of Profiles found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getProfileBySoundCloudUserContent(\PDO $pdo, string $profileSoundCloudUser) {
+		// sanitize the search term before searching
+		$profileSoundCloudUser = trim($profileSoundCloudUser);
+		$profileSoundCloudUser = filter_var($profileSoundCloudUser, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileSoundCloudUser) === true) {
+			throw(new \PDOException("SoundCloud user content is not valid"));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName FROM profile WHERE profileSoundCloudUser LIKE :profileSoundCloudUser";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile SoundCloud user content to the placeholder in the template
+		$profileSoundCloudUser = "%$profileSoundCloudUser%";
+		$parameters = ["profileSoundCloudUser" => $profileSoundCloudUser];
+		$statement->execute($parameters);
+
+		// build an array of profiles
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($profiles);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization

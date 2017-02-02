@@ -539,6 +539,45 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
+	 * gets profiles by profile type
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $profileTypeId profile type id to search for
+	 * @return \SplFixedArray SplFixedArray of profiles found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a data type input is not an integer
+	 */
+	public static function getProfileByProfileTypeId(\PDO $pdo, int $profileTypeId) {
+		// sanitize the profileTypeId before searching
+		if($profileTypeId <= 0) {
+			throw(new \PDOException("profile type id is not super positive, mmmmkay."));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName FROM profile WHERE profileTypeId = :profileTypeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile type id to the placeholder in the template
+		$parameters = ["profileTypeId" => $profileTypeId];
+		$statement->execute($parameters);
+
+		// build an array of profiles
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($profiles);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

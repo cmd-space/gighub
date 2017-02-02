@@ -131,11 +131,11 @@ class OAuth implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO oAuth(oAuthId, oAuthServiceName) VALUES(:oAuthId, :oAuthServiceName)";
+		$query = "INSERT INTO oAuth(oAuthServiceName) VALUES(:oAuthServiceName)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the placeholders in the template
-		$parameters = ["oAuthId" => $this->oAuthId, "oAuthServiceName" => $this->oAuthServiceName];
+		$parameters = ["oAuthServiceName" => $this->oAuthServiceName];
 		$statement->execute($parameters);
 
 		// update the null oAuthId with what mySQL just gave us

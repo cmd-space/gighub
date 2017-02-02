@@ -387,7 +387,52 @@ class Profile implements \JsonSerializable {
 		$this->profileUserName = $newProfileUserName;
 	}
 
+	/**
+	 * inserts this Profile into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo) {
+		// enforce that profileId is null (i.e., don't insert a profile that already exists)
+		if($this->profileId !== null) {
+			throw(new \PDOException("this is not a new profile, skillet!"));
+		}
 
+		// create query template
+		$query = "INSERT INTO profile(profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName) VALUES(:profileOAuthId, :profileTypeId, :profileBio, :profileImageCloudinaryId, :profileLocation, :profileOAuthToken, :profileSoundCloudUser, :profileUserName)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholders in the template
+		$parameters = ["profileOAuthId" => $this->profileOAuthId, "profileTypeId" => $this->profileTypeId, "profileBio" => $this->profileBio, "profileImageCloudinaryId" => $this->profileImageCloudinaryId, "profileLocation" => $this->profileLocation, "profileOAuthToken" => $this->profileOAuthToken, "profileSoundCloudUser" => $this->profileSoundCloudUser, "profileUserName" => $this->profileUserName];
+		$statement->execute($parameters);
+
+		// update the null profileId with what mySQL just gave us
+		$this->profileId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * delete this Profile from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) {
+		// enforce the profileId is not null (i.e., don't delete a profile that doesn't exist
+		if($this->profileId === null) {
+			throw(new \PDOException("unable to delete a profile that doesn't exist, even in your wildest dreams."));
+		}
+
+		// create query template
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholder in the template
+		$parameters = ["profileId" => $this->profileId];
+		$statement->execute($parameters);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization

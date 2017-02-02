@@ -444,7 +444,7 @@ class Profile implements \JsonSerializable {
 	public function update(\PDO $pdo) {
 		// enforce that profileId is not null (i.e., don't update a tweet that doesn't exist
 		if($this->profileId === null) {
-			throw(new \PDOException("unable to update a profile that doesn't exist. CASH ME OUtSIDE! HOW BOW DAT?"));
+			throw(new \PDOException("unable to update a profile that doesn't exist. CASH ME OUTSIDE! HOW BOW DAT?"));
 		}
 
 		// create query template

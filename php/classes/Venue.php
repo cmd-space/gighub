@@ -459,9 +459,176 @@ class Venue implements \JsonSerializable {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($venue);
+		return ($venue);
 	}
 
+	/**
+	 * gets the venue by venue name
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $venueName venue name to search for
+	 * @return \SplFixedArray SplFixedArray of venues found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVenueByVenueName(\PDO $pdo, string $venueName) {
+		// sanitize the description before searching
+		$venueName = trim($venueName);
+		$venueName = filter_var($venueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($venueName) === true) {
+			throw(new \PDOException("venue name is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueName LIKE :venueName";
+		$statement = $pdo->prepare($query);
+
+		// bind the venue content to the place holder in the template
+		$venueName = "%$venueName%";
+		$parameters = ["venueName" => $venueName];
+		$statement->execute($parameters);
+
+		// build an array of venues
+		$venues = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venues[$venues->key()] = $venue;
+				$venues->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($venues);
+	}
+
+	/**
+	 * gets the venue by venue street 1
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $venueStreet1 venue name to search for
+	 * @return \SplFixedArray SplFixedArray of venues found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVenueByVenueStreet1(\PDO $pdo, string $venueStreet1) {
+		// sanitize the description before searching
+		$venueStreet1 = trim($venueStreet1);
+		$venueStreet1 = filter_var($venueStreet1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($venueStreet1) === true) {
+			throw(new \PDOException("venue street is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueStreet1 LIKE :venueStreet1";
+		$statement = $pdo->prepare($query);
+
+		// bind the venue content to the place holder in the template
+		$venueStreet1 = "%$venueStreet1%";
+		$parameters = ["venueStreet1" => $venueStreet1];
+		$statement->execute($parameters);
+
+		// build an array of venues
+		$venues = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venues[$venues->key()] = $venue;
+				$venues->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($venues);
+	}
+
+	/**
+	 * gets the venue by venue city
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $venueCity venue city to search for
+	 * @return \SplFixedArray SplFixedArray of venues found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVenueByVenueCity(\PDO $pdo, string $venueCity) {
+		// sanitize the description before searching
+		$venueCity = trim($venueCity);
+		$venueCity = filter_var($venueCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($venueCity) === true) {
+			throw(new \PDOException("venue name is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueCity LIKE :venueCity";
+		$statement = $pdo->prepare($query);
+
+		// bind the venue content to the place holder in the template
+		$venueCity = "%$venueCity%";
+		$parameters = ["venueCity" => $venueCity];
+		$statement->execute($parameters);
+
+		// build an array of venues
+		$venues = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venues[$venues->key()] = $venue;
+				$venues->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($venues);
+	}
+
+	/**
+	 * gets the venue by venue zip
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $venueZip venue zip to search for
+	 * @return \SplFixedArray SplFixedArray of venues found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVenueByVenueZip(\PDO $pdo, string $venueZip) {
+		// sanitize the description before searching
+		$venueZip = trim($venueZip);
+		$venueZip = filter_var($venueZip, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($venueZip) === true) {
+			throw(new \PDOException("venue name is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueZip LIKE :venueZip";
+		$statement = $pdo->prepare($query);
+
+		// bind the venue content to the place holder in the template
+		$venueZip = "%$venueZip%";
+		$parameters = ["venueZip" => $venueZip];
+		$statement->execute($parameters);
+
+		// build an array of venues
+		$venues = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venues[$venues->key()] = $venue;
+				$venues->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($venues);
+	}
 	/**
 	 * formats the state variables for JSON serialization
 	 *

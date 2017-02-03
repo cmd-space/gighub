@@ -136,7 +136,7 @@ public function setPostTagPostId(int $newPostTagPostId) {
 	 **/
 	public function insert(\PDO $pdo) {
 		// ensure the object exists before inserting
-		if($this->postTagId === null || $this->postTagId === null) {
+		if($this->postTagTagId === null || $this->postTagPostId === null) {
 			throw(new \PDOException("not a valid postTag"));
 
 		}
@@ -144,7 +144,7 @@ public function setPostTagPostId(int $newPostTagPostId) {
 		$query = "INSERT INTO `tag`(postTagTagId, postTagPostId) VALUES(:postTagTagId, :postTagPostId)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["postTagId" => $this->postTagId, "profileTagId" => $this->postTagId];
+		$parameters = ["postTagTagId" => $this->postTagPostId, "postTagPostId" => $this->postTagPostId];
 		$statement->execute($parameters);
 	}
 	/**
@@ -156,45 +156,45 @@ public function setPostTagPostId(int $newPostTagPostId) {
 	 **/
 	public function delete(\PDO $pdo) {
 		// ensure the object exists before deleting
-		if($this->postTagId === null || $this->profileTagId === null) {
+		if($this->postTagTagId === null || $this->postTagPostId === null) {
 			throw(new \PDOException("not a valid postTag"));
 		}
 
 		// create query template
-		$query = "DELETE FROM `postTag` WHERE postTagId = :postTagId AND profileTagId = :ProfileTagId";
+		$query = "DELETE FROM `postTag` WHERE postTagTagId = :postTagPostId AND PostTagTagId = :postTagPostId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place hodlers in the template
-		$parameters = ["postTagId" => $this->postTagId, "profileTagId" => $this->profileTagId];
+		$parameters = ["postTagTagId" => $this->postTagTagId, "postTagPostId" => $this->postTagTagId];
 		$statement->execute($parameters);
 	}
 
 	/**
-	 * gets the post tag by profile tag id
+	 * gets the post tag by tag id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $postTagId tag id to search for
-	 * @param int $profileTagId tat id to search for
+	 * @param int $postTagTagId tag id to search for
+	 * @param int $postTagPostId tat id to search for
 	 * @return Tag|null Tag found or null if not found
 	 **/
-	public static function getTagByPostTagIdAndProfileTagId(\PDO $pdo, int $postTagId, int $profileTagId) {
-		// sanitize the post tag id and profile tag id before searching
-		if($postTagId <= 0) {
-			throw(new \PDOException("post tag id is not positive"));
+	public static function getTagByPostTagIdAndPostTagPostId(\PDO $pdo, int $postTagTagId, int $postTagPostId) {
+		// sanitize the post tag id and post tag id before searching
+		if($postTagTagId <= 0) {
+			throw(new \PDOException("post tag tag id is not positive"));
 		}
-		if($profileTagId <= 0) {
-			throw(new \PDOException("tweet id is not positive"));
+		if($postTagPostId <= 0) {
+			throw(new \PDOException("post tag post id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postTagId, profileTagid FROM 'tag' WHERE postTagId = :postTagId AND profileTagid = :profileTagId";
+		$query = "SELECT postTagTagId, postTagPostid FROM 'tag' WHERE postTagTagId = :postTagPostId AND profileTagTagid = :postTagPostId";
 		$statement->execute($parameters);
 		// grab the tag from mySQL
 		try {
-			$postTag = null;
+			$postTagTagId = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$tag = new tag($row["postTagId"], $row["postTagId"]);
+				$tag = new tag($row["postTagTagId"], $row["postTagPostId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

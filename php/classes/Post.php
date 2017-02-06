@@ -415,9 +415,6 @@ class Post implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-
-
-
 	/**
 	 * formats the state variables for JSON serialization
 	 *

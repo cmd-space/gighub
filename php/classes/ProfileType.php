@@ -109,6 +109,46 @@ class ProfileType implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this post type into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not PDO connection object
+	 **/
+	public function insert (\PDO $pdo) {
+		//enforce the profileTypeId is null (i.e., don't insert a profileType that already exists)
+		if ($this->profiletypeId !=null) {
+			throw(new \PDOException("this ain't a fresh profile type!"));
+		}
+
+		//create query template
+		$query = "INSERT INTO profileTypeId( profiletypeName) VALUES (:profileTypeName)";
+		$statement = $pdo->prepare($query);
+
+		//update the null profile type id  with what mySQL just gave us
+		$this->profileTypeId = intval($pdo->lastInsertId());
+
+		/**
+		 * updates profile type id in mySQL
+		 *
+		 * @param \PDO $pdo connection object
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError if $pdo is not a PDO connection object
+		 */
+		public function update(\PDO $pdo) {
+			//enforce the profile type id is not null (i.e., don't update a profile type id that hasn't been inserted )
+			if($this->profileTypeId === null) {
+				throw(new \PDOException("Error! Error! Error! 404-A: Profile Type Not Found"));
+			}
+			//create query template
+			$query = "UPDATE profileType SET  profileTypeName = :profileTypeName WHERE profileTypeId = :profileTypeId";
+			$statement = $pdo->prepare($query);
+		}
+
+
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

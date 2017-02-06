@@ -488,6 +488,8 @@ class Profile implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+				$profile[$profiles->key()] = $profile;
+				$profiles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));

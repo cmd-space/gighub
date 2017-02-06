@@ -507,7 +507,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getProfileBySoundCloudUserContent(\PDO $pdo, string $profileSoundCloudUser) {
+	public static function getProfileBySoundCloudUser(\PDO $pdo, string $profileSoundCloudUser) {
 		// sanitize the search term before searching
 		$profileSoundCloudUser = trim($profileSoundCloudUser);
 		$profileSoundCloudUser = filter_var($profileSoundCloudUser, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -524,6 +524,7 @@ class Profile implements \JsonSerializable {
 		$parameters = ["profileSoundCloudUser" => $profileSoundCloudUser];
 		$statement->execute($parameters);
 
+		// FIXME: change this from an array to one profile
 		// build an array of profiles
 		$profiles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);

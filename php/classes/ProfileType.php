@@ -27,7 +27,7 @@ class ProfileType implements \JsonSerializable {
 	/**
 	 * constructor for profile type class
 	 *
-	 * @param int|null $newProfileTypeId id of this profile type or null if a new profile type id
+	 * @param int|null $newProfileTypeID id of this profile type or null it a new profile type id
 	 * @param string $newProfileTypeName string containing actual profile type data
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e,g,. strings too long, negative integers)

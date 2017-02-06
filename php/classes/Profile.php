@@ -620,6 +620,44 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the Profile by primary key
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $profileId profile id to search for
+	 * @return Profile|null Profile found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getProfileByProfileId(\PDO $pdo, int $profileId) {
+		// sanitize the profileId before searching
+		if($profileId <= 0) {
+			throw(new \PDOException("profile id is 0 or negative"));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile id to the placeholder in the template
+		$parameters = ["profileId" => $profileId];
+		$statement->execute($parameters);
+
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($profile);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

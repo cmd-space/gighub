@@ -201,7 +201,7 @@ public function setPostTagPostId(int $newPostTagPostId) {
 			var_dump($exception->getTrace());
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($postTag);
+		return($postTagTagId);
 	}
 
 	/**

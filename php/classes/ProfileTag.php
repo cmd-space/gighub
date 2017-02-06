@@ -105,6 +105,54 @@ class ProfileTag implements \JsonSerializable {
 		}
 	}
 
+	/**
+	 * are you ready kiddo's
+	 * here's the dankest profileTag PDO
+	 * you ever seen
+	 * in your whole
+	 * life
+	 * cash me ouside howbadahhhhh
+	 */
+
+	/**
+	 * inserts this profileTag into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function inserts(\PDO $pdo) {
+		// ensure the object exists before inserting
+		if($this->profileTagTagId === null || $this->profileTagProfileId === null) {
+			throw(new \PDOException("not a valid tag"));
+		}
+// create query template
+		$query = "INSERT INTO tweet(profileTagTagId, profileTagProfileId)";
+		$statement = $pdo->prepare($query);
+
+		// update the null profileTagId with what mySQL just gave us
+		$this->profileTagId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * deletes this profile tag from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors ocur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) {
+		throw(new \PDOException("unable to delete a profile tag that does not exist"));
+	}
+	// create query template
+$query = "DELETE FROM profile tag WHERE profileTagTagId = :profileTagProfileId";
+$statement = $pdo->prepare($query);
+
+	// bind the member variables to the place holder in the template
+$parameters = ["ProfileTagTagId" => $this->ProfileTagProfileId];
+$statement->execute($parameters);
+}
+
 		/**
 		 * formats the state variables for JSON serialization
 		 *

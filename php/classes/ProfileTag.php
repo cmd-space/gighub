@@ -9,6 +9,10 @@ require_once("autoload.php");
  **/
 class ProfileTag implements \JsonSerializable {
 	/**
+	 * id for profileTag; this is a foreign key
+	 **/
+	private $profileTagId
+	/**
 	 * id for this ProfileTag; this is the foreign key
 	 * @var int $ProfileTag
 	 **/
@@ -153,6 +157,47 @@ $parameters = ["ProfileTagTagId" => $this->ProfileTagProfileId];
 $statement->execute($parameters);
 }
 
+/**
+ * gets the profile tag by content
+ *
+ * @param \PDO $pdo PDO connection object
+ * @param string $profileTagTagId content to search for
+ * @return \SplfixedArray SplFixedArray of profile tags found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the corrects data type
+ **/
+public static function getProfileTagTagIdByProfileTagProfileId(\PDO $pdo, string $profileTag) {
+// sanitize the description before searching
+	$profileTag = trim($ProfileTag);
+	$profileTag = filter_var($profileTag, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($profileTag) === true) {
+		throw(new \PDOException("profile tag is invalid"));
+	}
+// create query template
+	$query = "SELECT profileTagId, ProfileTagTagId, ProfileTagProfileId FROM profileTag WHERE profileTag LIKE :profileTag";
+$statement = $pdo->prepare($query);
+
+// bind the profile tat content to the place holder in the template
+	$profileTag = "%$profileTag%";
+	$parameters = ["profileTag" => $profileTag];
+	$statement->execute($parameters);
+
+	// build an array of profile tags
+	$profileTag = new \SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	while(($row = $statement->fetch()) !== false) {
+		try{
+			$profileId = new profileTagTagId($row["profileTag"], $row["profileTagTagId"], $row["profileTagProfileId"]);
+			$profileTagTagId[$profileTag->key()] = $ProfileTag;
+			$profileTag->next();
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+	return($profileTagId);
+	}
+
 		/**
 		 * formats the state variables for JSON serialization
 		 *
@@ -163,3 +208,4 @@ $statement->execute($parameters);
 			return ($fields);
 		}
 }
+

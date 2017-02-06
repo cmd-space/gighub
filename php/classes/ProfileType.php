@@ -27,7 +27,7 @@ class ProfileType implements \JsonSerializable {
 	/**
 	 * constructor for profile type class
 	 *
-	 * @param int|null $newProfileTypeId id of this profile type or null it a new profile type id
+	 * @param int|null $newProfileTypeId id of this profile type or null if a new profile type id
 	 * @param string $newProfileTypeName string containing actual profile type data
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e,g,. strings too long, negative integers)
@@ -95,7 +95,7 @@ class ProfileType implements \JsonSerializable {
 	 * @param string $newProfileTypeName new value of profile type name
 	 * @throws \InvalidArgumentException if $newProfileTypeName is not a string or insecure
 	 * @throws \RangeException if $newProfileTypeName is > 64 characters
-	 * @throw \TypeError if $newProfileTypeName is not a string
+	 * @throws \TypeError if $newProfileTypeName is not a string
 	 **/
 	public function setProfileTypeName(string $newProfileTypeName) {
 		//verify the Profile Type Name is secure
@@ -103,6 +103,10 @@ class ProfileType implements \JsonSerializable {
 		$newProfileTypeName = filter_var($newProfileTypeName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileTypeName) === true) {
 			throw(new \InvalidArgumentException("Name content is empty"));
+		}
+		//verify the profile type name will fit in the database
+		if(strlen($newProfileTypeName) > 64) {
+			throw(new \RangeException("All that content wont fit!"));
 		}
 		//store the profile type name
 		return($this->profileTypeName);
@@ -117,7 +121,7 @@ class ProfileType implements \JsonSerializable {
 	 **/
 	public function insert (\PDO $pdo) {
 		//enforce the profileTypeId is null (i.e., don't insert a profileType that already exists)
-		if ($this->profiletypeId !=null) {
+		if($this->profiletypeId != null) {
 			throw(new \PDOException("this ain't a fresh profile type!"));
 		}
 
@@ -125,8 +129,13 @@ class ProfileType implements \JsonSerializable {
 		$query = "INSERT INTO profileTypeId( profiletypeName) VALUES (:profileTypeName)";
 		$statement = $pdo->prepare($query);
 
+		//bind the member to the placeholders in the template
+		$parameters = ["profileTypeId" => $this->profileTypeId, "profileTypeName" => $this->profileTypeName];
+		$statement->execute($parameters);
+
 		//update the null profile type id  with what mySQL just gave us
 		$this->profileTypeId = intval($pdo->lastInsertId());
+	}
 
 		/**
 		 * updates profile type id in mySQL
@@ -143,10 +152,11 @@ class ProfileType implements \JsonSerializable {
 			//create query template
 			$query = "UPDATE profileType SET  profileTypeName = :profileTypeName WHERE profileTypeId = :profileTypeId";
 			$statement = $pdo->prepare($query);
+
+			//bind the member to the placeholders in the template
+		$parameters = ["profileTypeId" => $this -> profileTypeId, "profileTypeName" => $this -> profileTypeName];
+		$statement->execute($parameters);
 		}
-
-
-	}
 
 	/**
 	 * formats the state variables for JSON serialization

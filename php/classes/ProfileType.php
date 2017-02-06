@@ -109,7 +109,7 @@ class ProfileType implements \JsonSerializable {
 			throw(new \RangeException("All that content wont fit!"));
 		}
 		//store the profile type name
-		return($this->profileTypeName);
+		$this->profileTypeName = $newProfileTypeName;
 	}
 
 	/**

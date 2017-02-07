@@ -11,7 +11,7 @@ class ProfileTag implements \JsonSerializable {
 	/**
 	 * id for profileTag; this is a foreign key
 	 **/
-	private $profileTagId
+	private $profileTagId;
 	/**
 	 * id for this ProfileTag; this is the foreign key
 	 * @var int $ProfileTag
@@ -146,6 +146,7 @@ class ProfileTag implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo) {
+		if($this->profileTagTagId === null) {
 		throw(new \PDOException("unable to delete a profile tag that does not exist"));
 	}
 	// create query template
@@ -166,20 +167,20 @@ $statement->execute($parameters);
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the corrects data type
  **/
-public static function getProfileTagTagIdByProfileTagProfileId(\PDO $pdo, string $profileTag) {
+public static function getProfileTagTagIdByProfileTagProfileId(\PDO $pdo, string $profileTagId) {
 // sanitize the description before searching
-	$profileTag = trim($ProfileTag);
-	$profileTag = filter_var($profileTag, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($profileTag) === true) {
+	$profileTagId = trim($profileTagId);
+	$profileTagId = filter_var($profileTagId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($profileTagId) === true) {
 		throw(new \PDOException("profile tag is invalid"));
 	}
 // create query template
-	$query = "SELECT profileTagId, ProfileTagTagId, ProfileTagProfileId FROM profileTag WHERE profileTag LIKE :profileTag";
+	$query = "SELECT profileTagId, ProfileTagTagId, ProfileTagProfileId FROM profileTagId WHERE profileTagId LIKE :profileTagId";
 $statement = $pdo->prepare($query);
 
 // bind the profile tat content to the place holder in the template
-	$profileTag = "%$profileTag%";
-	$parameters = ["profileTag" => $profileTag];
+	$profileTagId = "%$profileTagId%";
+	$parameters = ["profileTag" => $profileTagId];
 	$statement->execute($parameters);
 
 	// build an array of profile tags
@@ -207,5 +208,4 @@ $statement = $pdo->prepare($query);
 			$fields = get_object_vars($this);
 			return ($fields);
 		}
-}
-
+	}

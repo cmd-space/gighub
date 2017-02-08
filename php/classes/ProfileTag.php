@@ -119,7 +119,7 @@ class ProfileTag implements \JsonSerializable {
 	 */
 
 	/**
-	 * inserts this profileTag into mySQL
+	 * inserts this profileTagId into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -139,7 +139,7 @@ class ProfileTag implements \JsonSerializable {
 	}
 
 	/**
-	 * deletes this profile tag from mySQL
+	 * deletes this profile tag id from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors ocur
@@ -150,7 +150,7 @@ class ProfileTag implements \JsonSerializable {
 		throw(new \PDOException("unable to delete a profile tag that does not exist"));
 	}
 	// create query template
-$query = "DELETE FROM profile tag WHERE profileTagTagId = :profileTagProfileId";
+$query = "DELETE FROM profileTagId WHERE profileTagTagId = :profileTagProfileId";
 $statement = $pdo->prepare($query);
 
 	// bind the member variables to the place holder in the template
@@ -159,7 +159,7 @@ $statement->execute($parameters);
 }
 
 /**
- * gets the profile tag by content
+ * gets the profile tag id by content
  *
  * @param \PDO $pdo PDO connection object
  * @param string $profileTagTagId content to search for
@@ -167,7 +167,7 @@ $statement->execute($parameters);
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the corrects data type
  **/
-public static function getProfileTagTagIdByProfileTagProfileId(\PDO $pdo, string $profileTagId) {
+public static function getProfileTagIdByProfileTagProfileId(\PDO $pdo, string $profileTagId) {
 // sanitize the description before searching
 	$profileTagId = trim($profileTagId);
 	$profileTagId = filter_var($profileTagId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -175,22 +175,22 @@ public static function getProfileTagTagIdByProfileTagProfileId(\PDO $pdo, string
 		throw(new \PDOException("profile tag is invalid"));
 	}
 // create query template
-	$query = "SELECT profileTagId, ProfileTagTagId, ProfileTagProfileId FROM profileTagId WHERE profileTagId LIKE :profileTagId";
+	$query = "SELECT profileTagId, ProfileTagTagId, ProfileTagProfileId FROM profileTagId WHERE profileTagTagId LIKE :profileTagProfileId";
 $statement = $pdo->prepare($query);
 
-// bind the profile tat content to the place holder in the template
+// bind the profile tag id content to the place holder in the template
 	$profileTagId = "%$profileTagId%";
-	$parameters = ["profileTag" => $profileTagId];
+	$parameters = ["profileTagId" => $profileTagId];
 	$statement->execute($parameters);
 
 	// build an array of profile tags
-	$profileTag = new \SplFixedArray($statement->rowCount());
+	$profileTagId = new \SplFixedArray($statement->rowCount());
 	$statement->setFetchMode(\PDO::FETCH_ASSOC);
 	while(($row = $statement->fetch()) !== false) {
 		try{
-			$profileId = new profileTagTagId($row["profileTag"], $row["profileTagTagId"], $row["profileTagProfileId"]);
-			$profileTagTagId[$profileTag->key()] = $ProfileTag;
-			$profileTag->next();
+			$profileTagId = new profileTagTagId($row["profileTagId"], $row["profileTagTagId"], $row["profileTagProfileId"]);
+			$profileTagTagId[$profileTagId->key()] = $profileTagId;
+			$profileTagId->next();
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));

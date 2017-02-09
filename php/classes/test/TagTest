@@ -1,0 +1,29 @@
+<?php
+namespace Edu\Cnm\Dconley6\GigHub\Test;
+
+use Edu\Cnm\Dconley6\GigHub\{Profile, Post};
+use Edu\Cnm\Gighub\Test\GigHubTest;
+
+// grab the project test parameters
+require_once("GigHubTest.php");
+
+// grab the class under scrutiny
+require_once(dirname(__DIR__) . "../classes/autoload.php");
+
+/**
+ * Full PHPUnit test for the Tag class
+ *
+ * This is a complete PHPUnit test of the Tag class. It is complete because *ALL* mySQL/PDO enabled methods
+ * are tested for both invalid and valid inputs.
+ *
+ * @see Tag
+ * @author Dante Conley <dconley6@cnm.edu>
+ **/
+class TagTest extends GigHubTest {
+
+	/**
+	 * content of the TagContent
+	 * @var string $VALID_TAGCONTENT
+	 **/
+	protected $VALID_TAGCONTENT = "Yup. It's a Tag!";
+}

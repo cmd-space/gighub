@@ -389,7 +389,7 @@ class Venue implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) {
 		// enforce the venueId is not null (i.e., don't update a venue that hasn't been inserted)
-		if($this->VenueId === null) {
+		if($this->venueId === null) {
 			throw(new \PDOException("unable to update a venue that does not exist"));
 		}
 

@@ -126,7 +126,7 @@ class Tag implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the venueId is null (i.e., don't insert a venue that already exists)
+		// enforce the tagId is null (i.e., don't insert a tag that already exists)
 		if($this->tagId !== null) {
 			throw(new \PDOException("not a new tag"));
 		}
@@ -139,7 +139,7 @@ class Tag implements \JsonSerializable {
 		$parameters = ["tagContent" => $this->tagContent];
 		$statement->execute($parameters);
 
-		// update the null venueId with what mySQL just gave us
+		// update the null tagId with what mySQL just gave us
 		$this->tagContent = intval($pdo->lastInsertId());
 	}
 
@@ -148,12 +148,12 @@ class Tag implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $tagId tag id to search for
-	 * @return Venue|null Venue found or null if not found
+	 * @return tag|null tag found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getTagByTagId(\PDO $pdo, int $tagId) {
-		// sanitize the venueId before searching
+		// sanitize the tagId before searching
 		if($tagId <= 0) {
 			throw(new \PDOException("tag id is not positive"));
 		}
@@ -162,17 +162,17 @@ class Tag implements \JsonSerializable {
 		$query = "SELECT tagId, tagContent FROM tag WHERE tagId = :tagId";
 		$statement = $pdo->prepare($query);
 
-		// bind the venue id to the place holder in the template
+		// bind the tag id to the place holder in the template
 		$parameters = ["tagId" => $tagId];
 		$statement->execute($parameters);
 
-		// grab the venue from mySQL
+		// grab the tag from mySQL
 		try {
 			$tag = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$tag = new Venue($row["tagId"], $row["tagContent"]);
+				$tag = new Tag($row["tagId"], $row["tagContent"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

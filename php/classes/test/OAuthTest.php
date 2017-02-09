@@ -2,7 +2,6 @@
 namespace Edu\Cnm\GigHub\OAuth\Test;
 
 use Edu\Cnm\GigHub\OAuth;
-use Edu\Cnm\GigHub\OAuth\{OAuth};
 use Edu\Cnm\Gighub\Test\GigHubTest;
 
 // grab the project test parameters
@@ -56,9 +55,25 @@ class OAuthTest extends GigHubTest {
 	}
 
 	/**
-	 * test getting an OAuth by OAuth service name
+	 * test getting ALL the OAuths
 	 */
-	public function testGetValidOAuthByServiceName() {
+	public function testGetAllValidOAuths() {
+		// count number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("oAuth");
 
+		// create a new OAuth and insert it into mySQL
+		$oAuth = new OAuth(null, $this->oAuth->getOAuthId(), $this->VALID_SERVICENAME);
+		$oAuth->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce fields match expectations
+		$results = OAuth::getAllOAuths($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("oAuth"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\OAuth", $results);
+
+		// grab the result from the array and validate it
+		$pdoOAuth = $results[0];
+		$this->assertEquals($pdoOAuth->getOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoOAuth->getOAuthServiceName(), $this->VALID_SERVICENAME);
 	}
 }

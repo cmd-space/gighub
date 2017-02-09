@@ -503,7 +503,7 @@ class Profile implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $profileSoundCloudUser SoundCloud user content to search for
-	 * @return \SplFixedArray SplFixedArray of Profiles found
+	 * @return Profile|null Profile found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
@@ -519,26 +519,24 @@ class Profile implements \JsonSerializable {
 		$query = "SELECT profileId, profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName FROM profile WHERE profileSoundCloudUser LIKE :profileSoundCloudUser";
 		$statement = $pdo->prepare($query);
 
-		// bind the profile SoundCloud user content to the placeholder in the template
+		// bind the profile SoundCloud user to the placeholder in the template
 		$profileSoundCloudUser = "%$profileSoundCloudUser%";
 		$parameters = ["profileSoundCloudUser" => $profileSoundCloudUser];
 		$statement->execute($parameters);
 
-		// FIXME: change this from an array to one profile
-		// build an array of profiles
-		$profiles = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
-				$profiles[$profiles->key()] = $profile;
-				$profiles->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($profiles);
+		return($profile);
 	}
 
 	/**

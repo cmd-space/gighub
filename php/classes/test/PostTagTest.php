@@ -77,6 +77,39 @@ class PostTagTest extends GigHubTest {
 			 *
 			 *
 			 *
+			 *
 			 *****************************/
+			// grab the data from mySQL and enforce the fields match our expectations
+		$pdoPostTag= PostTag::getPostTagbyPostTagId($this->getPDO(), $postTag->getPostTagId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		$this->assertEquals($pdoPostTag->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGTAGID);
+	}
+
+	/**
+	 * test inserting a PostTag that already exists
+	 *
+	 * @expdctedException PDOException
+	 **/
+	public function testUpdateValidPostTag() {
+		// count the number of rows and save it for later
+		$numRows+ $this->getConnection()->getRowCount("postTag");
+
+		// create a new PostTag and insert into mySQL
+		$postTag = new PostTag(null, $profile->getProfilId(), $this->VALID_POSTTAG);
+		/******************DO
+		 * i
+		 * USE
+		 * PROFILE
+		 * SINCE
+		 * IM JUST
+		 * USING TAGS
+		 * OR
+		 * NAH
+		 **/
+		$postTag->insert($this->getPDO());
+
+		// edit the PostTag and update it in mySQL
+		$postTag->setPostTagTagId
 	}
 }

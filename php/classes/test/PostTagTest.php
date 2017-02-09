@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Bsteider\Gighub\Test;
+namespace Edu\Cnm\Gighub\Test;
 
 use Edu\Cnm\Bsteider\Gighub\{Post, Tag};
 use Edu\Cnm\GigHub\PostTag;
@@ -8,7 +8,7 @@ use Edu\Cnm\GigHub\PostTag;
 require_once("GigHubTest.php");
 
 // grab the class under scrutiny
-require_once(dirname(__DIR__) . "/classes/autoload.php");
+require_once(dirname(__DIR__) . "/autoload.php");
 
 /**
  * Full PHPUit test for the PostTag class

@@ -7,7 +7,7 @@ use Edu\Cnm\GigHub\{Profile, ProfileType };
 require_once("GigHubTest.php");
 
 // grab the class under scrutiny
-require_once(dirname(__DIR__) . "../classes/autoload.php");
+require_once(dirname(__DIR__) . "/autoload.php");
 
 /**
  *

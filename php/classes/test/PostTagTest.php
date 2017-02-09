@@ -112,4 +112,4 @@ class PostTagTest extends GigHubTest {
 		// edit the PostTag and update it in mySQL
 		$postTag->setPostTagTagId
 	}
-}
+}.

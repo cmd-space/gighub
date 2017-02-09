@@ -697,10 +697,6 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 * gets Profile by
-	 */
-
-	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

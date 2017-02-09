@@ -143,6 +143,44 @@ class OAuth implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the OAuth by OAuth id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $oAuthId oAuth id to search for
+	 * @return OAuth|null OAuth found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getOAuthByOAuthId(\PDO $pdo, int $oAuthId) {
+		// sanitize the oAuthId before searching
+		if($oAuthId <= 0) {
+			throw(new \PDOException("oAuth id is 0 or negative. So cash me outside, how bow dat?"));
+		}
+
+		// create query template
+		$query = "SELECT oAuthId, oAuthServiceName FROM oAuth WHERE oAuthId = :oAuthId";
+		$statement = $pdo->prepare($query);
+
+		// bind the oAuth id to the placeholder in the template
+		$parameters = ["oAuthId" => $oAuthId];
+		$statement->execute($parameters);
+
+		// grab the OAuth from mySQL
+		try {
+			$oAuth = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$oAuth = new OAuth($row["oAuthId"], $row["oAuthServiceName"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($oAuth);
+	}
+
+	/**
 	 * get ALL the oAuths
 	 *
 	 * @param \PDO $pdo PDO connection object

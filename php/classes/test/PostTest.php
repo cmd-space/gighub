@@ -43,13 +43,13 @@ class PostTest extends GigHubTest {
 	 * profile that created the Post; this is for foreign key relations
 	 * @var Post profile id
 	 */
-	protected $postProfileId;
+	protected $profile;
 
-
+// TODO: create set up method that creates a profile
 	/**
 	 *test inserting a post, editing it, and then updating it
 	 */
-	public function TestUpdateValidPost() {
+	public function testUpdateValidPost() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->retRowCount("post");
 

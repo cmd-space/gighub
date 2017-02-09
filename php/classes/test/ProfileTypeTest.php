@@ -1,7 +1,7 @@
 <?php
-namespace Edu\Cnm\Jramirez98\GigHub\Test;
+namespace Edu\Cnm\GigHub\Test;
 
-use Edu\Cnm\jramirez98\GigHub\{Profile, ProfileType };
+use Edu\Cnm\GigHub\{Profile, ProfileType };
 
 // grab the project test parameters
 require_once("GigHubTest.php");

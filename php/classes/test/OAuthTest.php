@@ -8,7 +8,7 @@ use Edu\Cnm\Gighub\Test\GigHubTest;
 require_once("GigHubTest.php");
 
 // grab the class under scrutiny
-require_once(dirname(__DIR__) . "/autoload.php");
+require_once(dirname(__DIR__) . "../classes/autoload.php");
 
 /**
  * Full PHPUnit test for the OAuth class

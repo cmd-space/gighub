@@ -111,6 +111,4 @@ class PostTest extends GigHubTest {
 		$post->delete($this->getPDO());
 	}
 
-
-
 }

@@ -34,10 +34,31 @@ class OAuthTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("oauth");
 
 		// create a new OAuth and insert it into mySQL
-		$oAuth = new OAuth(null, $this->oauth->getOAuthId(), $this->VALID_SERVICENAME);
+		$oAuth = new OAuth(null, $this->oAuth->getOAuthId(), $this->VALID_SERVICENAME);
 		$oAuth->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce fields match expectations... or die
-		$pdoOAuth = OAuth::getOAuthByOAuthId
+		$pdoOAuth = OAuth::getOAuthByOAuthId($this->getPDO(), $oAuth->getOAuthId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("oAuth"));
+		$this->assertEquals($pdoOAuth->getOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoOAuth->getOAuthServiceName(), $this->VALID_SERVICENAME);
+	}
+
+	/**
+	 * test inserting an OAuth that already exists
+	 *
+	 * @expectedException PDOException
+	 */
+	public function testInsertInvalidOAuth() {
+		// create an OAuth with a non-null oAuth id and see the hackers cry
+		$oAuth = new OAuth(GigHubTest::INVALID_KEY, $this->oAuth->getOAuthId(), $this->VALID_SERVICENAME);
+		$oAuth->insert($this->getPDO());
+	}
+
+	/**
+	 * test getting an OAuth by OAuth service name
+	 */
+	public function testGetValidOAuthByServiceName() {
+
 	}
 }

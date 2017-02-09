@@ -69,3 +69,15 @@ public function TestUpdateValidPost() {
 	$this->assertEquals($pdoPost->getPostDate(), $this->VALID_POSTCREATEDDATE);
 	$this->assertEquals($pdoPost->getPostDate(), $this->VALID_POSTEVENTDATE);
 }
+
+/**
+ * test updating a post that does not exist
+ *
+ * @exceptedException PDoException
+ */
+public function testUpdateInvalidPost() {
+	// create a post, try to update it without actually updating it and watch it fail
+	$post = new Post(null, $this->profile-getPostProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
+	$post->update($this->getPDO());
+}
+

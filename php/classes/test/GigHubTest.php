@@ -2,7 +2,7 @@
 namespace Edu\Cnm\Gighub\Test;
 
 // grab the encrypted properties file
-require_once("/etc/apache2/gighub/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 /**
  * Abstract class containing universal and project specific mySQL parameters

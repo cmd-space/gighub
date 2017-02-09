@@ -29,7 +29,7 @@ class OAuthTest extends GigHubTest {
 	 */
 	public function testInsertValidOAuth() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("oauth");
+		$numRows = $this->getConnection()->getRowCount("oAuth");
 
 		// create a new OAuth and insert it into mySQL
 		$oAuth = new OAuth(null, $this->oAuth->getOAuthId(), $this->VALID_SERVICENAME);

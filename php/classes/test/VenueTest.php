@@ -148,6 +148,27 @@ class VenueTest extends GigHubTest {
 		$venue->update($this->getPDO());
 	}
 
+	/**
+	 * test creating a Venue and then deleting it
+	 **/
+	public function testDeleteValidVenue() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("venue");
+
+		// create a new Venue and insert to into mySQL
+		$venue = new Venue(null, $this->profile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue->insert($this->getPDO());
+
+		// delete the Venue from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+		$venue->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the Venue does not exist
+		$pdoVenue = Tweet::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
+		$this->assertNull($pdoVenue);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("venue"));
+	}
+
 
 
 

@@ -46,12 +46,23 @@ class PostTagTest extends GigHubTest {
 		// run the default setUp() method first
 		parent::setUp();
 
-		// create and insert a Profile to own the test PostTag
+		// calculate the data (just use the time the unit test was setup)
+		$this->VALID_PROFILEDATE = new \DateTime();
+
+		//create oAuth object
+
+		// fix profile object, missing state variables
 		$this->profile = new Profile(null, "@phpunit", "test@phpunit.de", "121255512120");
 		$this->profile-insert($this->getPDO());
 
-		// calculate the data (just use the time the unit test was setup)
-		$this->VALID_PROFILEDATE = new \DateTime();
+		//create post object
+
+		//create tag object
+
+
+
+
+
 			/***********************
 			 * do i need the date because the post tag and profile tag classes dont use date?
 			 *************************/

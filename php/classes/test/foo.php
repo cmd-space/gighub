@@ -148,4 +148,3 @@ class TagTest extends GigHubTest {
 		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGCONTENT);
 	}
 }
-

@@ -217,4 +217,13 @@ class ProfileTest extends GigHubTest {
 		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
 	}
+
+	/**
+	 * test grabbing a Profile by content that does not exist
+	 **/
+	public function testGetInvalidProfileByProfileUserName() {
+		// grab a Profile by searching for a user name that does not exist
+		$profile = Profile::getProfileByProfileUserName($this->getPDO(), "These aren't the droids you're looking for");
+		$this->assertCount(0, $profile);
+	}
 }

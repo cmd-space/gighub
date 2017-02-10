@@ -47,6 +47,18 @@ class PostTest extends GigHubTest {
 
 // TODO: create set up method that creates a profile
 	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setup() {
+		//run the default before setup() method first
+		parent::setup();
+
+		// create and insert a Profile to own the test Post
+		$this->profile = new Profile(null, "@phpunit", "test@phpunit.de", "HAHAHAHAHAHAHAHAHA!");
+		$this->profile->insert($this->getPDO());
+
+	}
+	/**
 	 *test inserting a post, editing it, and then updating it
 	 */
 	public function testUpdateValidPost() {

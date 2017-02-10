@@ -2,7 +2,6 @@
 namespace Edu\Cnm\Gighub\Test;
 
 use Edu\Cnm\Bsteider\Gighub\{Post, Tag};
-use Edu\Cnm\GigHub\PostTag;
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -110,6 +109,52 @@ class PostTagTest extends GigHubTest {
 		$postTag->insert($this->getPDO());
 
 		// edit the PostTag and update it in mySQL
-		$postTag->setPostTagTagId
+		$postTag->setPostTagTagId($this->VALID_POSTTAGPOSTID);
+		$postTag->update($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoPostTag = PostTag::getPostTagByPostTagId($this->getPDO(), $postTag->getPostTagId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		$this->assertEuals($pdoPostTag->getPostTagPostId(), $this->postTagPost->getPostTagPostId());
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGPOASTID);
 	}
-}
+	/**
+	 * test updating a PostTat that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidPostTag() {
+		// create a PostTag, try to update it without actually updating it and watch it fail
+		$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId(),
+		$postTag->update($this->getPDO());
+	}
+	/**
+	 * test creating a PostTag and then deleting it
+	 **/
+	public function testDeleteValidPostTag() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("postTag");
+
+		// create a new PostTag and insert to into mySQL
+		$postTag = new postTag(null, $this->postTagTagId->getPostTagTagId(),
+		$postTag->insert($this->getPDO());
+
+		// delete the PostTag from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		$postTag->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the PostTag does not exist
+		$pdoPostTag = PostTag::getPostTagByPostTagId($this->getPDO(), $postTag->getPostTagId());
+		$this->assertNull($pdoPostTag);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("postTag"));
+	}
+	/**
+	 * test deleting a PostTag that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testDeleteInvalidPostTag() {
+		// create a PostTag and try to delete it without actually inserting it
+		$postTag = new PostTag(null, $this->postTagPost->getPostTagPostId(), $this->VALID_POSTTAGCONTENT);
+		$postTag->delete($this->getPDO());
+
+	}

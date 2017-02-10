@@ -59,17 +59,40 @@ class VenueTest extends GigHubTest {
 	protected $VALID_VENUEZIP = "Its a zip code. Nothing witty to see here.";
 
 
-/**
- * create dependent objects before running each test
- **/
+	/**
+	 * create dependent objects before running each test
+	 **/
 
-public final function setUp() {
-	// run the default setUp() method first
-	parent::setUp();
+	public final function setUp() {
+		// run the default setUp() method first
+		parent::setUp();
 
-	// create and insert a Profile to own the test Venue
-	$this->profile = new Profile(null, "@phpunit", "test@phpunit.de", "+12125551212");
-	$this->profile->insert($this->getPDO());
-}
+		// create and insert a Profile to own the test Venue
+		$this->profile = new Profile(null, "@phpunit", "test@phpunit.de", "+12125551212");
+		$this->profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting a valid Venue and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidVenue() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("venue");
+
+		// create a new Venue and insert to into mySQL
+		$venue = new Venue(null, $this->profile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALIDVENUECITY, $this->VALIDVENUESTATE, $this->VALIDVENUEZIP);
+		$venue->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->profile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
+		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
+		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
+		$this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_VENUECITY);
+		$this->assertEquals($pdoVenue->getVenueState(), $this->VALID_VENUESTATE);
+		$this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_VENUEZIP;
+	}
 
 

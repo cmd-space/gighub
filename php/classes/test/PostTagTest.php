@@ -156,5 +156,60 @@ class PostTagTest extends GigHubTest {
 		// create a PostTag and try to delete it without actually inserting it
 		$postTag = new PostTag(null, $this->postTagPost->getPostTagPostId(), $this->VALID_POSTTAGCONTENT);
 		$postTag->delete($this->getPDO());
+	}
+
+	/**
+	 * test grabbing a PostTag by postTag content
+	 **/
+	public function testGetValidPostTagByPostTagTag() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("postTag");
+
+		// create a new PostTag and insert to into mySQL
+		$postTag = new PostTag(null, $this->postTagTag->getPostTagTagId(), $this->VALID_POSTTAGCONTENT);
+		$postTag->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = PostTag::getPostTagByPostTagTagId($this->getPDO(), $postTag->getPostTagTagId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ostTag"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Bsteider\\Gighub\\PostTag", $results);
+
+		// grab the result from the array and validate it
+		$pdoPostTag = $results[0];
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->profile->getPostTagProfileId());
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGCONTENT);
+	}
+	/**
+	 * test grabbing a PostTag by content that does not exist
+	 **/
+	public function testGetInvalidPostTagByPostTagTagId() {
+		// grab a postTag by searching for content that does not exist
+		$postTag = PostTag::getPostTagByPostTagTagId($this->getPDO(), "you will find nothing");
+		$this->assertCount(0, $PostTag);
+	}
+	/**
+	 * test grabbing all PostTags
+	 **/
+	public function testGetAllValidPostTags() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("postTag");
+
+		// create a new PostTag and insert to into mySQL
+		$postTag = new PostTag(null, $this->postTagPostId->getPostTagPostId());
+		$postTag->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = PostTag::getAllPostTags($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Bsteider\\Gighub\\PostTag", $results);
+
+		// grab the result from the array and validate it
+		$pdoPostTag = $results[0];
+		$this->assertEquals($pdoPostTag->getPostTagPostId(), $this->postTagPostId->getPostTagPostId());
+		$this->assertEquals($pdoPostTag->getPostTagTag(), $this->VALID_POSTTAGTAGID);
+
+	}
 
 	}

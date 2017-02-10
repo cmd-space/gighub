@@ -121,12 +121,12 @@ class ProfileType implements \JsonSerializable {
 	 **/
 	public function insert (\PDO $pdo) {
 		//enforce the profileTypeId is null (i.e., don't insert a profileType that already exists)
-		if($this->profiletypeId != null) {
+		if($this->profileTypeId != null) {
 			throw(new \PDOException("this ain't a fresh profile type!"));
 		}
 
 		//create query template
-		$query = "INSERT INTO profileTypeId( profiletypeName) VALUES (:profileTypeName)";
+		$query = "INSERT INTO profileType(profileTypeName) VALUES (:profileTypeName)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member to the placeholders in the template

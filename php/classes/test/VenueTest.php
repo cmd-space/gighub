@@ -151,6 +151,7 @@ class VenueTest extends GigHubTest {
 	/**
 	 * test creating a Venue and then deleting it
 	 **/
+
 	public function testDeleteValidVenue() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("venue");
@@ -168,6 +169,16 @@ class VenueTest extends GigHubTest {
 		$this->assertNull($pdoVenue);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("venue"));
 	}
+
+/**
+ * test deleting a Venue that does not exist
+ *
+ * @expectedException PDOException
+ **/
+public function testDeleteInvalidVenue() {
+	$venue = new Venue(null, $this->profile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+	$venue->delete($this->getPDO());
+}
 
 
 

@@ -219,11 +219,13 @@ class ProfileTest extends GigHubTest {
 	}
 
 	/**
-	 * test grabbing a Profile by content that does not exist
+	 * test grabbing a Profile by a user name that does not exist
 	 **/
 	public function testGetInvalidProfileByProfileUserName() {
 		// grab a Profile by searching for a user name that does not exist
 		$profile = Profile::getProfileByProfileUserName($this->getPDO(), "These aren't the droids you're looking for");
 		$this->assertCount(0, $profile);
 	}
+
+
 }

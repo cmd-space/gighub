@@ -34,28 +34,42 @@ class VenueTest extends GigHubTest {
 	protected $VALID_VENUENAME = "NewVenue, Who dis?";
 	/**
 	 * content of the updated Venue
-	 * @var string $VALID_VENUENAME
+	 * @var string $VALID_VENUESTREET1
 	 **/
 	protected $VALID_VENUESTREET1 = "Where they at, yo?";
 	/**
 	 * content of the updated Venue
-	 * @var string $VALID_VENUENAME
+	 * @var string $VALID_VENUESTREET2
 	 **/
 	protected $VALID_VENUESTREET2 = "Where the at? More specifically, yo";
 	/**
 	 * content of the updated Venue
-	 * @var string $VALID_VENUENAME
+	 * @var string $VALID_VENUECITY
 	 **/
 	protected $VALID_VENUECITY = "Where ya from?";
 	/**
 	 * content of the updated Venue
-	 * @var string $VALID_VENUENAME
+	 * @var string $VALID_VENUESTATE
 	 **/
 	protected $VALID_VENUESTATE = "New Mexiwhere?";
 	/**
 	 * content of the updated Venue
-	 * @var string $VALID_VENUENAME
+	 * @var string $VALID_VENUEZIP
 	 **/
 	protected $VALID_VENUEZIP = "Its a zip code. Nothing witty to see here.";
+
+
+/**
+ * create dependent objects before running each test
+ **/
+
+public final function setUp() {
+	// run the default setUp() method first
+	parent::setUp();
+
+	// create and insert a Profile to own the test Venue
+	$this->profile = new Profile(null, "@phpunit", "test@phpunit.de", "+12125551212");
+	$this->profile->insert($this->getPDO());
 }
+
 

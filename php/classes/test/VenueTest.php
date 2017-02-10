@@ -327,3 +327,32 @@ class VenueTest extends GigHubTest {
 		$venue = Venue::getVenueByVenueZip($this->getPDO(), "imaginary venue zip, dummy");
 		$this->assertCount(0, $venue);
 	}
+
+	/**
+	 * test grabbing all Venues
+	 **/
+	public function testGetAllValidVenues() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("venue");
+
+		// create a new Venue and insert to into mySQL
+		$venue = new Venue(null, $this->profile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Venue::getAllVenues($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Dconley6\\GigHub\\Venue", $results);
+
+		// grab the result from the array and validate it
+		$pdoVenue = $results[0];
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->profile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
+		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
+		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
+		$this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_VENUECITY);
+		$this->assertEquals($pdoVenue->getVenueState(), $this->VALID_VENUESTATE);
+		$this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_VENUEZIP);
+	}
+}

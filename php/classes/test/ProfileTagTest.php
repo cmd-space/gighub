@@ -35,3 +35,45 @@ class ProfileTagTest extends GigHubTest {
 	 **/
 
 	protected $profile = null;
+
+	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setUp() {
+		// run the default setUp() method first
+		parent::setUp();
+
+		// create and insert a ProfileTag to own the test ProfileTag
+		$this->profileTag = new ProfileTag(null, "@phpunit", "test@phpunit.de", "+12125551212");
+		$this->profileTag->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting a valid ProfileTag and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidProfileTag() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profileTag");
+
+		// create a new ProfileTag and insert to into mySQL
+		$profileTag = new ProfileTag(null, $this->profileTag->getProfileId(), $this->VALID_PROFILETAGTAGID);
+		$profiletag->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
+		$this->assertEquals($pdoTweet->getProfileTagId(), $this->profileTag->getProfileTagId());
+		$this->assertEquals($pdoTweet->getProfileTagProfile(), $this->VALID_PROFILETAGTAG);
+
+	}
+
+	/**
+	 * test inserting a ProfileTag that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidProfileTag() {
+		// create a ProfileTag with a non null profileTag id and watch it fail
+		$profileTag = new ProfileTag(GigHubTest::INVALID_KEY, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAGID);
+		$profileTag->insert($this->getPDO());
+	}

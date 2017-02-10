@@ -130,7 +130,8 @@ class ProfileType implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member to the placeholders in the template
-		$parameters = ["profileTypeId" => $this->profileTypeId, "profileTypeName" => $this->profileTypeName];
+		// deleted parameters  ["profileTypeId" => $this->profileTypeId, as it gives primary key by default
+		$parameters = ["profileTypeName" => $this->profileTypeName];
 		$statement->execute($parameters);
 
 		//update the null profile type id  with what mySQL just gave us

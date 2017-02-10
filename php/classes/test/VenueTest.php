@@ -137,4 +137,17 @@ class VenueTest extends GigHubTest {
 		$this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_VENUEZIP);
 	}
 
+	/**
+	 * test updating a Venue that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidVenue() {
+		// create a Venue, try to update it without actually updating it and watch it fail
+		$venue = new Venue(null, $this->profile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue->update($this->getPDO());
+	}
+
+
+
 

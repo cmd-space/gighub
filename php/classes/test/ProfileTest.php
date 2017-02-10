@@ -59,17 +59,13 @@ class ProfileTest extends GigHubTest {
 	 */
 	protected $profile = null;
 	/**
-	 * declare oAuthId
-	 */
-	protected $oAuthId = null;
-	/**
-	 * declare profileTypeId
-	 */
-	protected $profileTypeId = null;
-	/**
 	 * declare oAuth
 	 */
 	protected $oAuth = null;
+	/**
+	 * declare profileType
+	 */
+	protected $profileType = null;
 
 	/**
 	 * create dependent objects before running each test
@@ -105,6 +101,17 @@ class ProfileTest extends GigHubTest {
 		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
 		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test inserting a Profile that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidProfile() {
+		// create a Profile with a non null profile id and watch it fail /cry
+		$profile = new Profile(GigHubTest::INVALID_KEY, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
 	}
 
 }

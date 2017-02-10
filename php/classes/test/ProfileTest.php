@@ -146,5 +146,14 @@ class ProfileTest extends GigHubTest {
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
 	}
 
-
+	/**
+	 * test updating a Profile that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidProfile() {
+		// create a Profile, try to update it without actually updating it and watch it fail. Bad backend dev trying to update without parameters
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->update($this->getPDO());
+	}
 }

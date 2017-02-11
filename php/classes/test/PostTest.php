@@ -20,10 +20,18 @@ require_once(dirname(__DIR__) . "/autoload.php");
  **/
 class PostTest extends GigHubTest {
 	/**
+	 *
+	 */
+
+	/**
+	 *
+	 **/
+	protected $VALID_POSTVENUEID;
+	/**
 	 * content of the PostContent
 	 * @var string $VALID_POSTCONTENT
 	 **/
-	protected $VALID_POSTCONTENT = "PHPUnit test is postitve... for success";
+	protected $VALID_POSTCONTENT = "PHPUnit test is positive... for success";
 	/**
 	 * content of the updated postContent
 	 * @var string $VALID_POSTCONTENT2
@@ -40,10 +48,20 @@ class PostTest extends GigHubTest {
 	 **/
 	protected $VALID_POSTEVENTDATE = null;
 	/**
+	 *id of the imagecloudinary the user owns
+	 * @var int $VALID _POSTIMAGECLOUDINARY
+	 **/
+	protected $VALID_POSTIMAGECLOUDINARYID;
+	/**
+	 *the title of the post created
+	 **/
+	protected $VALID_POSTTITLE;
+	/**
 	 * profile that created the Post; this is for foreign key relations
 	 * @var Post profile id
 	 */
 	protected $profile;
+
 
 // TODO: create set up method that creates a profile
 	/**

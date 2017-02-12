@@ -48,7 +48,7 @@ class ProfileTest extends GigHubTest {
 	 * Profile SoundCloud User string
 	 * @var string $VALID_SOUNDCLOUDUSER
 	 */
-	protected $VALID_SOUNDCLOUDUSER = "PHPUnit passing. Many Songs. Wow.";
+	protected $VALID_SOUNDCLOUDUSER = "PHPUnit passing. Many Songs";
 	/**
 	 * Profile User Name string
 	 * @var string $VALID_USERNAME
@@ -97,8 +97,8 @@ class ProfileTest extends GigHubTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
-		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->profile->getProfileOAuthId());
-		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profile->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
 		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
 		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);

@@ -1,5 +1,5 @@
 <?php
-namespace EDU\Cnm\GigHub;
+namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
 /**

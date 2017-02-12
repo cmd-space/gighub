@@ -171,5 +171,41 @@ class PostTest extends GigHubTest {
 		$this->assertEquals($pdoPost->getPostTitle(), $this->VALID_POSTTITLE);
 	}
 
+	/**
+	 *test grabbing a Post by content that does not exist
+	 */
+	public function testGetInvalidPostByPostContent() {
+		// grab a post by searching for content that does not exist
+		$post = Post::getPostByPostContent($this->getPDO(), "Stop chasing Bigfoot!");
+		$this->assertCount(0, $post);
+	}
+
+	/**
+	 * test grabbing all posts
+	 */
+	public function testGetAllValidPosts() {
+		// grab a post by searching for content that does not exist
+		$numRows = $this->getConnection()->getRowCount("post");
+
+		// create a new post and insert to into mySQl
+		$post = new Post(null, $this->profile->getProfile(), $this->VALID_POSTVENUEID, $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
+		$post->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectaions
+		$results = Post::getAllPosts($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstencesOf("Edu\\Cnm\\Jramirez98\\GigHub\\Post", $results);
+
+		// grab the result from the array and validate it
+		$pdoPost = $results[0];
+		$this->assertEquals($pdoPost->getProfileId(), $this->profile->getProfile());
+		$this->assertEquals($pdoPost->getPostVenueId(), $this->VALID_POSTVENUEID);
+		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+		$this->assertEquals($pdoPost->getPostCreatedDate(), $this->VALID_POSTCREATEDDATE);
+		$this->assertEquals($pdoPost->getPostEventDate(), $this->VALID_POSTEVENTDATE);
+		$this->assertEquals($pdoPost->getPostImageCloudinaryId(), $this->VALID_POSTIMAGECLOUDINARYID);
+		$this->assertEquals($pdoPost->getPostTitle(), $this->VALID_POSTTITLE);
+	}
 
 }

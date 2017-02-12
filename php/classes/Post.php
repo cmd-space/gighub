@@ -416,6 +416,126 @@ class Post implements \JsonSerializable {
 	}
 
 	/**
+	 *gets the Post b contents
+	 *
+	 * @param \PDO $pdo PDO connection Object
+	 * @param string $postcontent post content to search for
+	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @thorws \ PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not correct data type
+	 **/
+	public static function getPostByPostContent(\PDO $pdo, string $postContent) {
+		// sanitize the description before searching
+		$postContent = trim($postContent);
+		$postContent = filter_var($postContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($postContent) === true) {
+			throw(new \PDOException("post content is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT postId, postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle FROM post WHERE postContent LIKE :postContent";
+		$statement = $pdo->prepare($query);
+
+		// bind the Post content to the place holder in the template
+		$postContent = "%postContent%";
+		$parameters = ["postContent" => $postContent];
+		$statement->execute($parameters);
+
+		// build an array of Posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$posts [$posts->key()] = $post;
+				$posts->next();
+			}  catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($post);
+	}
+
+	/**
+	 * gets the Post by PostId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $postId post id to search for
+	 * @return Post|null Post found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostByPostId(\PDO $pdo, int $postId) {
+		//sanitize the postId before searching
+		if($postId<= 0) {
+			throw(new \PDOException("post id is not positive "));
+		}
+
+		// create query template
+		$query = "SELECT postId, postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle FROM post WHERE postContent LIKE :postContent";
+		$statement = $pdo->prepare($query);
+
+		// bind the post id to the place holder in the template
+		$parameters = ["postId"=> $postId];
+		$statement->execute($parameters);
+
+		// grab the post from mySQl
+		try {
+			$post = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($esceptio->getMessage(), 0, $exception));
+		}
+		return($post);
+	}
+
+	/**
+	 * gets the Post by profile id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $postProfileId profile id to search by
+	 * @return \SplFixedArray SplFixedArray of Post found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostBYPostProfileId(\PDO $pdo, int $postProfileId) {
+		//sanitize the profile id before searching
+		if($postProfileId <= 0) {
+			throw(new \RangeException("post profile id must be positive"));
+		}
+
+		// create query template
+		$query = "SELECT postId, postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle FROM post WHERE postProfileId = :postProfileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the post profile id to the place holder in the template
+		$parameters = ["postProfileId" => $postProfileId];
+		$statement = $pdo->prepare($parameters);
+
+		// build an array of posts
+		$posts= new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) != false) {
+			try {
+				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($posts);
+	}
+
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

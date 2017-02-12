@@ -448,11 +448,11 @@ class Profile implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "UPDATE profile SET profileBio = :profileBio, profileImageCloudinaryId = :profileImageCloudinaryId, profileLocation = :profileLocation, profileOAuthToken = :profileOAuthToken, profileSoundCloudUser = :profileSoundCloudUser, profileUserName = :profileUsername WHERE profileId = :profileId";
+		$query = "UPDATE profile SET profileOAuthId = :profileOAuthId, profileTypeId = :profileTypeId, profileBio = :profileBio, profileImageCloudinaryId = :profileImageCloudinaryId, profileLocation = :profileLocation, profileOAuthToken = :profileOAuthToken, profileSoundCloudUser = :profileSoundCloudUser, profileUserName = :profileUsername WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the placeholders in the template
-		$parameters = ["profileBio" => $this->profileBio, "profileImageCloudinaryId" => $this->profileImageCloudinaryId, "profileLocation" => $this->profileLocation, "profileOAuthToken" => $this->profileOAuthToken, "profileSoundCloudUser" => $this->profileSoundCloudUser, "profileUserName" => $this->profileUserName, "profileId" => $this->profileId];
+		$parameters = ["profileOAuthId" => $this->profileOAuthId, "profileTypeId" => $this->profileTypeId,"profileBio" => $this->profileBio, "profileImageCloudinaryId" => $this->profileImageCloudinaryId, "profileLocation" => $this->profileLocation, "profileOAuthToken" => $this->profileOAuthToken, "profileSoundCloudUser" => $this->profileSoundCloudUser, "profileUserName" => $this->profileUserName, "profileId" => $this->profileId];
 		$statement->execute($parameters);
 	}
 

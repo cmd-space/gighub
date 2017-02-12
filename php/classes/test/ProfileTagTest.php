@@ -1,13 +1,14 @@
 <?php
-namespace Edu\Cnm\GigHub\Test;
+namespace Edu\Cnm\GigHub\ProfileTag\Test;
 
-use Edu\Cnm\bsteider\GigHub\{Profile, Tag};
+use Edu\Cnm\GigHub\{Oauth, ProfileType, Profile, Venue, Tag};
+use Edu\Cnm\Gighub\Test\GigHubTest;
 
 // grab the project test parameters
 require_once("GigHubTest.php");
 
 // grab the class under scrutiny
-require_once(dirname(__DIR__) . "/classes/autoload.php");
+require_once(dirname(__DIR__) . "/autoload.php");
 
 /**
  * Full PHPUnit test for the ProfileTag class
@@ -43,9 +44,19 @@ class ProfileTagTest extends GigHubTest {
 		// run the default setUp() method first
 		parent::setUp();
 
-		// create and insert a ProfileTag to own the test ProfileTag
-		$this->profileTag = new ProfileTag(null, "@phpunit", "test@phpunit.de", "+12125551212");
-		$this->profileTag->insert($this->getPDO());
+		// create and insert an OAuth to own the test ProfileTag
+		$this->oAuth = new OAuth(null, "Mail.ru");
+		$this->oAuth->insert($this->getPDO());
+		// create and sinsert an ProfileType to own the test ProfileTag
+		$this->profileType = new ProfileType(null, "Musician");
+		$this->profileType->insert($this->getPDO());
+		// create and insertg a Profile to own the test ProfileTag
+		$this->profile = new Profile(null, $this->profile->getProfileOAuthId(), $this->profile->getProfileTypeId(), "bio break", "blahblahblah", "Albuquerque", "this is a toekn", "SoundClouduser","Long Duck Dong");
+		$this->profile->insert($this->getPDO());
+		// create and insert a Tag to own the test
+		$this->tag = new Tag(null, "sausage");
+		$this->tag->insert($this->getPDO());
+
 	}
 
 	/**

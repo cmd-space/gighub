@@ -92,7 +92,7 @@ class VenueTest extends GigHubTest {
 		$this->testProfileType->insert($this->getPDO());
 
 		// add missing profile variables
-		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), "testProfileBio", "testProfileImageCloudinaryId", "testProfileLocation", "testProfileOAuthToken", "testProfileSoundCloudUser", "testProfileUserName");
+		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), $this->testProfileType->getProfileTypeId(), "testProfileBio", "testProfileImageCloudinaryId", "testProfileLocation", "testProfileOAuthToken", "testProfileSoundCloudUser", "testProfileUserName");
 		$this->testProfile->insert($this->getPDO());
 	}
 
@@ -104,7 +104,7 @@ class VenueTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("venue");
 
 		// create a new Venue and insert to into mySQL
-		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->testProfileType->getProfileTypeId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

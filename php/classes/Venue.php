@@ -72,7 +72,7 @@ class Venue implements \JsonSerializable {
 	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueName, string $newVenueStreet1, string $newVenueStreet2, string $newVenueCity, string $newVenueState, string $newVenueZip) {
 		try {
 			$this->setVenueId($newVenueId);
-			$this->setVenueProfileId($newVenueId);
+			$this->setVenueProfileId($newVenueProfileId);
 			$this->setVenueName($newVenueName);
 			$this->setVenueStreet1($newVenueStreet1);
 			$this->setVenueStreet2($newVenueStreet2);

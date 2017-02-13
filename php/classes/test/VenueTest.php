@@ -2,7 +2,7 @@
 namespace Edu\Cnm\GigHub\Profile\Test;
 
 use Edu\Cnm\GigHub\{
-	OAuth, Profile, ProfileType
+	OAuth, ProfileType, Profile
 };
 use Edu\Cnm\Gighub\Test\GigHubTest;
 

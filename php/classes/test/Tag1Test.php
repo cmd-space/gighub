@@ -2,7 +2,7 @@
 namespace Edu\Cnm\GigHub\Test;
 
 use Edu\Cnm\GigHub\{
-	OAuth, Profile, ProfileType
+	OAuth, ProfileType, Profile
 };
 
 // grab the project test parameters

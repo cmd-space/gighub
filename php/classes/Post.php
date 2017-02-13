@@ -490,7 +490,7 @@ class Post implements \JsonSerializable {
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($esceptio->getMessage(), 0, $exception));
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($post);
 	}
@@ -534,6 +534,35 @@ class Post implements \JsonSerializable {
 		return($posts);
 	}
 
+	/**
+	 * gets all Posts
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of posts found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllPosts (\PDO $pdo) {
+		// create query template
+		$query = "SELECT postId, postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle FROM post";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !==false) {
+			try {
+				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				// if the row couldnt be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($posts);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization

@@ -157,7 +157,7 @@ class VenueTest extends GigHubTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $venue->getVenueProfileId())	;
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $venue->getVenueProfileId());
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);

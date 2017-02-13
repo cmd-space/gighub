@@ -95,7 +95,7 @@ class TagTest extends GigHubTest {
 
 	/**
 	 * test inserting a Tag
-	 **/
+	 **
 	public function testInsertValidTag() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("tag");
@@ -110,7 +110,7 @@ class TagTest extends GigHubTest {
 		$this->assertEquals($pdoTag->getTagId(), $this->tag->getTagId());
 		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGONTENT);
 
-	}
+	}*/
 
 	/**
 	 * test grabbing a Tag by tag content

@@ -32,6 +32,11 @@ class VenueTest extends GigHubTest {
 	 **/
 	protected $VALID_VENUENAME = "NewVenue, Who dis?";
 	/**
+	 * valid venue name created for testing
+	 * @var string $testValidVenueName
+	 **/
+	protected $VALID_VENUENAME1= "Bobs Bar Venue";
+	/**
 	 * content of the updated Venue
 	 * @var string $VALID_VENUESTREET1
 	 **/
@@ -68,7 +73,7 @@ class VenueTest extends GigHubTest {
 	protected $testOAuth;
 	/**
 	 * Profile Type created for unit test
-	 * @var string $testOAuth
+	 * @var string $testProfileType
 	 **/
 	protected $testProfileType;
 
@@ -110,7 +115,7 @@ class VenueTest extends GigHubTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $venue->getVenueProfileId());
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
@@ -141,18 +146,18 @@ class VenueTest extends GigHubTest {
 		$venue->insert($this->getPDO());
 
 		// edit the Venue and update it in mySQL
-		$venue->setVenueName($this->VALID_VENUENAME);
-		$venue->setVenueStreet1($this->VALID_VENUESTREET1);
-		$venue->setVenueStreet2($this->VALID_VENUESTREET2);
-		$venue->setVenueCity($this->VALID_VENUECITY);
-		$venue->setVenueName($this->VALID_VENUESTATE);
-		$venue->setVenueName($this->VALID_VENUEZIP);
+		$venue->setVenueName($this->VALID_VENUENAME1);
+		//$venue->setVenueStreet1($this->VALID_VENUESTREET1);
+		//$venue->setVenueStreet2($this->VALID_VENUESTREET2);
+		//$venue->setVenueCity($this->VALID_VENUECITY);
+		//$venue->setVenueState($this->VALID_VENUESTATE);
+		//$venue->setVenueZip($this->VALID_VENUEZIP);
 		$venue->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $venue->getVenueProfileId())	;
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);

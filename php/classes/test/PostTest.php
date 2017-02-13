@@ -1,7 +1,8 @@
 <?php
 namespace Edu\Cnm\GigHub\Post\Test;
 
-use Edu\Cnm\GigHub\{Profile, Post };
+use Edu\Cnm\GigHub\{Profile,Post};
+use Edu\Cnm\Gighub\Test\GigHubTest;
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -80,7 +81,7 @@ class PostTest extends GigHubTest {
 	 */
 	public function testUpdateValidPost() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->retRowCount("post");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
 		$post = new Post(null, $this->profile->getpPostProfileId(), $this->VALID_POSTVENUEID, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTCONTENT, $this->POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
@@ -130,7 +131,7 @@ class PostTest extends GigHubTest {
 
 		// grab the data from mySQL and enforce the Post does not exist
 		$pdoPost = Post::getPostProfilebyPostProfileId($this->getPDO(), $post->getPostProfileId());
-		$this->assertNUll($pdoPost);
+		$this->assertNull($pdoPost);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("post"));
 	}
 

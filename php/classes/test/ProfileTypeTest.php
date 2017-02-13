@@ -18,7 +18,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Profile Type
  * @author Joseph Ramirez <jramirez98@cnm.edu>
  **/
-class ProfileTypeTest extends GigHub {
+class ProfileTypeTest extends GigHubTest {
 	/**
 	 * content of the ProfileType
 	 * @var string $VALID_PROFILETYPECONTENT
@@ -55,7 +55,7 @@ class ProfileTypeTest extends GigHub {
 		$numRows = $this->getConnection()->getRowCount("profileType");
 
 		//grab the data from mySQL and enforce the fields match our expectations
-		$pdoProfileType = ProfileType::getProfileTypebyProfileTypeId($this->getPDO(), $profileType->getProfileTypeId());
+		//$pdoProfileType = ProfileType::getProfileTypebyProfileTypeId($this->getPDO(), $profileType->getProfileTypeId());
 		$this->assertionEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
 		$this->assertionEquals($pdoProfileType->getProfileId(), $this->profile->getProfileId());
 		$this->assertionEquals($pdoProfileType->getProfileId(), $this->profile->getProfileId());

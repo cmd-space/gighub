@@ -90,7 +90,7 @@ class PostTagTest extends GigHubTest {
 		$numRows+ $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert into mySQL
-		$postTag = new PostTag(null, postTag->getProfilId(), $this->VALID_POSTTAG);
+		//$postTag = new PostTag(null, Profile->getProfileId(), $this->VALID_POSTTAG);//
 		$postTag->insert($this->getPDO());
 
 		// edit the PostTag and update it in mySQL
@@ -109,7 +109,7 @@ class PostTagTest extends GigHubTest {
 	 **/
 	public function testUpdateInvalidPostTag() {
 		// create a PostTag, try to update it without actually updating it and watch it fail
-		$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId(),
+		$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId());
 		$postTag->update($this->getPDO());
 	}
 	/**

@@ -1,8 +1,8 @@
 <?php
-namespace Edu\Cnm\Dconley6\GigHub\Test;
+namespace Edu\Cnm\GigHub\Profile\Test;
 
-use Edu\Cnm\Dconley6\GigHub\{
-	Profile, OAuth
+use Edu\Cnm\GigHub\{
+	OAuth, Profile, ProfileType
 };
 use Edu\Cnm\Gighub\Test\GigHubTest;
 
@@ -67,6 +67,11 @@ class VenueTest extends GigHubTest {
 	 * @var string $testOAuth
 	 **/
 	protected $testOAuth;
+	/**
+	 * Profile Type created for unit test
+	 * @var string $testOAuth
+	 **/
+	protected $testProfileType;
 
 
 
@@ -82,6 +87,10 @@ class VenueTest extends GigHubTest {
 		// add missing oAuth variables
 		$this->testOAuth = new OAuth(null, "testOAunthServiceName");
 		$this->testOAuth->insert($this->getPDO());
+
+		// add missing profileType variables
+		$this->testProfileType = new ProfileType(null, "testProfileTypeName");
+		$this->testProfileType->insert($this->getPDO());
 
 		// add missing profile variables
 		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), 1234, "testProfileBio", "testProfileImageCloudinaryId", "testProfileLocation", "testProfileOAuthToken", "testProfileSoundCloudUser", "testProfileUserName");

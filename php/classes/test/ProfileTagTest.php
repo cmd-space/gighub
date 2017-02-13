@@ -68,13 +68,12 @@ class ProfileTagTest extends GigHubTest {
 
 		// create a new ProfileTag and insert to into mySQL
 		$profileTag = new ProfileTag(null, $this->profileTag->getProfileId(), $this->VALID_PROFILETAGTAGID);
-		$profiletag->insert($this->getPDO());
+		$profileTag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
-		$this->assertEquals($pdoTweet->getProfileTagId(), $this->profileTag->getProfileTagId());
-		$this->assertEquals($pdoTweet->getProfileTagProfile(), $this->VALID_PROFILETAGTAG);
+		$this->assertEquals($pdoProfileTag->getProfileTagProfile(), $this->VALID_PROFILETAGTAG);
 
 	}
 

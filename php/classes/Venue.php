@@ -394,7 +394,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "UPDATE venue SET venueProfileId = :venueProfileId, venueName = :venueName, venueStreet1 = :venueStreet1, venueStreet2 = :venueStreet2, venueCity = :venueCity, venueState = :venueState, venueZip = :venueZip WHERE venueId = :venueId";
+		$query = "UPDATE venue SET venueProfileId = :venueProfileId, venueCity = :venueCity, venueName = :venueName, venueState = :venueState, venueStreet1 = :venueStreet1, venueStreet2 = :venueStreet2, venueZip = :venueZip WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template\

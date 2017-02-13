@@ -71,7 +71,7 @@ class TagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("tag");
 
 		// create a new Tag and insert to into mySQL
-		$tag = new Tag(null, $this->profile->getProfileId(), $this->VALID_TAGCONTENT,);
+		$tag = new Tag(null, $this->profile->getProfileId(), $this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -152,7 +152,7 @@ class TagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("tag");
 
 		// create a new Tag and insert to into mySQL
-		$tag = new Tag(null, $this->tag->getTagId(), $this->VALID_TAGCONTENT;
+		$tag = new Tag(null, $this->tag->getTagId(), $this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -162,7 +162,7 @@ class TagTest extends GigHubTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Dconley6\\Gighub\\Test", $results);
 
 		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
+		$pdoTag= $results[0];
 		$this->assertEquals($pdoTag->getTagId(), $this->profile->getTagId());
 		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGCONTENT);
 	}

@@ -173,7 +173,7 @@ class VenueTest extends GigHubTest {
 	 **/
 	public function testUpdateInvalidVenue() {
 		// create a Venue, try to update it without actually updating it and watch it fail
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->update($this->getPDO());
 	}
 
@@ -186,7 +186,7 @@ class VenueTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("venue");
 
 		// create a new Venue and insert to into mySQL
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->insert($this->getPDO());
 
 		// delete the Venue from mySQL
@@ -205,7 +205,7 @@ class VenueTest extends GigHubTest {
 	 * @expectedException PDOException
 	 **/
 	public function testDeleteInvalidVenue() {
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->delete($this->getPDO());
 	}
 
@@ -217,7 +217,7 @@ class VenueTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("venue");
 
 		// create a new Venue and insert to into mySQL
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -228,7 +228,7 @@ class VenueTest extends GigHubTest {
 
 		// grab the result from the array and validate it
 		$pdoVenue = $results[0];
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getProfileId());
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
@@ -254,7 +254,7 @@ class VenueTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("venue");
 
 		// create a new Venue and insert to into mySQL
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -265,7 +265,7 @@ class VenueTest extends GigHubTest {
 
 		// grab the result from the array and validate it
 		$pdoVenue = $results[0];
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getProfileId());
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
@@ -302,7 +302,7 @@ class VenueTest extends GigHubTest {
 
 		// grab the result from the array and validate it
 		$pdoVenue = $results[0];
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getProfileId());
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
@@ -328,7 +328,7 @@ class VenueTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("venue");
 
 		// create a new Venue and insert to into mySQL
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -339,7 +339,7 @@ class VenueTest extends GigHubTest {
 
 		// grab the result from the array and validate it
 		$pdoVenue = $results[0];
-		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getVenueProfileId());
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getProfileId());
 		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
 		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
 		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
@@ -365,7 +365,7 @@ class VenueTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("venue");
 
 		// create a new Venue and insert to into mySQL
-		$venue = new Venue(null, $this->testProfile->getVenueProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUENAME, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUECITY, $this->VALID_VENUESTATE, $this->VALID_VENUEZIP);
 		$venue->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

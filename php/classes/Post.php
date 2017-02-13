@@ -2,7 +2,7 @@
 namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
-
+use ValidateDate;
 /**
  * Post class
  *
@@ -12,7 +12,6 @@ require_once("autoload.php");
  * @version 1.0.0
  */
 class Post implements \JsonSerializable {
-	use ValidateDate;
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId

@@ -1,7 +1,7 @@
 <?php
-namespace Edu\Cnm\Jramirez98\GigHub\Test;
+namespace Edu\Cnm\GigHub\Post\Test;
 
-use Edu\Cnm\jramirez98\GigHub\{Profile, Post };
+use Edu\Cnm\GigHub\{Profile, Post };
 
 // grab the project test parameters
 require_once("GigHubTest.php");

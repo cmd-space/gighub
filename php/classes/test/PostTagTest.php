@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\Gighub\Test;
 
-use Edu\Cnm\Bsteider\Gighub\{Post, Tag};
+use Edu\Cnm\Gighub\{Post, Tag};
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -46,26 +46,21 @@ class PostTagTest extends GigHubTest {
 		// run the default setUp() method first
 		parent::setUp();
 
-		// calculate the data (just use the time the unit test was setup)
-		$this->VALID_PROFILEDATE = new \DateTime();
+		// create and insert an OAuth to own the test ProfileTag
+		$this->oAuth = new OAuth(null, "Mail.ru");
+		$this->oAuth->insert($this->getPDO());
 
-		//create oAuth object
+		// fix tag object, missing state variables
+		$this->tag = new tag(null, "@phpunit", "test@phpunit.de", "121255512120");
+		$this->tag->insert($this->getPDO());
 
-		// fix profile object, missing state variables
-		$this->profile = new Profile(null, "@phpunit", "test@phpunit.de", "121255512120");
-		$this->profile-insert($this->getPDO());
+		//create and insert a Post to own the test
+		$this->tag = new Post(null, "@that one place");
+		$this->tag->insert($this->getPDO());
 
-		//create post object
-
-		//create tag object
-
-
-
-
-
-			/***********************
-			 * do i need the date because the post tag and profile tag classes dont use date?
-			 *************************/
+		// create and insert a Tag to own the test
+		$this->tag = new Tag(null, "sausage");
+		$this->tag->insert($this->getPDO());
 	}
 
 	/**
@@ -76,23 +71,12 @@ class PostTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new post tag and insert into mySQL
-		$postTag = new PostTag(null, $this->profile->getProfileId(), $this->VALID_POSTTAGCONTENT, $this->VALID_POSTTAGDATE)
-			/*****************************
-			 * FER REAL THO DO I NEED THIS DATE STUFF
-			 *
-			 *
-			 *
-			 *
-			 *
-			 *
-			 *
-			 *
-			 *
-			 *****************************/
+		$postTag = new PostTag(null, $this->tag->gettagId(), $this->VALID_POSTTAGTAG);
+			
 			// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPostTag= PostTag::getPostTagbyPostTagId($this->getPDO(), $postTag->getPostTagId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
-		$this->assertEquals($pdoPostTag->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoPostTag->gettagId(), $this->postTag->getPostTagId());
 		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGTAGID);
 	}
 
@@ -106,17 +90,7 @@ class PostTagTest extends GigHubTest {
 		$numRows+ $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert into mySQL
-		$postTag = new PostTag(null, $profile->getProfilId(), $this->VALID_POSTTAG);
-		/******************DO
-		 * i
-		 * USE
-		 * PROFILE
-		 * SINCE
-		 * IM JUST
-		 * USING TAGS
-		 * OR
-		 * NAH
-		 **/
+		$postTag = new PostTag(null, postTag->getProfilId(), $this->VALID_POSTTAG);
 		$postTag->insert($this->getPDO());
 
 		// edit the PostTag and update it in mySQL
@@ -188,8 +162,8 @@ class PostTagTest extends GigHubTest {
 
 		// grab the result from the array and validate it
 		$pdoPostTag = $results[0];
-		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->profile->getPostTagProfileId());
-		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGCONTENT);
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->postTag->getPostTagtagId());
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGTAG);
 	}
 	/**
 	 * test grabbing a PostTag by content that does not exist

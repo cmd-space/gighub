@@ -96,11 +96,11 @@ class ProfileTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
 		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
+		$profileTag = new ProfileTag(null, $this->PpofileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
 		$profileTag->insert($this->getPDO());
 
 		// edit the ProfileTag and update it in mySQL
-		$ProfileTag->setProfileTagTagId($this->VALID_PROFILETAGPROFILEID);
+		$profileTag->setProfileTagTagId($this->VALID_PROFILETAGPROFILEID);
 		$profileTag->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -138,7 +138,7 @@ class ProfileTagTest extends GigHubTest {
 		$profileTag->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the ProfileTag does not exist
-		$pdoTweet = ProfileTag::getTweetByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
+		$pdoProfileTag = ProfileTag::getTweetByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
 		$this->assertNull($pdoProfileTag);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profileTag"));
 	}

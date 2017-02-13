@@ -393,7 +393,7 @@ class Venue implements \JsonSerializable {
 			throw(new \PDOException("unable to update a venue that does not exist"));
 		}
 
-		// create query template
+		// create query template h
 		$query = "UPDATE venue SET venueProfileId = :venueProfileId, venueCity = :venueCity, venueName = :venueName, venueState = :venueState, venueStreet1 = :venueStreet1, venueStreet2 = :venueStreet2, venueZip = :venueZip WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 

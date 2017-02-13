@@ -1,10 +1,9 @@
 <?php
-namespace Edu\Cnm\GigHub\Profile\Test;
+namespace Edu\Cnm\GigHub\Test;
 
 use Edu\Cnm\GigHub\{
 	OAuth, ProfileType, Profile
 };
-use Edu\Cnm\Gighub\Test\GigHubTest;
 
 // grab the project test parameters
 require_once("GigHubTest.php");

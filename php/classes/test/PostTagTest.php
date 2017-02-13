@@ -120,7 +120,7 @@ class PostTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert to into mySQL
-		$postTag = new postTag(null, $this->postTagTagId->getPostTagTagId(),
+		$postTag = new postTag(null, $this->postTagTagId->getPostTagTagId());
 		$postTag->insert($this->getPDO());
 
 		// delete the PostTag from mySQL

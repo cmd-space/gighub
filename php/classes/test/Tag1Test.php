@@ -28,20 +28,40 @@ class TagTest extends GigHubTest {
 	 * @var string $VALID_TAGCONTENT
 	 **/
 	protected $VALID_TAGCONTENT = "Yup. It's a Tag!";
+	/**
+	 * profile created to use with unit test.
+	 * @var string $testProfile
+	 **/
+	protected $testProfile;
+	/**
+	 * OAuth created for unit test
+	 * @var string $testOAuth
+	 **/
+	protected $testOAuth;
+	/**
+	 * Profile Type created for unit test
+	 * @var string $testOAuth
+	 **/
+	protected $testProfileType;
 
 	/**
 	 * create dependent objects before running each test
 	 **/
-
-	public
-
-	final function setUp() {
+	public final function setUp() {
 		// run the default setUp() method first
 		parent::setUp();
 
-		// create and insert a Profile to own the test Tag
-		$this->Tag = new Profile(null, "@phpunit", "test@phpunit.de", "+12125551212");
-		$this->profile->insert($this->getPDO());
+		// add missing oAuth variables
+		$this->testOAuth = new OAuth(null, "testOAunthServiceName");
+		$this->testOAuth->insert($this->getPDO());
+
+		// add missing profileType variables
+		$this->testProfileType = new ProfileType(null, "testProfileTypeName");
+		$this->testProfileType->insert($this->getPDO());
+
+		// add missing profile variables
+		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), 1234, "testProfileBio", "testProfileImageCloudinaryId", "testProfileLocation", "testProfileOAuthToken", "testProfileSoundCloudUser", "testProfileUserName");
+		$this->testProfile->insert($this->getPDO());
 	}
 
 	/**

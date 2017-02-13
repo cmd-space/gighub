@@ -440,7 +440,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueStreet1, venueStreet2, VvenueCity, VenueState, venueZip FROM venue WHERE venueId = :venueId";
+		$query = "SELECT venueId, venueProfileId, venueStreet1, venueStreet2, venueCity, venueState, venueZip FROM venue WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue id to the place holder in the template

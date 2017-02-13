@@ -50,12 +50,12 @@ class VenueTest extends GigHubTest {
 	 * content of the updated Venue
 	 * @var string $VALID_VENUESTATE
 	 **/
-	protected $VALID_VENUESTATE = "New Mexiwhere?";
+	protected $VALID_VENUESTATE = "NM";
 	/**
 	 * content of the updated Venue
 	 * @var string $VALID_VENUEZIP
 	 **/
-	protected $VALID_VENUEZIP = "Its a zip code. Nothing witty to see here.";
+	protected $VALID_VENUEZIP = "87110";
 	/**
 	 * profile created to use with unit test.
 	 * @var string $testProfile

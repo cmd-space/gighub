@@ -18,7 +18,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Profile Type
  * @author Joseph Ramirez <jramirez98@cnm.edu>
  **/
-class ProfileTypeTest extends GigHub {
+class ProfileTypeTest extends GigHubTest {
 	/**
 	 * content of the ProfileType
 	 * @var string $VALID_PROFILETYPECONTENT

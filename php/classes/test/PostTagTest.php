@@ -87,10 +87,10 @@ class PostTagTest extends GigHubTest {
 	 **/
 	public function testUpdateValidPostTag() {
 		// count the number of rows and save it for later
-		$numRows+ $this->getConnection()->getRowCount("postTag");
+		$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert into mySQL
-		$postTag = new PostTag(null, postTag->getProfilId(), $this->VALID_POSTTAG);
+		$postTag = new PostTag( $this->postTag->getPostTagTagId(), $this->postTag->getPostTagPostId());
 		$postTag->insert($this->getPDO());
 
 		// edit the PostTag and update it in mySQL
@@ -109,7 +109,7 @@ class PostTagTest extends GigHubTest {
 	 **/
 	public function testUpdateInvalidPostTag() {
 		// create a PostTag, try to update it without actually updating it and watch it fail
-		$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId(),
+		$postTag = new PostTag( $this->postTag->getPostTagTagId(), $this->postTag->getPostTagPostId());
 		$postTag->update($this->getPDO());
 	}
 	/**
@@ -120,7 +120,7 @@ class PostTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert to into mySQL
-		$postTag = new postTag(null, $this->postTagTagId->getPostTagTagId(),
+		$postTag = new PostTag( $this->postTag->getPostTagTagId(), $this->postTag->getPostTagPostId());
 		$postTag->insert($this->getPDO());
 
 		// delete the PostTag from mySQL
@@ -171,7 +171,7 @@ class PostTagTest extends GigHubTest {
 	public function testGetInvalidPostTagByPostTagTagId() {
 		// grab a postTag by searching for content that does not exist
 		$postTag = PostTag::getPostTagByPostTagTagId($this->getPDO(), "you will find nothing");
-		$this->assertCount(0, $PostTag);
+		$this->assertCount(0, $postTag);
 	}
 	/**
 	 * test grabbing all PostTags

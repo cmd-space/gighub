@@ -72,7 +72,7 @@ class Venue implements \JsonSerializable {
 	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueName, string $newVenueStreet1, string $newVenueStreet2, string $newVenueCity, string $newVenueState, string $newVenueZip) {
 		try {
 			$this->setVenueId($newVenueId);
-			$this->setVenueProfileId($newVenueId);
+			$this->setVenueProfileId($newVenueProfileId);
 			$this->setVenueName($newVenueName);
 			$this->setVenueStreet1($newVenueStreet1);
 			$this->setVenueStreet2($newVenueStreet2);
@@ -393,8 +393,8 @@ class Venue implements \JsonSerializable {
 			throw(new \PDOException("unable to update a venue that does not exist"));
 		}
 
-		// create query template
-		$query = "UPDATE venue SET venueProfileId = :venueProfileId, venueName = :venueName, venueStreet1 = :venueStreet1, venueStreet2 = :venueStreet2, venueCity = :venueCity, venueState = :venueState, venueZip = venueZip WHERE venueId = :venueId";
+		// create query template h
+		$query = "UPDATE venue SET venueProfileId = :venueProfileId, venueCity = :venueCity, venueName = :venueName, venueState = :venueState, venueStreet1 = :venueStreet1, venueStreet2 = :venueStreet2, venueZip = :venueZip WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template\
@@ -440,7 +440,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueStreet1, venueStreet2, VvenueCity, VenueState, venueZip FROM venue WHERE venueId = :venueId";
+		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueState, venueZip FROM venue WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue id to the place holder in the template

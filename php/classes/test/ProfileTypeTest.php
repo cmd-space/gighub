@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\GigHub\Test;
 
-use Edu\Cnm\GigHub\{Profile, ProfileType };
+use Edu\Cnm\GigHub\{Profile, ProfileType, OAuth};
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -38,9 +38,9 @@ class ProfileTypeTest extends GigHubTest {
 	/**
 	 * create dependent objects before running each test
 	 */
-	public final function setup() {
+	public final function setUp() {
 		// run the default setup() method first
-		parent::setup();
+		parent::setUp();
 
 		// create and insert a profile to own the test Profile Type
 		$this->profile = new Profile(null, "@redun", "redundent@Redundent.de", "73386338");
@@ -55,7 +55,7 @@ class ProfileTypeTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileType");
 
 		//grab the data from mySQL and enforce the fields match our expectations
-		$pdoProfileType = profileType::getProfileTypebyProfileTypeId($this->getPDO(), $profileType->getProfileTypeId());
+		//$pdoProfileType = ProfileType::getProfileTypebyProfileTypeId($this->getPDO(), $profileType->getProfileTypeId());
 		$this->assertionEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
 		$this->assertionEquals($pdoProfileType->getProfileId(), $this->profile->getProfileId());
 		$this->assertionEquals($pdoProfileType->getProfileId(), $this->profile->getProfileId());

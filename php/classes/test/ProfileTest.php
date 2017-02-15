@@ -216,7 +216,17 @@ class ProfileTest extends GigHubTest {
 	 * @expectedException RangeException
 	 */
 	public function testInsertInvalidProfileTypeId() {
-		$profile = new Profile(-1, $this->oAuth->getOAuthId(), -1, $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), -1, $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid/empty profile bio
+	 *
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testInsertEmptyProfileBio() {
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "", $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 	}
 

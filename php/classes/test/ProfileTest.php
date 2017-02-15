@@ -231,6 +231,19 @@ class ProfileTest extends GigHubTest {
 	}
 
 	/**
+	 * test inserting super duper long profile bio
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertLongProfileBio() {
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "Spicy jalapeno bacon ipsum dolor amet shankle ham turducken drumstick, spare ribs bresaola sirloin shoulder ribeye shank rump meatloaf meatball. Chuck venison biltong andouille porchetta. Ground round pork loin strip steak tail jerky bresaola pork brisket landjaeger prosciutto shoulder filet mignon leberkas fatback. Frankfurter brisket meatball picanha short loin ham pork chop. Chicken pork belly capicola short ribs kielbasa porchetta.
+Flank short ribs bresaola biltong short loin cow ribeye t-bone capicola pastrami corned beef pork belly strip steak chicken turducken. Kevin swine meatball leberkas, bacon pork loin tongue landjaeger strip steak corned beef tail prosciutto turducken biltong shankle. Kevin jerky bresaola, jowl prosciutto boudin frankfurter landjaeger. Frankfurter fatback turducken short loin. Turducken drumstick shank, rump prosciutto bresaola venison. Shankle swine t-bone meatball tri-tip short loin shoulder meatloaf pork chop kevin beef ribs sirloin tongue. Shank ham hock jowl corned beef pork loin meatloaf.
+Pork belly chuck pork beef shoulder filet mignon tenderloin doner spare ribs beef ribs hamburger ball tip porchetta tongue. Pig hamburger sirloin, doner salami flank t-bone tongue shank drumstick kielbasa venison. Sirloin bresaola tenderloin fatback. Jerky porchetta corned beef burgdoggen pig, filet mignon pastrami prosciutto pancetta.
+Burgdoggen drumstick brisket, porchetta kielbasa leberkas swine pig. Ball tip pig ribeye t-bone pancetta fatback, porchetta capicola. Ham picanha doner pastrami. Shoulder alcatra strip steak brisket ham short loin filet mignon ground round. Short ribs hamburger meatball venison, corned beef porchetta biltong sausage turkey fatback picanha pork chop tail.", $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
 	 * test grabbing a Profile by profile user name
 	 **/
 	public function testGetValidProfileByProfileUserName() {

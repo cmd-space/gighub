@@ -152,6 +152,7 @@ class VenueTest extends GigHubTest {
 		//$venue->setVenueCity($this->VALID_VENUECITY);
 		//$venue->setVenueState($this->VALID_VENUESTATE);
 		//$venue->setVenueZip($this->VALID_VENUEZIP);
+		var_dump($venue);
 		$venue->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

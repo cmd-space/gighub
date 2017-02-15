@@ -313,7 +313,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// verify the venue state content will fit into the database
-		if(strlen($newVenueState) > 2) {
+		if(strlen($newVenueState) !== 2) {
 			throw(new \RangeException("venue state content too large"));
 		}
 
@@ -373,7 +373,7 @@ class Venue implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+		$parameters = ["venueId" => $this->venueId, "venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 
 		// update the null venueId with what mySQL just gave us
@@ -398,7 +398,7 @@ class Venue implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template\
-		$parameters = ["venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+		$parameters = ["venueProfileId" => $this->venueProfileId,  "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 	}
 
@@ -453,7 +453,7 @@ class Venue implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -493,7 +493,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {
@@ -535,7 +535,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {
@@ -577,7 +577,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {
@@ -619,7 +619,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {

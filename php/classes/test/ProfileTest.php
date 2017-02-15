@@ -190,6 +190,37 @@ class ProfileTest extends GigHubTest {
 	}
 
 	/**
+	 * test inserting a profile with a negative primary key
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertInvalidProfileId() {
+		// create a Profile with a negative primary key and insert that ish
+		$profile = new Profile(-1, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid OAuthId
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertInvalidProfileOAuthId() {
+		$profile = new Profile(null, -1, $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid profile type id
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertInvalidProfileTypeId() {
+		$profile = new Profile(-1, $this->oAuth->getOAuthId(), -1, $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
 	 * test grabbing a Profile by profile user name
 	 **/
 	public function testGetValidProfileByProfileUserName() {

@@ -303,8 +303,44 @@ class ProfileTest extends GigHubTest {
 	public function testGetInvalidProfileBySoundCloudUser() {
 		// grab a profile by searching for SoundCloud user that does not exist
 		$profile = Profile::getProfileBySoundCloudUser($this->getPDO(), "Engelbert Humperdink");
-		var_dump($profile);
 		$this->assertCount(0, $profile);
 	}
 
+	/**
+	 * test grabbing a Profile by profile type id
+	 */
+	public function testGetValidProfileByProfileTypeId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount('profile');
+
+		// create a new Profile and insert it into mySQL
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce that fields match expectations
+		$results = Profile::getProfileByProfileTypeId($this->getPDO(), $profile->getProfileTypeId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Profile", $results);
+
+		// grab the result from the array and validate it
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
+		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
+		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
+		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test grabbing a Profile by profile type id that does not exist
+	 */
+	public function testGetInvalidProfileByProfileTypeId() {
+		// grab a profile by searching for SoundCloud user that does not exist
+		$profile = Profile::getProfileByProfileTypeId($this->getPDO(), 60000000);
+		$this->assertCount(0, $profile);
+	}
 }

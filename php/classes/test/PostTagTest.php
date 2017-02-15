@@ -1,7 +1,9 @@
 <?php
 namespace Edu\Cnm\Gighub\Test;
 
+use Edu\Cnm\GigHub\OAuth;
 use Edu\Cnm\Gighub\{Post, Tag};
+use Edu\Cnm\GigHub\ProfileType;
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -36,31 +38,90 @@ class PostTagTest extends GigHubTest {
 	protected $VALID_POSTTAGTAGID = null;
 	/**
 	 * id of the post tag post id
-	 * @var string $VALID_POSTTAGPOSTID
+	 * @var Post
 	 **/
-	protected $VALID_POSTTAGPOSTID = null;
+	private $post = null;
 	/**
-	 * create dependent objects before running each test
+	 * create dependent objects before running each  test
+	 * @var OAuth
 	 **/
+	private $OAuth = null;
+
+	/**
+	 * create dependent objects to own the test
+	 * @var ProfileType
+	 **/
+	 private $profileType = null;
+
+	/**
+	 * create dependent objects to own the test
+	 * @var Profile
+	 **/
+	private $profile = null;
+
+	/**
+	 * create dependent objects
+	 * @var venue
+	 **/
+	private $venue = null;
+
+	/**
+	 * create object
+	 * @var profile tag
+	 **/
+	private $profileTag = null;
+
+	/**
+	 * create date
+	 * @var VALID_DATE
+	 **/
+	protected $VALID_DATE = null;
+
+	/**
+	 * create date
+	 * @var VALID_DATE2
+	 **/
+	protected $VALID_DATE2 = null;
+
+
 	public final function setUp() {
 		// run the default setUp() method first
 		parent::setUp();
 
 		// create and insert an OAuth to own the test ProfileTag
-		$this->oAuth = new OAuth(null, "Mail.ru");
-		$this->oAuth->insert($this->getPDO());
+		$this->OAuth = new OAuth(null, "Mail.ru");
+		$this->OAuth->insert($this->getPDO());
 
-		// fix tag object, missing state variables
-		$this->tag = new tag(null, "@phpunit", "test@phpunit.de", "121255512120");
-		$this->tag->insert($this->getPDO());
+		// create and insert a Profile
+		$this->profile = new Profile(null, "yep");
+		$this->profile->insert($this->getPDO());
 
+		// create and insert a venue
+		$this->venue = new Venue(null, "yah");
+		$this->venue->insert($this->getPDO());
+
+		// create dependent profile type
+		$this->profileType = new ProfileType(null, "venue");
+		$this->profileType->insert($this->getPDO());
+
+		/** create profile tag
+		$this->profileTag = new ProfileTag(	$this->profileTagProfileId->
+	profileTagTagId,
+		$this->profileTag->insert($this->getPDO());
+		**/
 		//create and insert a Post to own the test
-		$this->tag = new Post(null, "@that one place");
-		$this->tag->insert($this->getPDO());
+		$this->post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), "cockcontent", VALID_DATE, VALID_DATE2, "you can do whatever fam", "postTitle");
+		$this->post->insert($this->getPDO());
 
 		// create and insert a Tag to own the test
 		$this->tag = new Tag(null, "sausage");
 		$this->tag->insert($this->getPDO());
+
+		// calculate the date (just use the time the unit test was setup...)
+
+		$this->VALID_DATE = new \DateTime();
+		$this->VALID_DATE2 = new \DateTime();
+
 	}
 
 	/**
@@ -87,10 +148,10 @@ class PostTagTest extends GigHubTest {
 	 **/
 	public function testUpdateValidPostTag() {
 		// count the number of rows and save it for later
-		$numRows+ $this->getConnection()->getRowCount("postTag");
+		$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert into mySQL
-		//$postTag = new PostTag(null, Profile->getProfileId(), $this->VALID_POSTTAG);//
+		$postTag = new PostTag($this->postTag->getPostTagPostId(), $this->postTag->getPostTagId());
 		$postTag->insert($this->getPDO());
 
 		// edit the PostTag and update it in mySQL
@@ -171,7 +232,7 @@ class PostTagTest extends GigHubTest {
 	public function testGetInvalidPostTagByPostTagTagId() {
 		// grab a postTag by searching for content that does not exist
 		$postTag = PostTag::getPostTagByPostTagTagId($this->getPDO(), "you will find nothing");
-		$this->assertCount(0, $PostTag);
+		$this->assertCount(0, $postTag);
 	}
 	/**
 	 * test grabbing all PostTags

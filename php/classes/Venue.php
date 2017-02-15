@@ -398,7 +398,7 @@ class Venue implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template\
-		$parameters = ["venueProfileId" => $this->venueProfileId,  "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
+		$parameters = ["venueId" => $this->venueId, "venueProfileId" => $this->venueProfileId,  "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 	}
 

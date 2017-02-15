@@ -278,7 +278,14 @@ class ProfileTest extends GigHubTest {
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce that fields match expectations
-		$pdoProfile = Profile::getProfileBySoundCloudUser($this->getPDO(), $profile->getProfileSoundCloudUser());
+		$results = Profile::getProfileBySoundCloudUser($this->getPDO(), $profile->getProfileSoundCloudUser());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Profile", $results);
+
+		// grab the result from the array and validate it
+		$pdoProfile = $results[0];
+//		$pdoProfile = Profile::getProfileBySoundCloudUser($this->getPDO(), $profile->getProfileSoundCloudUser());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
 		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
@@ -296,6 +303,7 @@ class ProfileTest extends GigHubTest {
 	public function testGetInvalidProfileBySoundCloudUser() {
 		// grab a profile by searching for SoundCloud user that does not exist
 		$profile = Profile::getProfileBySoundCloudUser($this->getPDO(), "Engelbert Humperdink");
+		var_dump($profile);
 		$this->assertCount(0, $profile);
 	}
 

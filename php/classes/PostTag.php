@@ -22,10 +22,15 @@ class PostTag implements \JsonSerializable {
 	private $postTagPostId;
 
 	/**
-	 * FIXME: update this docblock for the constructor
-	 * actual textual content of this postTag
-	 * @var int $postTagPostId
+	 * Constructor for class PostTag
+	 * @param int $newPostTagPostId new value of post tag post Id
+	 * @param int $newPostTagTagId new value of the tag id assigned to this postTag
+	 * @throws \InvalidArgumentException if the data types are not valid
+	 * @throws \RangeException if data values are not positive
+	 * @throws \TypeError if the data entered is the incorrect type
+	 * @throws \Exception if any other type of errors occur
 	 **/
+
 	public function __construct(int $newPostTagTagId, int $newPostTagPostId) {
 		try {
 			$this->setPostTagTagId($newPostTagTagId);
@@ -170,7 +175,10 @@ class PostTag implements \JsonSerializable {
 			throw(new \PDOException("post tag post id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postTagTagId, postTagPostid FROM 'tag' WHERE postTagTagId = :postTagTagId AND profileTagPostId = :postTagPostId";
+		$query = "SELECT postTagTagId, postTagPostid FROM 'tag' WHERE postTagTagId = :postTagTagId AND postTagPostId = :postTagPostId";
+		$statement = $pdo->prepare($query);
+
+		$parameters = ["postTagTagId" => $postTagTagId];
 		$statement->execute($parameters);
 		// grab the tag from mySQL
 		try {
@@ -223,7 +231,7 @@ class PostTag implements \JsonSerializable {
 		return ($postTags);
 	}
 
-	public static function getPostTagByPostId(\PDO $pdo, int $postTagByPostId) {
+	public static function getPostTagByPostId(\PDO $pdo, int $postTagPostId) {
 		//sanitize the post id
 		if($postTagPostId < 0) {
 			throw (new \PDOException("post id is not positive"));
@@ -271,6 +279,6 @@ class PostTag implements \JsonSerializable {
 		return ($fields);
 	}
 		// TODO: Implement jsonSerialize() method.
-	}
+
 }
 

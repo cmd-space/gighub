@@ -23,10 +23,20 @@ class Venue implements \JsonSerializable {
 	 **/
 	private $venueProfileId;
 	/**
+	 * the city in which the venue is located
+	 * @var string $venueCity
+	 **/
+	private $venueCity;
+	/**
 	 * the name of the venue
 	 * @var string $venueName
 	 **/
 	private $venueName;
+	/**
+	 * state in which the venue is located
+	 * @var string $venueState
+	 **/
+	private $venueState;
 	/**
 	 * the first street address of the venue
 	 * @var string $venueStreet1
@@ -38,16 +48,6 @@ class Venue implements \JsonSerializable {
 	 **/
 	private $venueStreet2;
 	/**
-	 * the city in which the venue is located
-	 * @var string $venueCity
-	 **/
-	private $venueCity;
-	/**
-	 * state in which the venue is located
-	 * @var string $venueState
-	 **/
-	private $venueState;
-	/**
 	 * zip code in which venue is located
 	 * @var string $venueZip
 	 **/
@@ -58,26 +58,26 @@ class Venue implements \JsonSerializable {
 	 *
 	 * @param int|null $newVenueId id of this venue or null if a new venue
 	 * @param int $newVenueProfileId id of the profile who owns this venue
+	 * @param string $newVenueCity string containing the city in which the venue is located
 	 * @param string $newVenueName string containing the venue name
+	 * @param string $newVenueState string containing the state in which the venue is located
 	 * @param string $newVenueStreet1 string containing the first line of the street address
 	 * @param string $newVenueStreet2 string containing the second line of a street address (if any)
-	 * @param string $newVenueCity string containing the city in which the venue is located
-	 * @param string $newVenueState string containing the state in which the venue is located
 	 * @param string $newVenueZip string containing the zip code in which the venue is located
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (eg strings too long, negative integers)
 	 * @throws \TypeError if data types violate hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueName, string $newVenueStreet1, string $newVenueStreet2, string $newVenueCity, string $newVenueState, string $newVenueZip) {
+	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueCity, string $newVenueName, string $newVenueState, string $newVenueStreet1, string $newVenueStreet2, string $newVenueZip) {
 		try {
 			$this->setVenueId($newVenueId);
 			$this->setVenueProfileId($newVenueProfileId);
+			$this->setVenueCity($newVenueCity);
 			$this->setVenueName($newVenueName);
+			$this->setVenueState($newVenueState);
 			$this->setVenueStreet1($newVenueStreet1);
 			$this->setVenueStreet2($newVenueStreet2);
-			$this->setVenueCity($newVenueCity);
-			$this->setVenueState($newVenueState);
 			$this->setVenueZip($newVenueZip);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller

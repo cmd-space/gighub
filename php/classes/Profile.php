@@ -526,20 +526,20 @@ class Profile implements \JsonSerializable {
 
 		// grab the profile from mySQL
 		try {
-//			$profile = null;
-			$profiles = new \SplFixedArray($statement->rowCount());
+			$profile = null;
+//			$profiles = new \SplFixedArray($statement->rowCount());
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
-				$profiles[$profiles->key()] = $profile;
-				$profiles->next();
+//				$profiles[$profiles->key()] = $profile;
+//				$profiles->next();
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($profiles);
+		return($profile);
 	}
 
 	/**

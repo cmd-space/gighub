@@ -137,17 +137,17 @@ class Venue implements \JsonSerializable {
 	/**
 	 * mutator method for venue profile id
 	 *
-	 * @param int $newVenueProfileId
+	 * @param int|null $newVenueProfileId
 	 * @throws \RangeException if $newVenueProfileId is not positive
 	 * @throws \TypeError if $newVenueId is not an integer
 	 **/
-	public function setVenueProfileId(int $newVenueProfileId) {
+	public function setVenueProfileId(int $newVenueProfileId = null) {
 		// verify the new profile id is positive
 		if($newVenueProfileId <= 0) {
 			throw(new \RangeException("venue profile id is not positive"));
 		}
-		if($newVenueProfileId !== null) {
-			throw(new \InvalidArgumentException("venue profile id is null"));
+		if($newVenueProfileId === null) {
+			throw(new \InvalidArgumentException("venue profile id is not null"));
 		}
 
 		// convert and store the profile id

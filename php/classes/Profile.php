@@ -72,7 +72,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (i.e. strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
-	 * @throws \Error if some other exception occurs
+	 * @throws \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newProfileId = null, int $newProfileOAuthId, int $newProfileTypeId, string $newProfileBio, string $newProfileImageCloudinaryId, string $newProfileLocation, string $newProfileOAuthToken, string $newProfileSoundCloudUser, string $newProfileUserName) {
 		try {
@@ -96,7 +96,7 @@ class Profile implements \JsonSerializable {
 			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
 		} catch(\Exception $exception) {
 			// rethrow the exception to the caller
-			throw(new \Error($exception->getMessage(), 0, $exception));
+			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
 

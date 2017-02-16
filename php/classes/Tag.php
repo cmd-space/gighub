@@ -237,20 +237,20 @@ class Tag implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		// build an array of tweets
-		$tag = new \SplFixedArray($statement->rowCount());
+		// build an array of tags
+		$tags = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$tag = new Tag($row["tagId"], $row["tagContent"]);
-				$tag[$tag->key()] = $tag;
-				$tag->next();
+				$tags[$tags->key()] = $tag;
+				$tags->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($tag;
+		return ($tags);
 	}
 	/**
 	 * formats the state variables for JSON serialization

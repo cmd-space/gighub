@@ -374,10 +374,8 @@ class Venue implements \JsonSerializable {
 		$query = "INSERT INTO venue(venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip) VALUES(:venueProfileId, :venueCity, :venueName, :venueState, :venueStreet1, :venueStreet2, :venueZip)";
 		$statement = $pdo->prepare($query);
 
-// TODO put shit in the orders
-
 		// bind the member variables to the place holders in the template
-		$parameters = ["venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+		$parameters = ["venueProfileId" => $this->venueProfileId, "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 
 		// update the null venueId with what mySQL just gave us

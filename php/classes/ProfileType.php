@@ -34,9 +34,9 @@ class ProfileType implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newProfileTypeID = null, string $newProfileTypeName) {
+	public function __construct(int $newProfileTypeId = null, string $newProfileTypeName) {
 		try {
-			$this->setProfileTypeId($newProfileTypeID);
+			$this->setProfileTypeId($newProfileTypeId);
 			$this->setProfileTypeName($newProfileTypeName);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the caller
@@ -121,7 +121,7 @@ class ProfileType implements \JsonSerializable {
 	 **/
 	public function insert (\PDO $pdo) {
 		//enforce the profileTypeId is null (i.e., don't insert a profileType that already exists)
-		if($this->profileTypeId != null) {
+		if($this->profileTypeId !== null) {
 			throw(new \PDOException("this ain't a fresh profile type!"));
 		}
 
@@ -155,7 +155,7 @@ class ProfileType implements \JsonSerializable {
 			$statement = $pdo->prepare($query);
 
 			//bind the member to the placeholders in the template
-		$parameters = ["profileTypeId" => $this -> profileTypeId, "profileTypeName" => $this -> profileTypeName];
+		$parameters = ["profileTypeId" => $this->profileTypeId, "profileTypeName" => $this->profileTypeName];
 		$statement->execute($parameters);
 		}
 
@@ -175,7 +175,7 @@ class ProfileType implements \JsonSerializable {
 }
 
 // create query template
-		$query = "SELECT profileId, profileTypeId, profileTypeName FROM profile WHERE profileId = :profileId";
+		$query = "SELECT profileTypeId, profileTypeName FROM profileType WHERE profileTypeId = :profileTypeId";
 	$statement = $pdo = $pdo->prepare($query);
 
 	// bind the profile type id to the place holder in the template
@@ -187,7 +187,7 @@ class ProfileType implements \JsonSerializable {
 				$profileType = null;
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				$row = $statement->fetch(); {
-					$profileType = new ProfileType($row["profileId"], $row["profileTypeId"], $row["profileTypeName"]);
+					$profileType = new ProfileType($row["profileTypeId"], $row["profileTypeName"]);
 			}
 		}catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -195,7 +195,7 @@ class ProfileType implements \JsonSerializable {
 		}
 		return($profileType);
 }
-
+// TODO: create two more methods, get profile types by profile type name, and get all profile types C:
 	/**
 	 * formats the state variables for JSON serialization
 	 *

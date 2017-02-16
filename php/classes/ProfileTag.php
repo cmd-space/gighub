@@ -70,11 +70,11 @@ class ProfileTag implements \JsonSerializable {
 	 * @throws \TypeError if $newProfileTagTagId is not an integer
 	 **/
 	public function setProfileTagTagId(int $newProfileTagTagId) {
-		// verify the post tag tag id is positive
+		// verify the profile tag tag id is positive
 		if($newProfileTagTagId <= 0) {
-			throw(new \RangeException("post tag tag id is not positive"));
+			throw(new \RangeException("profile tag tag id is not positive"));
 		}
-		// convert and store the post tag tag id
+		// convert and store the profile tag tag id
 		$this->profileTagTagId = $newProfileTagTagId;
 	}
 
@@ -90,16 +90,16 @@ class ProfileTag implements \JsonSerializable {
 	/**
 	 * mutator method for Profile tag Profile id
 	 *
-	 * @param int $newProfileTagProfileId new value of post tag post id
+	 * @param int $newProfileTagProfileId new value of profile tag profile id
 	 * @throws \RangeException if $newProfileTagProfileId is not positive
 	 * @throws \TypeError if $newProfileTagProfileId is not an integer
 	 **/
 	public function setProfileTagProfileId(int $newProfileTagProfileId) {
-		// verify the post tag post id is positive
+		// verify the profile tag profile id is positive
 		if($newProfileTagProfileId <= 0) {
-			throw(new \RangeException("profile tag post id is not positive"));
+			throw(new \RangeException("profile tag profile id is not positive"));
 		}
-		// convert and store the post tag post id
+		// convert and store the profile tag profile id
 		$this->profileTagProfileId = $newProfileTagProfileId;
 	}
 	/**
@@ -134,7 +134,7 @@ class ProfileTag implements \JsonSerializable {
 	}
 
 	/**
-	 * deletes this post tag from mySQL
+	 * deletes this profile tag from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -142,118 +142,118 @@ class ProfileTag implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo) {
 		// ensure the object exists before deleting
-		if($this->postTagTagId === null || $this->postTagPostId === null) {
-			throw(new \PDOException("not a valid postTag"));
+		if($this->profileTagTagId === null || $this->profileTagProfileId === null) {
+			throw(new \PDOException("not a valid profileTag"));
 		}
 
 		// create query template
-		$query = "DELETE FROM `postTag` WHERE postTagTagId = :postTagTagId AND PostTagPostId = :postTagPostId";
+		$query = "DELETE FROM `profileTag` WHERE profileTagTagId = :profileTagTagId AND ProfileITagProfileIId = :profileTagProfileIId";
 		$statement = $pdo->prepare($query);
 
-		// bind the member variables to the place hodlers in the template
-		$parameters = ["postTagTagId" => $this->postTagTagId, "postTagPostId" => $this->postTagTagId];
+		// bind the member variables to the place holders in the template
+		$parameters = ["profileTagTagId" => $this->profileTagTagId, "profileTagProfileIId" => $this->profileTagTagId];
 		$statement->execute($parameters);
 	}
 
 	/**
-	 * gets the post tag by tag id
+	 * gets the profile tag by tag id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $postTagTagId tag id to search for
-	 * @param int $postTagPostId tat id to search for
-	 * @return PostTag|null Tag found or null if not found
+	 * @param int $profileTagTagId tag id to search for
+	 * @param int $profileTagPostId tat id to search for
+	 * @return $profileITag|null Tag found or null if not found
 	 **/
-	/* FIXME: this method needs to be renamed getPostTagByPostTagTagIdAndPostTagPostId(), */
+	/* FIXME: this method needs to be renamed getProfileITagByProfileITagTagIdAndProfileITagProfileIId(), */
 	/* is this gucci?*/
 
-	public static function getPostTagByPostTagTagIdAndPostTagPostId(\PDO $pdo, int $postTagTagId, int $postTagPostId) {
-		// sanitize the post tag id and post tag id before searching
-		if($postTagTagId <= 0) {
-			throw(new \PDOException("post tag tag id is not positive"));
+	public static function getProfileITagByProfileITagTagIdAndProfileITagProfileIId(\PDO $pdo, int $profileTagTagId, int $profileTagProfileIId) {
+		// sanitize the profile tag id and profile tag id before searching
+		if($profileTagTagId <= 0) {
+			throw(new \PDOException("profile tag tag id is not positive"));
 		}
-		if($postTagPostId <= 0) {
-			throw(new \PDOException("post tag post id is not positive"));
+		if($profileTagProfileIId <= 0) {
+			throw(new \PDOException("profile tag profile id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagTagId = :postTagTagId AND postTagPostId = :postTagPostId";
+		$query = "SELECT profileTagProfileIId, profileTagTagId FROM profileTag WHERE profileTagTagId = :profileTagTagId AND profileTagProfileIId = :profileTagProfileIId";
 //		$statement->execute($parameters);
 		$statement = $pdo->prepare($query);
 		// grab the tag from mySQL
 		try {
-			$postTag = null;
+			$profileTag = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$postTag = new PostTag($row["postTagTagId"], $row["postTagPostId"]);
+				$profileTag = new ProfileITag($row["profileTagTagId"], $row["profileTagProfileIId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			var_dump($exception->getTrace());
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($postTag);
+		return ($profileTag);
 	}
 
 	/* FIXME: we need 2 more methods:
-	 * - getPostTagsByPostTagTagId() - should return an array of all postTags by tagId
+	 * - getProfileTagsByProfileTagTagId() - should return an array of all profileTags by tagId
 	 * - LOOK AT: getBeerTagByTagId()
 	 *
-	 * - getPostTagsByPostTagPostId() - should return an array of all postTags by postId
+	 * - getProfileTagsByProfileTagProfileId() - should return an array of all profileTags by profileId
 	 * - LOOK AT: getBeerTagByBeerId()
 	 * */
 
-	public static function getPostTagsByPostTagTagId(\PDO $pdo, int $postTagTagId) {
+	public static function getProfileTagsByProfileTagTagId(\PDO $pdo, int $profileTagTagId) {
 		// sanitize the tag id
-		if($postTagTagId < 0) {
+		if($profileTagTagId < 0) {
 			throw(new \PDOException ("Tag Id is not positive"));
 		}
 		//create query template
-		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagTagId = :postTagTagId";
+		$query = "SELECT profileTagProfileId, profileTagTagId FROM profileTag WHERE profileTagTagId = :profileTagTagId";
 		$statement = $pdo->prepare($query);
 		//bind the member variables to the placeholders in the template
-		$parameters = ["postTagTagId" => $postTagTagId];
+		$parameters = ["profileTagTagId" => $profileTagTagId];
 		$statement->execute($parameters);
-		//build an array of post tags
-		$postTags = new \SplFixedArray($statement->rowCount());
+		//build an array of profile tags
+		$profileTags = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$postTag = new PostTag($row["postTagPostId"], $row["postTagTagId"]);
-				$postTags[$postTags->key()] = $postTag;
-				$postTags->next();
+				$profileTag = new ProfileTag($row["profileTagProfileId"], $row["profileTagTagId"]);
+				$profileTags[$profileTags->key()] = $profileTag;
+				$profileTags->next();
 			} catch(\Exception $exception) {
 				//if the row could not be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($postTags);
+		return ($profileTags);
 	}
 
-	public static function getPostTagsByPostTagPostId(\PDO $pdo, int $postTagPostId) {
-		//sanitize the post id
-		if($postTagPostId < 0) {
-			throw (new \PDOException("post id is not positive"));
+	public static function getProfileTagsByProfileTagProfileId(\PDO $pdo, int $profileTagProfileId) {
+		//sanitize the profile id
+		if($profileTagProfileId < 0) {
+			throw (new \PDOException("profile id is not positive"));
 		}
 		//create query template
-		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagPostId = :postTagPostId";
+		$query = "SELECT profileTagProfileId, profileTagTagId FROM profileTag WHERE profileTagProfileId = :profileTagProfileId";
 		$statement = $pdo->prepare($query);
-		//bind the post id to the place holder in the template
-		$parameters = ["postTagPostId" => $postTagPostId];
+		//bind the profile id to the place holder in the template
+		$parameters = ["profileTagProfileId" => $profileTagProfileId];
 		$statement->execute($parameters);
-		//build an array of postTags
-		$postTags = new \SplFixedArray($statement->rowCount());
+		//build an array of profileTags
+		$profileTags = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$postTag = new PostTag($row["postTagPostId"], $row["postTagTagId"]);
-				$postTags[$postTags->key()] = $postTag;
-				$postTags->next();
+				$profileTag = new ProfileTag($row["profileTagProfileId"], $row["profileTagTagId"]);
+				$profileTags[$profileTags->key()] = $profileTag;
+				$profileTags->next();
 			} catch(\Exception $exception) {
 				//if the row cant be converted rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($postTags);
+		return ($profileTags);
 	}
 
 	/* are these groovy?*/

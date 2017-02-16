@@ -198,7 +198,7 @@ class ProfileType implements \JsonSerializable {
 // TODO: create two more methods, get profile types by profile type name, and get all profile types C:
 
 	/**
-	 *get profile types by profile type name
+	 * get profile types by profile type name
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $profileTypeName profile type name to search for
@@ -237,6 +237,36 @@ class ProfileType implements \JsonSerializable {
 			}
 		}
 		return($profileTypes);
+	}
+
+	/**
+	 * get ALL profile types
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of ProfileTypes found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllProfileTypes(\PDO $pdo) {
+		// create query template
+		$query = "SELECT profileTypeId, profileTypeName FROM profileType";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of ProfileTypes
+		$profileTypes = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profileType = new ProfileType($row["profileTypeId"], $row["profileTypeName"]);
+				$profileTypes[$profileTypes->key()] = $profileType;
+				$profileTypes->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($profileTypes);
 	}
 
 

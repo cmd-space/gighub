@@ -182,7 +182,7 @@ class Tag implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the  tag by content
+	 * gets the tag by content
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $tagContent tag content to search for
@@ -221,6 +221,36 @@ class Tag implements \JsonSerializable {
 			}
 		}
 		return($tags);
+	}
+
+	/**
+	 * gets all Tags
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Tags found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllTags(\PDO $pdo) {
+		// create query template
+		$query = "SELECT tagId, tagContent FROM tag";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of tweets
+		$tag = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tag = new Tag($row["tagId"], $row["tagContent"]);
+				$tag[$tag->key()] = $tag;
+				$tag->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($tag;
 	}
 	/**
 	 * formats the state variables for JSON serialization

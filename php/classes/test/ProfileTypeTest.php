@@ -130,7 +130,7 @@ class ProfileTypeTest extends GigHubTest {
 		$profileType->insert($this->getPDO());
 
 		// grab the data form mySQL and enforce the fields match our expectations
-		$results = ProfileType::getProfileTypeByProfileTypeName($this->getPDO(), $profileType->getPrfoileTypeName());
+		$results = ProfileType::getProfileTypesByProfileTypeName($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileType");
@@ -153,7 +153,7 @@ class ProfileTypeTest extends GigHubTest {
 		$profileType->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = ProfileType::getProfileTypesByProfileTypeName($this->getPDo(), $profileType->getProfileTypeName());
+		$results = ProfileType::getAllProfileTypes($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileType", $results);

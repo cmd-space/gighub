@@ -55,7 +55,7 @@ class VenueTest extends GigHubTest {
 	 * content of the updated Venue
 	 * @var string $VALID_VENUESTATE
 	 **/
-	protected $VALID_VENUESTATE = "NM";
+	protected $VALID_VENUESTATE = "N.M";
 	/**
 	 * content of the updated Venue
 	 * @var string $VALID_VENUEZIP
@@ -97,7 +97,7 @@ class VenueTest extends GigHubTest {
 		$this->testProfileType->insert($this->getPDO());
 
 		// add missing profile variables
-		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), $this->testProfileType->getProfileTypeId(), "testProfileBio", "testProfileImageCloudinaryId", "testProfileLocation", "testProfileOAuthToken", "testProfileSoundCloudUser", "testProfileUserName");
+		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), $this->testProfileType->getProfileTypeId(), "Albuquerque", "fij974i948", "Deftones","Deftones","jojsokjo");
 		$this->testProfile->insert($this->getPDO());
 	}
 

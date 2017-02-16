@@ -160,6 +160,43 @@ class ProfileType implements \JsonSerializable {
 		}
 
 	/**
+	 *get profiletype by profiletypeid
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $profileTypeId profileType found or null if not found
+	 * @return ProfileTypeId|null ProfileType found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variable are not the correct data type
+	 **/
+	public static function getProfileTypeByProfileTypeId(\PDO $pdo, int $profileTypeId) {
+		// sanitize the profileTypeId before searching
+	if($profileTypeId <= 0) {
+		throw(new \PDOException("Profile Type id is not positive"));
+}
+
+// create query template
+		$query = "SELECT profileId, profileTypeId, profileTypeName FROM profile WHERE profileId = :profileId";
+	$statement = $pdo = $pdo->prepare($query);
+
+	// bind the profile type id to the place holder in the template
+		$parameters =  ["profileTypeId" => $profileTypeId];
+		$statement->execute($parameters);
+
+		// grab the profile type from mySQL
+		try {
+				$profileType = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch(); {
+					$profileType = new ProfileType($row["profileId"], $row["profileTypeId"], $row["profileTypeName"]);
+			}
+		}catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($profileType);
+}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize

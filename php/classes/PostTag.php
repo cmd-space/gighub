@@ -29,7 +29,7 @@ class PostTag implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (i.e. negative integers)
 	 * @throws \TypeError if data types violate type hints
-	 * @throws \Error if some other exception occurs
+	 * @throws \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newPostTagPostId, int $newPostTagTagId) {
 		try {

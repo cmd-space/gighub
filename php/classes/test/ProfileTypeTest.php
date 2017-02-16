@@ -41,6 +41,9 @@ class ProfileTypeTest extends GigHubTest {
 		$profileType = new ProfileType(null, $this->VALID_PROFILETYPENAME);
 
 // TODO: add the insert method
+		// create a new ProfileType and insert ti into mySQL
+		$profileType = new ProfileType(null, $this->VALID_PROFILETYPENAME);
+		$profileType->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfileType = ProfileType::getProfileTypeByProfileTypeId($this->getPDO(), $profileType-getProfileTypeId());
@@ -90,7 +93,54 @@ class ProfileTypeTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileType");
 
 		// create a new Profile Type and insert to into mySQL
+		$profileType = new ProileType(null, $this->VALID_PROFILETYPENAME);
+		$profileType->insert($this->getPDO());
 
+		// delete the ProfileType form mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
+		$profileType->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the ProfileType does not exist
+		$pdoProfileType = ProfileType::getProfileTypebyProfileTypeId($this->getPDO(), $profileType->profileTypeId());
+		$this->assertNull($pdoProfileType);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profileType"));
 		}
+	//TODO: finish test delete invalid, test all fooByBars, then you're gucci c:
+
+	/**
+	 * test deleting a ProfileType that does not exist
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testGetValidProfileTypeByProfileTypeName() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profileType");
+
+		// create a new profileType and insert to into mySQL
+		$profileType = new ProfileType(null, $this->VALID_PROFILETYPENAME);
+		$profileType->insert($this->getPDO());
+
+		// grab the data form mySQL and enforce the fields match our expectations
+		$results = ProfileType::getProfileTypeByProfileTypeName($this->getPDO(), $profileType->getPrfoileTypeName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileType");
+
+		// grab the result from the array and validate it
+		$pdoProfileType = $results[0];
+		$this->assertEquals($pdoProfileType->getProfileTypeId(),$this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfileType->getProfileTypeName(), $this->VALID_PROFILETYPENAME);
+	}
+
+	/**
+	 * test grabbing all Profile Types
+	 */
+	public function testGetAllValidProfileType() {
+		// create a new ProfileType and save it for later
+		$numRows = $this->getConnection()->getRowCount("profileType");
+
+
+	}
+
+
 }
-//TODO: finish test delete invalid, test all fooByBars, then you're gucci c:

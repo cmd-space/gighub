@@ -20,7 +20,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Tag
  * @author Dante Conley <dconley6@cnm.edu>
  **/
-class TagTest extends GigHubTest {
+class Tag1Test extends GigHubTest {
 
 	/**
 	 * content of the TagContent
@@ -36,7 +36,7 @@ class TagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("tag");
 
 		// create a new Tag and insert to into mySQL
-		$tag = new Tag($this->VALID_TAGCONTENT);
+		$tag = new Tag(null, $this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -72,7 +72,7 @@ class TagTest extends GigHubTest {
 		$results = Tag::getTagByTagContent($this->getPDO(), $tag->getTagContent());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Gighub\\Tag", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Tag", $results);
 
 		// grab the result from the array and validate it
 		$pdoTag = $results[0];
@@ -103,7 +103,7 @@ class TagTest extends GigHubTest {
 		$results = Tag::getAllTags($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Gighub\\Test", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Tag", $results);
 
 		// grab the result from the array and validate it
 		$pdoTag= $results[0];

@@ -62,14 +62,14 @@ class Venue implements \JsonSerializable {
 	 * @param string $newVenueName string containing the venue name
 	 * @param string $newVenueState string containing the state in which the venue is located
 	 * @param string $newVenueStreet1 string containing the first line of the street address
-	 * @param string $newVenueStreet2 string containing the second line of a street address (if any)
+	 * @param string|null $newVenueStreet2 string containing the second line of a street address (if any)
 	 * @param string $newVenueZip string containing the zip code in which the venue is located
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (eg strings too long, negative integers)
 	 * @throws \TypeError if data types violate hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueCity, string $newVenueName, string $newVenueState, string $newVenueStreet1, string $newVenueStreet2, string $newVenueZip) {
+	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueCity, string $newVenueName, string $newVenueState, string $newVenueStreet1, $newVenueStreet2, string $newVenueZip) {
 		try {
 			$this->setVenueId($newVenueId);
 			$this->setVenueProfileId($newVenueProfileId);
@@ -145,6 +145,9 @@ class Venue implements \JsonSerializable {
 		// verify the new profile id is positive
 		if($newVenueProfileId <= 0) {
 			throw(new \RangeException("venue profile id is not positive"));
+		}
+		if($newVenueProfileId !== null) {
+			throw(new \InvalidArgumentException("venue profile id is null"));
 		}
 
 		// convert and store the profile id
@@ -240,10 +243,9 @@ class Venue implements \JsonSerializable {
 		// verify the venue street 2 is secure
 		$newVenueStreet2 = trim($newVenueStreet2);
 		$newVenueStreet2 = filter_var($newVenueStreet2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newVenueStreet2) === true) {
-			throw(new \InvalidArgumentException("venue street 2 is empty or insecure"));
+		if((empty($newVenueStreet2) === null)){
+			$newVenueStreet2 = null;
 		}
-
 		// verify the venue street 2 content will fit into the database
 		if(strlen($newVenueStreet2) > 64) {
 			throw(new \RangeException("venue street 2 content too large"));
@@ -373,7 +375,7 @@ class Venue implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["venueId" => $this->venueId, "venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+		$parameters = ["venueProfileId" => $this->venueProfileId, "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 
 		// update the null venueId with what mySQL just gave us
@@ -398,7 +400,7 @@ class Venue implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template\
-		$parameters = ["venueId" => $this->venueId, "venueProfileId" => $this->venueProfileId,  "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
+		$parameters = ["venueProfileId" => $this->venueProfileId,  "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip, "venueId" => $this->venueId];
 		$statement->execute($parameters);
 	}
 

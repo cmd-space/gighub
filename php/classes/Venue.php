@@ -142,10 +142,12 @@ class Venue implements \JsonSerializable {
 	 * @throws \TypeError if $newVenueId is not an integer
 	 **/
 	public function setVenueProfileId(int $newVenueProfileId) {
-		//TODO: check if venue profile id is null, throw invalid argument exception
 		// verify the new profile id is positive
 		if($newVenueProfileId <= 0) {
 			throw(new \RangeException("venue profile id is not positive"));
+		}
+		if($newVenueProfileId !== null) {
+			throw(new \InvalidArgumentException("venue profile id is null"));
 		}
 
 		// convert and store the profile id

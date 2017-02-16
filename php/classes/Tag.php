@@ -263,4 +263,3 @@ class Tag implements \JsonSerializable {
 	}
 
 }
-// TODO: FIXME: get all tags

@@ -1,8 +1,7 @@
 <?php
 namespace Edu\Cnm\GigHub\Test;
 
-use Edu\Cnm\GigHub\{Oauth, ProfileType, Profile, Venue, Tag};
-use Edu\Cnm\Gighub\Test\GigHubTest;
+use Edu\Cnm\GigHub\{OAuth, ProfileType, Profile, Tag};
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -33,7 +32,7 @@ class ProfileTagTest extends GigHubTest {
 	protected $VALID_PROFILETAGPROFILEID = "PHPUnit test still passing";
 	/**
 	 *content of the profile class
-	 * @var  Profile
+	 * @var /Profile
 	 **/
 	private $profile = null;
 	/**
@@ -60,8 +59,8 @@ class ProfileTagTest extends GigHubTest {
 		parent::setUp();
 
 		// create and insert an OAuth to own the test ProfileTag
-		$this->OAuth = new OAuth(null, "Mail.ru");
-		$this->OAuth->insert($this->getPDO());
+		$this->oAuth = new OAuth(null, "Mail.ru");
+		$this->oAuth->insert($this->getPDO());
 		// create and sinsert an ProfileType to own the test ProfileTag
 		$this->profileType = new ProfileType(null, "Musician");
 		$this->profileType->insert($this->getPDO());

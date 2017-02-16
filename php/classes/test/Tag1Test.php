@@ -2,7 +2,7 @@
 namespace Edu\Cnm\GigHub\Test;
 
 use Edu\Cnm\GigHub\{
-	OAuth, ProfileType, Profile
+	Tag
 };
 
 // grab the project test parameters
@@ -27,41 +27,6 @@ class TagTest extends GigHubTest {
 	 * @var string $VALID_TAGCONTENT
 	 **/
 	protected $VALID_TAGCONTENT = "Yup. It's a Tag!";
-	/**
-	 * profile created to use with unit test.
-	 * @var string $testProfile
-	 **/
-	protected $testProfile;
-	/**
-	 * OAuth created for unit test
-	 * @var string $testOAuth
-	 **/
-	protected $testOAuth;
-	/**
-	 * Profile Type created for unit test
-	 * @var string $testOAuth
-	 **/
-	protected $testProfileType;
-
-	/**
-	 * create dependent objects before running each test
-	 **/
-	public final function setUp() {
-		// run the default setUp() method first
-		parent::setUp();
-
-		// add missing oAuth variables
-		$this->testOAuth = new OAuth(null, "testOAunthServiceName");
-		$this->testOAuth->insert($this->getPDO());
-
-		// add missing profileType variables
-		$this->testProfileType = new ProfileType(null, "testProfileTypeName");
-		$this->testProfileType->insert($this->getPDO());
-
-		// add missing profile variables
-		$this->testProfile = new Profile(null, $this->testOAuth->getOAuthId(), 1234, "testProfileBio", "testProfileImageCloudinaryId", "testProfileLocation", "testProfileOAuthToken", "testProfileSoundCloudUser", "testProfileUserName");
-		$this->testProfile->insert($this->getPDO());
-	}
 
 	/**
 	 * test inserting a valid Tag and verify that the actual mySQL data matches
@@ -71,13 +36,12 @@ class TagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("tag");
 
 		// create a new Tag and insert to into mySQL
-		$tag = new Tag(null, $this->profile->getProfileId(), $this->VALID_TAGCONTENT);
+		$tag = new Tag($this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
-		$this->assertEquals($pdoTag->getTagId(), $this->tag->getTagId());
 		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGCONTENT);
 
 	}
@@ -89,28 +53,9 @@ class TagTest extends GigHubTest {
 	 **/
 	public function testInsertInvalidTag() {
 		// create a Tag with a non null tag id and watch it fail
-		$tag = new Tag(DataDesignTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_TAGCONTENT);
+		$tag = new Tag(GigHubTest::INVALID_KEY, $this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 	}
-
-	/**
-	 * test inserting a Tag
-	 **
-	public function testInsertValidTag() {
-		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tag");
-
-		// create a new Tag and insert to into mySQL
-		$tag = new Tag(null, $this->profile->getProfileId(), $this->VALID_TAGCONTENT);
-		$tag->insert($this->getPDO());
-
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
-		$this->assertEquals($pdoTag->getTagId(), $this->tag->getTagId());
-		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGONTENT);
-
-	}*/
 
 	/**
 	 * test grabbing a Tag by tag content
@@ -120,18 +65,17 @@ class TagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("tag");
 
 		// create a new Tag and insert to into mySQL
-		$tag = new Tag(null, $this->profile->getProfileId(), $this->VALID_TAGCONTENT);
+		$tag = new Tag(null, $this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Tag::getTagByTagContent($this->getPDO(), $tag->getTagContent());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Dconley6\\Gighub\\Tag", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Gighub\\Tag", $results);
 
 		// grab the result from the array and validate it
 		$pdoTag = $results[0];
-		$this->assertEquals($pdoTag->getTagId(), $this->profile->getTagId());
 		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGCONTENT);
 	}
 
@@ -152,18 +96,17 @@ class TagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("tag");
 
 		// create a new Tag and insert to into mySQL
-		$tag = new Tag(null, $this->tag->getTagId(), $this->VALID_TAGCONTENT);
+		$tag = new Tag(null, $this->VALID_TAGCONTENT);
 		$tag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tag::getAllTagss($this->getPDO());
+		$results = Tag::getAllTags($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Dconley6\\Gighub\\Test", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Gighub\\Test", $results);
 
 		// grab the result from the array and validate it
 		$pdoTag= $results[0];
-		$this->assertEquals($pdoTag->getTagId(), $this->profile->getTagId());
 		$this->assertEquals($pdoTag->getTagContent(), $this->VALID_TAGCONTENT);
 	}
 }

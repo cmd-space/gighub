@@ -76,7 +76,7 @@ class Tag implements \JsonSerializable {
 		}
 
 		//verify the tag id is positive
-		if($newTagId <=0) {
+		if($newTagId <= 0) {
 			throw(new \RangeException("tag id is not positive"));
 		}
 
@@ -140,7 +140,7 @@ class Tag implements \JsonSerializable {
 		$statement->execute($parameters);
 
 		// update the null tagId with what mySQL just gave us
-		$this->tagContent = intval($pdo->lastInsertId());
+		$this->tagId = intval($pdo->lastInsertId());
 	}
 
 	/**
@@ -233,3 +233,4 @@ class Tag implements \JsonSerializable {
 	}
 
 }
+// TODO: FIXME: get all tags

@@ -20,7 +20,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Tag
  * @author Dante Conley <dconley6@cnm.edu>
  **/
-class TagTest extends GigHubTest {
+class Tag1Test extends GigHubTest {
 
 	/**
 	 * content of the TagContent

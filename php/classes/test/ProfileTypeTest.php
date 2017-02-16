@@ -136,10 +136,22 @@ class ProfileTypeTest extends GigHubTest {
 	 * test grabbing all Profile Types
 	 */
 	public function testGetAllValidProfileType() {
-		// create a new ProfileType and save it for later
+		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profileType");
 
+		// create a new ProfileType and insert to mySQL
+		$profileType = new ProfileType(null, $this->VALID_PROFILETYPENAME);
+		$profileType->insert($this->getPDO());
 
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = ProfileType::getProfileTypeByProfileName($this->getPDo(), $profileType->getProfileTypeName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileType"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstencesOd("Edu\\Cnm\\GigHub\\ProfileType", $results);
+
+		// grab the results from the array and validate it
+		$pdoprofileType = $results[0];
+		$this->assertEquals($pdoprofileType->getProfileTypeName(), $this->VALID_PROFILETYPENAME);
 	}
 
 

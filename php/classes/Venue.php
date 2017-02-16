@@ -23,10 +23,20 @@ class Venue implements \JsonSerializable {
 	 **/
 	private $venueProfileId;
 	/**
+	 * the city in which the venue is located
+	 * @var string $venueCity
+	 **/
+	private $venueCity;
+	/**
 	 * the name of the venue
 	 * @var string $venueName
 	 **/
 	private $venueName;
+	/**
+	 * state in which the venue is located
+	 * @var string $venueState
+	 **/
+	private $venueState;
 	/**
 	 * the first street address of the venue
 	 * @var string $venueStreet1
@@ -38,16 +48,6 @@ class Venue implements \JsonSerializable {
 	 **/
 	private $venueStreet2;
 	/**
-	 * the city in which the venue is located
-	 * @var string $venueCity
-	 **/
-	private $venueCity;
-	/**
-	 * state in which the venue is located
-	 * @var string $venueState
-	 **/
-	private $venueState;
-	/**
 	 * zip code in which venue is located
 	 * @var string $venueZip
 	 **/
@@ -58,26 +58,26 @@ class Venue implements \JsonSerializable {
 	 *
 	 * @param int|null $newVenueId id of this venue or null if a new venue
 	 * @param int $newVenueProfileId id of the profile who owns this venue
+	 * @param string $newVenueCity string containing the city in which the venue is located
 	 * @param string $newVenueName string containing the venue name
+	 * @param string $newVenueState string containing the state in which the venue is located
 	 * @param string $newVenueStreet1 string containing the first line of the street address
 	 * @param string $newVenueStreet2 string containing the second line of a street address (if any)
-	 * @param string $newVenueCity string containing the city in which the venue is located
-	 * @param string $newVenueState string containing the state in which the venue is located
 	 * @param string $newVenueZip string containing the zip code in which the venue is located
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (eg strings too long, negative integers)
 	 * @throws \TypeError if data types violate hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueName, string $newVenueStreet1, string $newVenueStreet2, string $newVenueCity, string $newVenueState, string $newVenueZip) {
+	public function __construct(int $newVenueId = null, int $newVenueProfileId, string $newVenueCity, string $newVenueName, string $newVenueState, string $newVenueStreet1, string $newVenueStreet2, string $newVenueZip) {
 		try {
 			$this->setVenueId($newVenueId);
 			$this->setVenueProfileId($newVenueProfileId);
+			$this->setVenueCity($newVenueCity);
 			$this->setVenueName($newVenueName);
+			$this->setVenueState($newVenueState);
 			$this->setVenueStreet1($newVenueStreet1);
 			$this->setVenueStreet2($newVenueStreet2);
-			$this->setVenueCity($newVenueCity);
-			$this->setVenueState($newVenueState);
 			$this->setVenueZip($newVenueZip);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
@@ -313,7 +313,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// verify the venue state content will fit into the database
-		if(strlen($newVenueState) > 2) {
+		if(strlen($newVenueState) !== 2) {
 			throw(new \RangeException("venue state content too large"));
 		}
 
@@ -369,11 +369,11 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO venue(venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueState, venueZip) VALUES(:venueProfileId, :venueName, :venueStreet1, :venueStreet2, :venueCity, :venueState, :venueZip)";
+		$query = "INSERT INTO venue(venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip) VALUES(:venueProfileId, :venueCity, :venueName, :venueState, :venueStreet1, :venueStreet2, :venueZip)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+		$parameters = ["venueId" => $this->venueId, "venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 
 		// update the null venueId with what mySQL just gave us
@@ -393,12 +393,12 @@ class Venue implements \JsonSerializable {
 			throw(new \PDOException("unable to update a venue that does not exist"));
 		}
 
-		// create query template h
+		// create query template
 		$query = "UPDATE venue SET venueProfileId = :venueProfileId, venueCity = :venueCity, venueName = :venueName, venueState = :venueState, venueStreet1 = :venueStreet1, venueStreet2 = :venueStreet2, venueZip = :venueZip WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template\
-		$parameters = ["venueProfileId" => $this->venueProfileId, "venueName" => $this->venueName, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueCity" => $this->venueCity, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+		$parameters = ["venueId" => $this->venueId, "venueProfileId" => $this->venueProfileId,  "venueCity" => $this->venueCity, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueStreet1" => $this->venueStreet1, "venueStreet2" => $this->venueStreet2, "venueZip" => $this->venueZip];
 		$statement->execute($parameters);
 	}
 
@@ -440,7 +440,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueState, venueZip FROM venue WHERE venueId = :venueId";
+		$query = "SELECT venueId, venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip FROM venue WHERE venueId = :venueId";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue id to the place holder in the template
@@ -453,7 +453,7 @@ class Venue implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -480,7 +480,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueName LIKE :venueName";
+		$query = "SELECT venueId, venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip FROM venue WHERE venueName LIKE :venueName";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue content to the place holder in the template
@@ -493,7 +493,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {
@@ -522,7 +522,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueStreet1 LIKE :venueStreet1";
+		$query = "SELECT venueId, venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip FROM venue WHERE venueStreet1 LIKE :venueStreet1";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue content to the place holder in the template
@@ -535,7 +535,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {
@@ -564,7 +564,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueCity LIKE :venueCity";
+		$query = "SELECT venueId, venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip FROM venue WHERE venueCity LIKE :venueCity";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue content to the place holder in the template
@@ -577,7 +577,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {
@@ -606,7 +606,7 @@ class Venue implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT venueId, venueProfileId, venueName, venueStreet1, venueStreet2, venueCity, venueZip FROM venue WHERE venueZip LIKE :venueZip";
+		$query = "SELECT venueId, venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip FROM venue WHERE venueZip LIKE :venueZip";
 		$statement = $pdo->prepare($query);
 
 		// bind the venue content to the place holder in the template
@@ -619,7 +619,7 @@ class Venue implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueName"], $row["venueStreet1"], $row["venueStreet2"], $row["venueCity"], $row["venueState"], $row["venueZip"]);
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
 				$venues[$venues->key()] = $venue;
 				$venues->next();
 			} catch(\Exception $exception) {

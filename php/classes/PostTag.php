@@ -10,113 +10,98 @@ require_once("autoload.php");
 class PostTag implements \JsonSerializable {
 
 	/**
-	 * id for this postTag; this is a foreign key
-	 * @var int $postTagId
-	 **/
-	private $postTagId;
-	/**
-	 * id for this Post Tag; this is a foreign key
+	 * Tag id for this postTag; this is a foreign key
 	 * @var int $postTagId
 	 **/
 	private $postTagTagId;
+
 	/**
-	 * actual textual content of this PostTag
-	 * @var \DateTime $PostTagDate
+	 * id of the post for this PostTag
+	 * @var int $PostTagPost
 	 **/
 	private $postTagPostId;
-	/**
-	 * actual textual content of this postTag
-	 * @var int $postTagPostId
-	 **/
-
-public function __construct(int $newPostTagId = null, int $newPostTagTagId, int $newPostTagPostId) {
-	try {
-		$this->setPostTagId($newPostTagId);
-		$this->setPostTagTagId($newPostTagTagId);
-		$this->setPostTagPostId($newPostTagPostId);
-	} catch(\InvalidArgumentException $invalidArgument) {
-		//rethrow the exception to the calller
-		throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
-	} catch(\RangeException $range) {
-		// rethrow the exception to the caller
-		throw(new \RangeException($range->getMessage(), 0, $range));
-	} catch(\TypeError $typeError) {
-		// rethrow the exception to the caller
-		throw(new \TypeError($typeError->getMessage(), 0, $typeError));
-	} catch(\Exception $exception) {
-		// rethrow the exception to the caller
-		throw(new\Exception($exception->getMessage(), 0, $exception));
-	}
-}
-/**
- * accessor method for post tag id
- *
- * @return int|null value of post tag id
- **/
-public function getPostTagId() {
-	return($this->postTagId);
-}
 
 	/**
-	 * mutator method for post tag id
+	 * actual keys of this postTag
 	 *
-	 * @param int|null $newPostTagId new value of profile id
-	 * @throws \RangeException if $newPostTagId is not positive
-	 * @throws \TypeError if $newPostTagId is not an integer
+	 * @param int $newPostTagPostId id of the Post that is referenced
+	 * @param int $newPostTagTagId id of the Tag that is referenced
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (i.e. negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
 	 **/
-	public function setPostTagId(int $newPostTagId = null) {
-		// base case: if the profile id is null, this is a new profile without a mySQL assigned id (yet)
-		if($newPostTagId === null) {
-			$this->postTagId = null;
-			return;
+	public function __construct(int $newPostTagPostId, int $newPostTagTagId) {
+		try {
+			$this->setPostTagTagId($newPostTagTagId);
+			$this->setPostTagPostId($newPostTagPostId);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the calller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new\Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/* FIXME: accessor for postTagTagId here*/ /*is this good?*/
+	/**
+	 * accessors for class postTag
+	 */
+	/**
+	 * accessor method for postTagTagId
+	 * @return int value of PostTag post Id, foreign key
+	 **/
+	public function getPostTagTagId() {
+		return ($this->postTagTagId);
 		}
 
-		// verify that the post tag id is positive
-		if($newPostTagId <= 0) {
-			throw(new \RangeException("post tag id is not positive... enough"));
+	/**
+	 * mutator method for post tag tag id
+	 *
+	 * @param int|null $newPostTagTagId new value of post tag id
+	 * @throws \RangeException if $newPostTagTagId is not positive
+	 * @throws \TypeError if $newPostTagTagId is not an integer
+	 **/
+	public function setPostTagTagId(int $newPostTagTagId) {
+		// verify the post tag tag id is positive
+		if($newPostTagTagId <= 0) {
+			throw(new \RangeException("post tag tag id is not positive"));
 		}
-
-		// convert and store the post tag id
-		$this->postTagId = $newPostTagId;
+		// convert and store the post tag tag id
+		$this->postTagTagId = $newPostTagTagId;
 	}
 
-/**
- * mutator method for post tag tag id
- *
- * @param int|null $newPostTagTagId new value of post tag id
- * @throws \RangeException if $newPostTagTagId is not positive
- * @throws \TypeError if $newPostTagTagId is not an integer
- **/
-public function setPostTagTagId(int $newPostTagTagId = null) {
-	// verify the post tag tag id is positive
-	if($newPostTagTagId <= 0) {
-		throw(new \RangeException("post tag tag id is not positive"));
+	/**
+	 * accessor method for post tag post id
+	 *
+	 * @return int value of post tag post id
+	 **/
+	public function getPostTagPostId() {
+		return ($this->postTagPostId);
 	}
-	// convert and store the post tag tag id
-	$this->postTagTagId = $newPostTagTagId;
-}/**
- * accessor method for post tag post id
- *
- * @return int value of post tag post id
- **/
-public function getPostTagPostId() {
-	return($this->postTagPostId);
-}
-/**
- * mutator method for post tag post id
- *
- * @param int $newPostTagPostId new value of post tag post id
- * @throws \RangeException if $newPostTagPostId is not positive
- * @throws \TypeError if $newPostTagPostId is not an integer
- **/
-public function setPostTagPostId(int $newPostTagPostId) {
-	// verify the post tag post id is positive
-	if($newPostTagPostId <= 0) {
-		throw(new \RangeException("post tag post id is not positive"));
+
+	/**
+	 * mutator method for post tag post id
+	 *
+	 * @param int $newPostTagPostId new value of post tag post id
+	 * @throws \RangeException if $newPostTagPostId is not positive
+	 * @throws \TypeError if $newPostTagPostId is not an integer
+	 **/
+	public function setPostTagPostId(int $newPostTagPostId) {
+		// verify the post tag post id is positive
+		if($newPostTagPostId <= 0) {
+			throw(new \RangeException("post tag post id is not positive"));
+		}
+		// convert and store the post tag post id
+		$this->postTagPostId = $newPostTagPostId;
 	}
-	// convert and store the post tag post id
-	$this->postTagPostId = $newPostTagPostId;
-}
 	/**
 	 * this is
 	 * the
@@ -141,12 +126,13 @@ public function setPostTagPostId(int $newPostTagPostId) {
 
 		}
 		// create query template
-		$query = "INSERT INTO `tag`(postTagTagId, postTagPostId) VALUES(:postTagTagId, :postTagPostId)";
+		$query = "INSERT INTO postTag(postTagPostId, postTagTagId) VALUES(:postTagPostId, :postTagTagId)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["postTagTagId" => $this->postTagPostId, "postTagPostId" => $this->postTagPostId];
+		$parameters = ["postTagPostId" => $this->postTagPostId, "postTagTagId" => $this->postTagTagId];
 		$statement->execute($parameters);
 	}
+
 	/**
 	 * deletes this post tag from mySQL
 	 *
@@ -161,7 +147,7 @@ public function setPostTagPostId(int $newPostTagPostId) {
 		}
 
 		// create query template
-		$query = "DELETE FROM `postTag` WHERE postTagTagId = :postTagPostId AND PostTagTagId = :postTagPostId";
+		$query = "DELETE FROM `postTag` WHERE postTagTagId = :postTagTagId AND PostTagPostId = :postTagPostId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place hodlers in the template
@@ -175,9 +161,12 @@ public function setPostTagPostId(int $newPostTagPostId) {
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $postTagTagId tag id to search for
 	 * @param int $postTagPostId tat id to search for
-	 * @return Tag|null Tag found or null if not found
+	 * @return PostTag|null Tag found or null if not found
 	 **/
-	public static function getTagByPostTagIdAndPostTagPostId(\PDO $pdo, int $postTagTagId, int $postTagPostId) {
+	/* FIXME: this method needs to be renamed getPostTagByPostTagTagIdAndPostTagPostId(), */
+	/* is this gucci?*/
+
+	public static function getPostTagByPostTagTagIdAndPostTagPostId(\PDO $pdo, int $postTagTagId, int $postTagPostId) {
 		// sanitize the post tag id and post tag id before searching
 		if($postTagTagId <= 0) {
 			throw(new \PDOException("post tag tag id is not positive"));
@@ -186,23 +175,88 @@ public function setPostTagPostId(int $newPostTagPostId) {
 			throw(new \PDOException("post tag post id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postTagTagId, postTagPostid FROM 'tag' WHERE postTagTagId = :postTagPostId AND profileTagTagid = :postTagPostId";
-		$statement->execute($parameters);
+		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagTagId = :postTagTagId AND postTagPostId = :postTagPostId";
+//		$statement->execute($parameters);
+		$statement = $pdo->prepare($query);
 		// grab the tag from mySQL
 		try {
-			$postTagTagId = null;
+			$postTag = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$tag = new tag($row["postTagTagId"], $row["postTagPostId"]);
+				$postTag = new PostTag($row["postTagTagId"], $row["postTagPostId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			var_dump($exception->getTrace());
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($postTagTagId);
+		return ($postTag);
 	}
+
+	/* FIXME: we need 2 more methods:
+	 * - getPostTagsByPostTagTagId() - should return an array of all postTags by tagId
+	 * - LOOK AT: getBeerTagByTagId()
+	 *
+	 * - getPostTagsByPostTagPostId() - should return an array of all postTags by postId
+	 * - LOOK AT: getBeerTagByBeerId()
+	 * */
+
+	public static function getPostTagsByPostTagTagId(\PDO $pdo, int $postTagTagId) {
+		// sanitize the tag id
+		if($postTagTagId < 0) {
+			throw(new \PDOException ("Tag Id is not positive"));
+		}
+		//create query template
+		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagTagId = :postTagTagId";
+		$statement = $pdo->prepare($query);
+		//bind the member variables to the placeholders in the template
+		$parameters = ["postTagTagId" => $postTagTagId];
+		$statement->execute($parameters);
+		//build an array of post tags
+		$postTags = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$postTag = new PostTag($row["postTagPostId"], $row["postTagTagId"]);
+				$postTags[$postTags->key()] = $postTag;
+				$postTags->next();
+			} catch(\Exception $exception) {
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($postTags);
+	}
+
+	public static function getPostTagsByPostTagPostId(\PDO $pdo, int $postTagPostId) {
+		//sanitize the post id
+		if($postTagPostId < 0) {
+			throw (new \PDOException("post id is not positive"));
+		}
+		//create query template
+		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagPostId = :postTagPostId";
+		$statement = $pdo->prepare($query);
+		//bind the post id to the place holder in the template
+		$parameters = ["postTagPostId" => $postTagPostId];
+		$statement->execute($parameters);
+		//build an array of postTags
+		$postTags = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$postTag = new PostTag($row["postTagPostId"], $row["postTagTagId"]);
+				$postTags[$postTags->key()] = $postTag;
+				$postTags->next();
+			} catch(\Exception $exception) {
+				//if the row cant be converted rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($postTags);
+	}
+
+	/* are these groovy?*/
 
 	/**
 	 * Specify data which should be serialized to JSON
@@ -211,8 +265,17 @@ public function setPostTagPostId(int $newPostTagPostId) {
 	 * which is a value of any type other than a resource.
 	 * @since 5.4.0
 	 */
-	function jsonSerialize() {
+
+	//jsonSerialize
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return ($fields);
+	}
 		// TODO: Implement jsonSerialize() method.
 	}
-}
 

@@ -125,7 +125,7 @@ class ProfileTest extends GigHubTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 
-		// create a new Profile and insert to into mySQL
+		// create a new Profile and insert it into mySQL
 		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 
@@ -136,8 +136,8 @@ class ProfileTest extends GigHubTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
-		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->profile->getProfileOAuthId());
-		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profile->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO2);
 		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
 		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
@@ -190,6 +190,66 @@ class ProfileTest extends GigHubTest {
 	}
 
 	/**
+	 * test inserting a profile with a negative primary key
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertInvalidProfileId() {
+		// create a Profile with a negative primary key and insert that ish
+		$profile = new Profile(-1, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid OAuthId
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertInvalidProfileOAuthId() {
+		$profile = new Profile(null, -1, $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid profile type id
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertInvalidProfileTypeId() {
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), -1, $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid/empty profile bio
+	 *
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testInsertEmptyProfileBio() {
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "", $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting super duper long profile bio
+	 *
+	 * @expectedException RangeException
+	 */
+	public function testInsertLongProfileBio() {
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "Spicy jalapeno bacon ipsum dolor amet shankle ham turducken drumstick, spare ribs bresaola sirloin shoulder ribeye shank rump meatloaf meatball. Chuck venison biltong andouille porchetta. Ground round pork loin strip steak tail jerky bresaola pork brisket landjaeger prosciutto shoulder filet mignon leberkas fatback. Frankfurter brisket meatball picanha short loin ham pork chop. Chicken pork belly capicola short ribs kielbasa porchetta.
+Flank short ribs bresaola biltong short loin cow ribeye t-bone capicola pastrami corned beef pork belly strip steak chicken turducken. Kevin swine meatball leberkas, bacon pork loin tongue landjaeger strip steak corned beef tail prosciutto turducken biltong shankle. Kevin jerky bresaola, jowl prosciutto boudin frankfurter landjaeger. Frankfurter fatback turducken short loin. Turducken drumstick shank, rump prosciutto bresaola venison. Shankle swine t-bone meatball tri-tip short loin shoulder meatloaf pork chop kevin beef ribs sirloin tongue. Shank ham hock jowl corned beef pork loin meatloaf.
+Pork belly chuck pork beef shoulder filet mignon tenderloin doner spare ribs beef ribs hamburger ball tip porchetta tongue. Pig hamburger sirloin, doner salami flank t-bone tongue shank drumstick kielbasa venison. Sirloin bresaola tenderloin fatback. Jerky porchetta corned beef burgdoggen pig, filet mignon pastrami prosciutto pancetta.
+Burgdoggen drumstick brisket, porchetta kielbasa leberkas swine pig. Ball tip pig ribeye t-bone pancetta fatback, porchetta capicola. Ham picanha doner pastrami. Shoulder alcatra strip steak brisket ham short loin filet mignon ground round. Short ribs hamburger meatball venison, corned beef porchetta biltong sausage turkey fatback picanha pork chop tail.", $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting invalid/empty profile image cloudinary id
+	 *
+	 * @expectedException InvalidArgumentException
+	 */
+
+	/**
 	 * test grabbing a Profile by profile user name
 	 **/
 	public function testGetValidProfileByProfileUserName() {
@@ -208,9 +268,9 @@ class ProfileTest extends GigHubTest {
 
 		// grab the result from the array and validate it
 		$pdoProfile = $results[0];
-		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->profile->getProfileOAuthId());
-		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profile->getProfileTypeId());
-		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO2);
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
 		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
 		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
 		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
@@ -227,5 +287,146 @@ class ProfileTest extends GigHubTest {
 		$this->assertCount(0, $profile);
 	}
 
+	/**
+	 * test grabbing a Profile(s) by Location Content
+	 */
+	public function testGetValidProfileByLocationContent() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount('profile');
 
+		// create a new Profile and insert it into mySQL
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+
+//		var_dump($profile->getProfileLocation());
+		// grab the data from mySQL and enforce that fields match expectations
+		$results = Profile::getProfileByLocationContent($this->getPDO(), $profile->getProfileLocation());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Profile", $results);
+
+		// grab the result from the array and validate it
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
+		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
+		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
+		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test grabbing a Profile by Location Content that does not exist
+	 */
+	public function testGetInvalidProfileByLocationContent() {
+		// grab a profile by searching for location content that does not exist
+		$profile = Profile::getProfileByLocationContent($this->getPDO(), "Elbonia");
+		$this->assertCount(0, $profile);
+	}
+
+	/**
+	 * test grabbing a Profile by SoundCloud user
+	 */
+	public function testGetValidProfileBySoundCloudUser() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		// create a new Profile and insert it into mySQL
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce that fields match expectations
+		$pdoProfile = Profile::getProfileBySoundCloudUser($this->getPDO(), $profile->getProfileSoundCloudUser());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
+		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
+		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
+		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test grabbing a Profile by SoundCloud user that does not exist
+	 */
+	public function testGetInvalidProfileBySoundCloudUser() {
+		// grab a profile by searching for SoundCloud user that does not exist
+		$profile = Profile::getProfileBySoundCloudUser($this->getPDO(), "Engelbert Humperdink");
+		$this->assertNull($profile);
+	}
+
+	/**
+	 * test grabbing a Profile by profile type id
+	 */
+	public function testGetValidProfileByProfileTypeId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount('profile');
+
+		// create a new Profile and insert it into mySQL
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce that fields match expectations
+		$results = Profile::getProfileByProfileTypeId($this->getPDO(), $profile->getProfileTypeId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Profile", $results);
+
+		// grab the result from the array and validate it
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
+		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
+		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
+		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test grabbing a Profile by profile type id that does not exist
+	 */
+	public function testGetInvalidProfileByProfileTypeId() {
+		// grab a profile by searching for SoundCloud user that does not exist
+		$profile = Profile::getProfileByProfileTypeId($this->getPDO(), 60000000);
+		$this->assertCount(0, $profile);
+	}
+
+	/**
+	 * test grabbing a Profile by profile oauth id
+	 */
+	public function testGetValidProfileByProfileOAuthId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount('profile');
+
+		// create a new Profile and insert it into mySQL
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce that fields match expectations
+		$pdoProfile = Profile::getProfileByProfileOAuthId($this->getPDO(), $profile->getProfileOAuthId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
+		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
+		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
+		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test grabbing a Profile by profile oauth id that does not exist
+	 */
+	public function testGetInvalidProfileByProfileOAuthId() {
+		// grab a profile by searching for SoundCloud user that does not exist
+		$profile = Profile::getProfileByProfileOAuthId($this->getPDO(), 60000000);
+		$this->assertNull($profile);
+	}
 }

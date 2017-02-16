@@ -107,7 +107,8 @@ CREATE TABLE profileTag (
 	INDEX(profileTagProfileId),
 	INDEX(profileTagTagId),
 	FOREIGN KEY(profileTagProfileId) REFERENCES profile(profileId),
-	FOREIGN KEY(profileTagTagId) REFERENCES tag(tagId)
+	FOREIGN KEY(profileTagTagId) REFERENCES tag(tagId),
+	PRIMARY KEY (profileTagProfileId, profileTagTagId)
 );
 
 -- create the postTag entity
@@ -117,5 +118,6 @@ CREATE TABLE postTag (
 	INDEX(postTagPostId),
 	INDEX(postTagTagId),
 	FOREIGN KEY(postTagPostId) REFERENCES post(postId),
-	FOREIGN KEY(postTagTagId) REFERENCES tag(tagId)
+	FOREIGN KEY(postTagTagId) REFERENCES tag(tagId),
+	PRIMARY KEY (postTagPostId, postTagTagId)
 );

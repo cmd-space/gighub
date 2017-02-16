@@ -72,7 +72,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (i.e. strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
-	 * @throws \Error if some other exception occurs
+	 * @throws \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newProfileId = null, int $newProfileOAuthId, int $newProfileTypeId, string $newProfileBio, string $newProfileImageCloudinaryId, string $newProfileLocation, string $newProfileOAuthToken, string $newProfileSoundCloudUser, string $newProfileUserName) {
 		try {
@@ -96,7 +96,7 @@ class Profile implements \JsonSerializable {
 			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
 		} catch(\Exception $exception) {
 			// rethrow the exception to the caller
-			throw(new \Error($exception->getMessage(), 0, $exception));
+			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
 
@@ -448,7 +448,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "UPDATE profile SET profileOAuthId = :profileOAuthId, profileTypeId = :profileTypeId, profileBio = :profileBio, profileImageCloudinaryId = :profileImageCloudinaryId, profileLocation = :profileLocation, profileOAuthToken = :profileOAuthToken, profileSoundCloudUser = :profileSoundCloudUser, profileUserName = :profileUsername WHERE profileId = :profileId";
+		$query = "UPDATE profile SET profileOAuthId = :profileOAuthId, profileTypeId = :profileTypeId, profileBio = :profileBio, profileImageCloudinaryId = :profileImageCloudinaryId, profileLocation = :profileLocation, profileOAuthToken = :profileOAuthToken, profileSoundCloudUser = :profileSoundCloudUser, profileUserName = :profileUserName WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the placeholders in the template
@@ -488,7 +488,7 @@ class Profile implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
-				$profile[$profiles->key()] = $profile;
+				$profiles[$profiles->key()] = $profile;
 				$profiles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -527,10 +527,13 @@ class Profile implements \JsonSerializable {
 		// grab the profile from mySQL
 		try {
 			$profile = null;
+//			$profiles = new \SplFixedArray($statement->rowCount());
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+//				$profiles[$profiles->key()] = $profile;
+//				$profiles->next();
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

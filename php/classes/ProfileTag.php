@@ -176,8 +176,12 @@ class ProfileTag implements \JsonSerializable {
 		}
 		// create query template
 		$query = "SELECT profileTagProfileId, profileTagTagId FROM profileTag WHERE profileTagTagId = :profileTagTagId AND profileTagProfileId = :profileTagProfileId";
-//		$statement->execute($parameters);
+
 		$statement = $pdo->prepare($query);
+		//bind the param
+		$parameters = ["profileTagTagId" => $profileTagTagId, "profileTagProfileId" => $profileTagProfileId ];
+
+		$statement->execute($parameters);
 		// grab the tag from mySQL
 		try {
 			$profileTag = null;

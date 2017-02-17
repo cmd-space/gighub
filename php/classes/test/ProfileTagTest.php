@@ -221,7 +221,7 @@ class ProfileTagTest extends GigHubTest {
 		$profileTag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = ProfileTag::getAllProfileTag($this->getPDO());
+		$results = ProfileTag::getAllProfileTags($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileTag", $results);

@@ -121,7 +121,7 @@ class ProfileTag implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) {
 		// ensure the object exists before inserting
-		if($this->profileTagTagId === null || $this->profileTagPostId === null) {
+		if($this->profileTagTagId === null || $this->profileTagProfileId === null) {
 			throw(new \PDOException("not a valid profileTag"));
 
 		}

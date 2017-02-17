@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\GigHub\Test;
 
-use Edu\Cnm\GigHub\{OAuth, ProfileType, Profile, Tag};
+use Edu\Cnm\GigHub\{OAuth, ProfileType, Profile, Tag, ProfileTag};
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -39,7 +39,7 @@ class ProfileTagTest extends GigHubTest {
 	 * content of the OAuth
 	 * @var string OAuth
 	 **/
-	private $OAuth = null;
+	private $oAuth = null;
 	/**
 	 * content of the profileType
 	 * @var string for profileType
@@ -50,22 +50,28 @@ class ProfileTagTest extends GigHubTest {
 	 * @var string for tag
 	 **/
 	private $tag = null;
+	/**
+	 * content of profileTag
+	 * @var string profileTag
+	 **/
+	private $profileTag = null;
 
 	/**
 	 * create dependent objects before running each test
 	 **/
 	public final function setUp() {
-		// run the default setUp() method fir00
+		// run the default setUp() method for
 		parent::setUp();
 
 		// create and insert an OAuth to own the test ProfileTag
 		$this->oAuth = new OAuth(null, "Mail.ru");
 		$this->oAuth->insert($this->getPDO());
-		// create and sinsert an ProfileType to own the test ProfileTag
+
+		// create and insert an ProfileType to own the test ProfileTag
 		$this->profileType = new ProfileType(null, "Musician");
 		$this->profileType->insert($this->getPDO());
 		// create and insertg a Profile to own the test ProfileTag
-		$this->profile = new Profile(null, $this->OAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "bio break", "blahblahblah", "Albuquerque", "this is a toekn", "SoundClouduser","Long Duck Dong");
+		$this->profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "bio break", "blahblahblah", "Albuquerque", "this is a token", "SoundCloudUser", "Long Duck Dong");
 		$this->profile->insert($this->getPDO());
 		// create and insert a Tag to own the test
 		$this->tag = new Tag(null, "sausage");
@@ -81,7 +87,7 @@ class ProfileTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
 		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag( $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGID);
+		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
 		$profileTag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

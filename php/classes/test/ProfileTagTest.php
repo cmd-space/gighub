@@ -224,7 +224,7 @@ class ProfileTagTest extends GigHubTest {
 		$results = ProfileTag::getAllProfileTag($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Bsteider\\GigHub\\ProfileTag", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileTag", $results);
 
 		// grab the result from the array and validate it
 		$pdoProfileTag = $results[0];

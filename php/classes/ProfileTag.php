@@ -22,6 +22,11 @@ class ProfileTag implements \JsonSerializable {
 	private $profileTagProfileId;
 
 	/**
+	 * object of profileTag
+	 */
+	private $profileTag;
+
+	/**
 	 * actual keys of this profileTag
 	 *
 	 * @param int $newProfileTagProfileId id of the Profile that is referenced
@@ -33,8 +38,8 @@ class ProfileTag implements \JsonSerializable {
 	 **/
 	public function __construct(int $newProfileTagProfileId, int $newProfileTagTagId) {
 		try {
-			$this->setProfileTagTagId($newProfileTagTagId);
 			$this->setProfileTagProfileId($newProfileTagProfileId);
+			$this->setProfileTagTagId($newProfileTagTagId);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the calller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -56,7 +61,7 @@ class ProfileTag implements \JsonSerializable {
 	 */
 	/**
 	 * accessor method for profileTagTagId
-	 * @return int value of PostTag profile Id, foreign key
+	 * @return int value of ProfileTag profile Id, foreign key
 	 **/
 	public function getProfileTagTagId() {
 		return ($this->profileTagTagId);
@@ -102,6 +107,7 @@ class ProfileTag implements \JsonSerializable {
 		// convert and store the profile tag profile id
 		$this->profileTagProfileId = $newProfileTagProfileId;
 	}
+
 	/**
 	 * this is
 	 * the
@@ -123,7 +129,6 @@ class ProfileTag implements \JsonSerializable {
 		// ensure the object exists before inserting
 		if($this->profileTagTagId === null || $this->profileTagProfileId === null) {
 			throw(new \PDOException("not a valid profileTag"));
-
 		}
 		// create query template
 		$query = "INSERT INTO profileTag(profileTagProfileId, profileTagTagId) VALUES(:profileTagProfileId, :profileTagTagId)";
@@ -147,11 +152,11 @@ class ProfileTag implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "DELETE FROM `profileTag` WHERE profileTagTagId = :profileTagTagId AND ProfileITagProfileId = :profileTagProfileId";
+		$query = "DELETE FROM profileTag WHERE profileTagProfileId = :profileTagProfileId AND profileTagTagId = :profileTagTagId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileTagTagId" => $this->profileTagTagId, "profileTagProfileId" => $this->profileTagTagId];
+		$parameters = ["profileTagProfileId" => $this->profileTagProfileId, "profileTagTagId" => $this->profileTagTagId];
 		$statement->execute($parameters);
 	}
 
@@ -160,13 +165,13 @@ class ProfileTag implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $profileTagTagId tag id to search for
-	 * @param int $profileTagPostId tat id to search for
-	 * @return $profileITag|null Tag found or null if not found
+	 * @param int $profileTagProfileId profile id to search for
+	 * @return $profileTag|null Tag found or null if not found
 	 **/
-	/* FIXME: this method needs to be renamed getProfileITagByProfileITagTagIdAndProfileITagProfileId(), */
+	/* FIXME: this method needs to be renamed getProfileITagByProfileITagTagIdAndProfileITagProfileIId(), */
 	/* is this gucci?*/
 
-	public static function getProfileTagByProfileTagTagIdAndProfileTagProfileId(\PDO $pdo, int $profileTagTagId, int $profileTagProfileId) {
+	public static function getProfileTagByProfileTagTagIdAndProfileTagProfileId(\PDO $pdo, int $profileTagProfileId, int $profileTagTagId) {
 		// sanitize the profile tag id and profile tag id before searching
 		if($profileTagTagId <= 0) {
 			throw(new \PDOException("profile tag tag id is not positive"));
@@ -175,24 +180,25 @@ class ProfileTag implements \JsonSerializable {
 			throw(new \PDOException("profile tag profile id is not positive"));
 		}
 		// create query template
-		$query = "SELECT profileTagProfileId, profileTagTagId FROM profileTag WHERE profileTagTagId = :profileTagTagId AND profileTagProfileId = :profileTagProfileId";
-
+		$query = "SELECT profileTagProfileId, profileTagTagId FROM profileTag WHERE profileTagProfileId = :profileTagProfileId AND profileTagTagId = :profileTagTagId";
+//		$statement->execute($parameters);
 		$statement = $pdo->prepare($query);
-		//bind the param
-		$parameters = ["profileTagTagId" => $profileTagTagId, "profileTagProfileId" => $profileTagProfileId ];
 
+		//bind the profileTag to the placeholder in the template
+		$parameters = ["profileTagProfileId" => $profileTagProfileId, "profileTagTagId" => $profileTagTagId];
 		$statement->execute($parameters);
-		// grab the tag from mySQL
+
+		// grab the profile tag from mySQL
 		try {
 			$profileTag = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profileTag = new ProfileTag($row["profileTagTagId"], $row["profileTagProfileId"]);
+				$profileTag = new ProfileTag($row["profileTagProfileId"], $row["profileTagTagId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			var_dump($exception->getTrace());
+//			var_dump($exception->getTrace());
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($profileTag);

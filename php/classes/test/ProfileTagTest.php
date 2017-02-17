@@ -37,7 +37,7 @@ class ProfileTagTest extends GigHubTest {
 	private $profile = null;
 	/**
 	 * content of the OAuth
-	 * @var string OAuth
+	 * @var OAuth
 	 **/
 	private $oAuth = null;
 	/**
@@ -88,12 +88,15 @@ class ProfileTagTest extends GigHubTest {
 
 		// create a new ProfileTag and insert to into mySQL
 		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
+		//var_dump($profileTag);
 		$profileTag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
+		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagTagIdAndProfileTagProfileId($this->getPDO(), $profileTag->getProfileTagProfileId(), $profileTag->getProfileTagTagId());
+
+		var_dump($pdoProfileTag);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
-		$this->assertEquals($pdoProfileTag->getProfileTagProfile(), $this->VALID_PROFILETAGTAG);
+		$this->assertEquals($pdoProfileTag->getProfileTagProfileId(), $profileTag->getProfileTagProfileId());
 
 	}
 
@@ -116,7 +119,7 @@ class ProfileTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
 		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->PpofileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
+		$profileTag = new ProfileTag(null, $this->ProfileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
 		$profileTag->insert($this->getPDO());
 
 		// edit the ProfileTag and update it in mySQL
@@ -214,7 +217,7 @@ class ProfileTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
 		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
+		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId());
 		$profileTag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

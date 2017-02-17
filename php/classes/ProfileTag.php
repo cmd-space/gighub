@@ -59,7 +59,7 @@ class ProfileTag implements \JsonSerializable {
 	 * @return int value of PostTag profile Id, foreign key
 	 **/
 	public function getProfileTagTagId() {
-		return ($this->ProfileTagTagId);
+		return ($this->profileTagTagId);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class ProfileTag implements \JsonSerializable {
 		$query = "INSERT INTO profileTag(profileTagProfileId, profileTagTagId) VALUES(:profileTagProfileId, :profileTagTagId)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileTagPostId" => $this->profileTagProfileId, "profileTagTagId" => $this->profileTagTagId];
+		$parameters = ["profileTagProfileId" => $this->profileTagProfileId, "profileTagTagId" => $this->profileTagTagId];
 		$statement->execute($parameters);
 	}
 
@@ -147,11 +147,11 @@ class ProfileTag implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "DELETE FROM `profileTag` WHERE profileTagTagId = :profileTagTagId AND ProfileITagProfileIId = :profileTagProfileIId";
+		$query = "DELETE FROM `profileTag` WHERE profileTagTagId = :profileTagTagId AND ProfileITagProfileId = :profileTagProfileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileTagTagId" => $this->profileTagTagId, "profileTagProfileIId" => $this->profileTagTagId];
+		$parameters = ["profileTagTagId" => $this->profileTagTagId, "profileTagProfileId" => $this->profileTagTagId];
 		$statement->execute($parameters);
 	}
 
@@ -163,19 +163,19 @@ class ProfileTag implements \JsonSerializable {
 	 * @param int $profileTagPostId tat id to search for
 	 * @return $profileITag|null Tag found or null if not found
 	 **/
-	/* FIXME: this method needs to be renamed getProfileITagByProfileITagTagIdAndProfileITagProfileIId(), */
+	/* FIXME: this method needs to be renamed getProfileITagByProfileITagTagIdAndProfileITagProfileId(), */
 	/* is this gucci?*/
 
-	public static function getProfileITagByProfileITagTagIdAndProfileITagProfileIId(\PDO $pdo, int $profileTagTagId, int $profileTagProfileIId) {
+	public static function getProfileTagByProfileTagTagIdAndProfileTagProfileId(\PDO $pdo, int $profileTagTagId, int $profileTagProfileId) {
 		// sanitize the profile tag id and profile tag id before searching
 		if($profileTagTagId <= 0) {
 			throw(new \PDOException("profile tag tag id is not positive"));
 		}
-		if($profileTagProfileIId <= 0) {
+		if($profileTagProfileId <= 0) {
 			throw(new \PDOException("profile tag profile id is not positive"));
 		}
 		// create query template
-		$query = "SELECT profileTagProfileIId, profileTagTagId FROM profileTag WHERE profileTagTagId = :profileTagTagId AND profileTagProfileIId = :profileTagProfileIId";
+		$query = "SELECT profileTagProfileId, profileTagTagId FROM profileTag WHERE profileTagTagId = :profileTagTagId AND profileTagProfileId = :profileTagProfileId";
 //		$statement->execute($parameters);
 		$statement = $pdo->prepare($query);
 		// grab the tag from mySQL
@@ -184,7 +184,7 @@ class ProfileTag implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profileTag = new ProfileITag($row["profileTagTagId"], $row["profileTagProfileIId"]);
+				$profileTag = new ProfileTag($row["profileTagTagId"], $row["profileTagProfileId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

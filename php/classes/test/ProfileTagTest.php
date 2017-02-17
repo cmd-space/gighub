@@ -1,7 +1,8 @@
 <?php
-namespace Edu\Cnm\GigHub\Test;
+namespace Edu\Cnm\GigHub\ProfileTag\Test;
 
 use Edu\Cnm\GigHub\{OAuth, ProfileType, Profile, Tag, ProfileTag};
+use Edu\Cnm\Gighub\Test\GigHubTest;
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -34,45 +35,46 @@ class ProfileTagTest extends GigHubTest {
 	 *content of the profile class
 	 * @var /Profile
 	 **/
-	private $profile = null;
+	protected $profile = null;
 	/**
 	 * content of the OAuth
-	 * @var OAuth
+	 * @var string OAuth
 	 **/
-	private $oAuth = null;
+	protected $oAuth = null;
 	/**
 	 * content of the profileType
 	 * @var string for profileType
 	 **/
-	private $profileType = null;
+	protected $profileType = null;
 	/**
 	 * content of the tag class
 	 * @var string for tag
 	 **/
-	private $tag = null;
+	protected $tag = null;
 	/**
-	 * content of profileTag
-	 * @var string profileTag
-	 **/
-	private $profileTag = null;
+	 * profileTag
+	 */
+	protected $profileTag = null;
 
 	/**
 	 * create dependent objects before running each test
 	 **/
 	public final function setUp() {
-		// run the default setUp() method for
+		// run the default setUp() method fir00
 		parent::setUp();
 
 		// create and insert an OAuth to own the test ProfileTag
-		$this->oAuth = new OAuth(null, "Mail.ru");
+		$this->oAuth = new OAuth(null, "Facebook");
 		$this->oAuth->insert($this->getPDO());
 
-		// create and insert an ProfileType to own the test ProfileTag
+		// create and insert a ProfileType to own the test Profile
 		$this->profileType = new ProfileType(null, "Musician");
 		$this->profileType->insert($this->getPDO());
-		// create and insertg a Profile to own the test ProfileTag
-		$this->profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "bio break", "blahblahblah", "Albuquerque", "this is a token", "SoundCloudUser", "Long Duck Dong");
+
+		// create and insert a Profile to own the test ProfileTag
+		$this->profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "bio break", "blahblahblah", "Albuquerque", "this is a toekn", "SoundClouduser","Long Duck Dong");
 		$this->profile->insert($this->getPDO());
+
 		// create and insert a Tag to own the test
 		$this->tag = new Tag(null, "sausage");
 		$this->tag->insert($this->getPDO());
@@ -86,18 +88,20 @@ class ProfileTagTest extends GigHubTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
+//		var_dump($this->profile);
+
 		// create a new ProfileTag and insert to into mySQL
 		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
-		//var_dump($profileTag);
 		$profileTag->insert($this->getPDO());
+
+//		var_dump($profileTag);
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagTagIdAndProfileTagProfileId($this->getPDO(), $profileTag->getProfileTagProfileId(), $profileTag->getProfileTagTagId());
-
 		var_dump($pdoProfileTag);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
 		$this->assertEquals($pdoProfileTag->getProfileTagProfileId(), $profileTag->getProfileTagProfileId());
-
+		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $profileTag->getProfileTagTagId());
 	}
 
 	/**
@@ -107,43 +111,43 @@ class ProfileTagTest extends GigHubTest {
 	 **/
 	public function testInsertInvalidProfileTag() {
 		// create a ProfileTag with a non null profileTag id and watch it fail
-		$profileTag = new ProfileTag(GigHubTest::INVALID_KEY, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAGID);
+		$profileTag = new ProfileTag(GigHubTest::INVALID_KEY, GigHubTest::INVALID_KEY);
 		$profileTag->insert($this->getPDO());
 	}
 
 	/**
 	 * test inserting a ProfileTag, editing it, and then updating it
 	 **/
-	public function testUpdateValidProfileTag() {
-		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("profileTag");
+//	public function testUpdateValidProfileTag() {
+//		// count the number of rows and save it for later
+//		$numRows = $this->getConnection()->getRowCount("profileTag");
+//
+//		// create a new ProfileTag and insert to into mySQL
+//		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
+//		$profileTag->insert($this->getPDO());
+//
+//		// edit the ProfileTag and update it in mySQL
+//		$profileTag->setProfileTagTagId($this->VALID_PROFILETAGPROFILEID);
+//		$profileTag->update($this->getPDO());
+//
+//		// grab the data from mySQL and enforce the fields match our expectations
+//		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
+//		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
+//		$this->assertEquals($pdoProfileTag->getProfileTagId(), $this->profile->TaggetProfileTagId());
+//		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $this->VALID_PROFILETAGPROFILEID);
+//	}
 
-		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->ProfileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
-		$profileTag->insert($this->getPDO());
-
-		// edit the ProfileTag and update it in mySQL
-		$profileTag->setProfileTagTagId($this->VALID_PROFILETAGPROFILEID);
-		$profileTag->update($this->getPDO());
-
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
-		$this->assertEquals($pdoProfileTag->getProfileTagId(), $this->profile->TaggetProfileTagId());
-		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $this->VALID_PROFILETAGPROFILEID);
-	}
-
-	/**
-	 * test updating a ProfileTag that does not exist
-	 *
-	 * @expectedException PDOException
-	 **/
-	public function testUpdateInvalidProfileTag() {
-		// create a ProfileTag, try to update it without actually updating it and watch it fail
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
-		$profileTag->update($this->getPDO());
-
-	}
+//	/**
+//	 * test updating a ProfileTag that does not exist
+//	 *
+//	 * @expectedException PDOException
+//	 **/
+//	public function testUpdateInvalidProfileTag() {
+//		// create a ProfileTag, try to update it without actually updating it and watch it fail
+//		$profileTag = new ProfileTag();
+//		$profileTag->update($this->getPDO());
+//
+//	}
 
 	/**
 	 * test creating a ProfileTag and then deleting it
@@ -153,7 +157,7 @@ class ProfileTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
 		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
+		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
 		$profileTag->insert($this->getPDO());
 
 		// delete the ProfileTag from mySQL
@@ -161,74 +165,72 @@ class ProfileTagTest extends GigHubTest {
 		$profileTag->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the ProfileTag does not exist
-		$pdoProfileTag = ProfileTag::getTweetByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
+		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagTagIdAndProfileTagProfileId($this->getPDO(), $profileTag->getProfileTagProfileId(), $profileTag->getProfileTagTagId());
 		$this->assertNull($pdoProfileTag);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profileTag"));
 	}
 
 	/**
 	 * test deleting a ProfileTag that does not exist
-	 *
-	 * @expectedException PDOException
 	 **/
 	public function testDeleteInvalidProfileTag() {
 		// create a ProfileTag and try to delete it without actually inserting it
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
+		$profileTag = new ProfileTag(GigHubTest::INVALID_KEY, GigHubTest::INVALID_KEY);
 		$profileTag->delete($this->getPDO());
 	}
 
 	/**
 	 * test grabbing a ProfileTag by profile tag tag
 	 **/
-	public function testGetValidProfileTagByProfileTagTag() {
+	public function testGetValidProfileTagByProfileTagTagId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
 		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId(), $this->VALID_PROFILETAGTAG);
+		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
 		$profileTag->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = ProfileTag::getProfileTagByProfileTagTag($this->getPDO(), $profileTag->getProfileTagTag());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Bsteider\\GigHub\\ProfileTag", $results);
-
-		// grab the result from the array and validate it
-		$pdoProfileTag = $results[0];
-		$this->assertEquals($pdoProfileTag->getProfileTagId(), $this->profileTag->getProfileTagId());
-		$this->assertEquals($pdoProfileTag->getProfileTagTag(), $this->VALID_PROFILETAGTAG);
-	}
-
-	/**
-	 * test grabbing a ProfileTag by content that does not exist
-	 **/
-	public function testGetInvalidProfileTagByProfileTagTag() {
-		// grab a profile tag by searching for content that does not exist
-		$profileTag = ProfileTag::getProfileTagByProfileTagTag($this->getPDO(), "you will find nothing");
-		$this->assertCount(0, $profileTag);
-	}
-
-	/**
-	 * test grabbing all ProfileTag
-	 **/
-	public function testGetAllValidProfileTags() {
-		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("profileTag");
-
-		// create a new ProfileTag and insert to into mySQL
-		$profileTag = new ProfileTag(null, $this->profileTag->getProfileTagId());
-		$profileTag->insert($this->getPDO());
-
-		// grab the data from mySQL and enforce the fields match our expectations
-		$results = ProfileTag::getAllProfileTags($this->getPDO());
+		$results = ProfileTag::getProfileTagsByProfileTagTagId($this->getPDO(), $profileTag->getProfileTagTagId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileTag", $results);
 
 		// grab the result from the array and validate it
 		$pdoProfileTag = $results[0];
-		$this->assertEquals($pdoProfileTag->getProfileTagId(), $this->profile->getProfileTagId());
-		$this->assertEquals($pdoProfileTag->getProfileTagTag(), $this->VALID_PROFILETAGTAG);
+		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $profileTag->getProfileTagTagId());
+		$this->assertEquals($pdoProfileTag->getProfileTagProfileId(), $profileTag->getProfileTagProfileId());
+	}
+
+	/**
+	 * test grabbing a ProfileTag by content that does not exist
+	 **/
+	public function testGetInvalidProfileTagByProfileTagTagId() {
+		// grab a profile tag by searching for content that does not exist
+		$profileTag = ProfileTag::getProfileTagsByProfileTagTagId($this->getPDO(), GigHubTest::INVALID_KEY);
+		$this->assertCount(0, $profileTag);
+	}
+
+	/**
+	 * test grabbing all ProfileTags
+	 **/
+	public function testGetAllValidProfileTags() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profileTag");
+
+		// create a new ProfileTag and insert to into mySQL
+		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
+		$profileTag->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = ProfileTag::getProfileTagsByProfileTagProfileId($this->getPDO(), $profileTag->getProfileTagProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\ProfileTag", $results);
+
+		// grab the result from the array and validate it
+		$pdoProfileTag = $results[0];
+		$this->assertEquals($pdoProfileTag->getProfileTagProfileId(), $profileTag->getProfileTagProfileId());
+		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $profileTag->getProfileTagTagId());
 	}
 }

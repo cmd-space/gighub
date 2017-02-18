@@ -174,7 +174,7 @@ class PostTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new post and insert into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->getConnection(), $this->getRowCount("post"));
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
 		$post->insert($this->getPDO());
 
 		// delete the Post from mySQL

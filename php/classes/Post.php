@@ -441,7 +441,7 @@ class Post implements \JsonSerializable {
 		$statement->execute($parameters);
 
 		// build an array of Posts
-		$posts = new \SplFixedArray($statement->rowCount());
+		$post = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {

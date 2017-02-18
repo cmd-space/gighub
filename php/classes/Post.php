@@ -237,7 +237,7 @@ class Post implements \JsonSerializable {
 		}
 		//store the post created date
 		try {
-			$newPostCreatedDate = self::validateDateTime($newPostCreatedDate);
+			$newPostCreatedDate = self::DateTime($newPostCreatedDate);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -415,10 +415,10 @@ class Post implements \JsonSerializable {
 	}
 
 	/**
-	 *gets the Post b contents
+	 *gets the Post by contents
 	 *
 	 * @param \PDO $pdo PDO connection Object
-	 * @param string $postcontent post content to search for
+	 * @param string $postcontent to search for
 	 * @return \SplFixedArray SplFixedArray of Posts found
 	 * @thorws \ PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type

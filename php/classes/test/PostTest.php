@@ -35,7 +35,7 @@ class PostTest extends GigHubTest {
 	protected $VALID_POSTCONTENT2 = "BELIEVE IT OR NOT... it passed the second gate of Hell ";
 	/**
 	 * timestamp of the Tweet; this starts as null and is assigned later
-	 * @var DateTime $VALID_POSTCREATEDDATE
+	 * @var \DateTime $VALID_POSTCREATEDDATE
 	 **/
 	protected $VALID_POSTCREATEDDATE = null;
 	/**
@@ -51,7 +51,7 @@ class PostTest extends GigHubTest {
 	/**
 	 *the title of the post created
 	 **/
-	protected $VALID_POSTTITLE = null;
+	protected $VALID_POSTTITLE = "let's Jam";
 	/**
 	 * profile that created the Post; this is for foreign key relations
 	 * @var Post profile id
@@ -92,18 +92,41 @@ class PostTest extends GigHubTest {
 
 
 		// create and insert a Profile to own the test Post
-		$this->profile = new Profile(null, $this->oAuth->getOAuthId(),$this->profileType->getProfileTypeId(), "Super Bad", "valid cloud ID", "valid location", "valid O'Auth token", "valid soundcloud", "valid Username");
+		$this->profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "Super Bad", "valid cloud ID", "valid location", "valid O'Auth token", "valid soundcloud", "valid Username");
 		$this->profile->insert($this->getPDO());
 
 
 		// create and insert a venue to own the test Post
-		$this->venue = new Venue(null, "Err 418","89678 central", "7685 Lomas", "Rio Rathole", "NM", 87106);
+		$this->venue = new Venue(null, $this->venue->getVenueProfileId(), "Albuquerque", "Error 418", "nm","1343 Rock", "3453 Rock", "87105");
 		$this->venue->insert($this->getPDO());
 
 
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTCREATEDDATE = new \DateTime();
 		$this->VALID_POSTEVENTDATE = new \DateTime();
+	}
+
+	/**
+	 *test inserting a valid post and verify the actual mySQL data matches
+	 */
+	public function testInsertValidPost() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("post");
+
+		// create a new Post and insert it into mySQL
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
+		$post->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoPost = Post::getPostbyPostId($this->getPDO(), $post->getPostId());
+		$this->aasertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertEquals($pdoPost->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoPost->getVenueProfileId(), $this->venue->getVenueProfileId());
+		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+		$this->assertEquals($pdoPost->getPostImageCloudinaryId(), $this->VALID_POSTIMAGECLOUDINARYID);
+		$this->assertEquals($pdoPost->getPostTitle(), $this->VALID_POSTTITLE);
+		$this->assertEquals($pdoPost->getPostCreatedDate(), $this->VALID_POSTCREATEDDATE);
+		$this->assertEquals($pdoPost->getPostEventDate(), $this->VALID_POSTEVENTDATE);
 	}
 	/**
 	 *test inserting a post, editing it, and then updating it
@@ -112,9 +135,8 @@ class PostTest extends GigHubTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 
-
 		// create a new Post and insert to into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->profile->getVenueProfileId(), $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
 		$post->insert($this->getPDO());
 
 
@@ -142,7 +164,7 @@ class PostTest extends GigHubTest {
 	 */
 	public function testUpdateInvalidPost() {
 		// create a post, try to update it without actually updating it and watch it fail
-		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
 		$post->update($this->getPDO());
 	}
 
@@ -154,7 +176,7 @@ class PostTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new post and insert into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->getConnection(),$this->getRowCount("post"));
+		$post = new Post(null, $this->profile->getProfileId(), $this->getConnection(),$this->getRowCount("post"));
 		$post->insert($this->getPDO());
 
 		// delete the Post from mySQL
@@ -172,7 +194,7 @@ class PostTest extends GigHubTest {
 	 */
 	public function testDeleteInvalidPost() {
 		// create a post and try to delete it without actually inserting it
-		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
 		$post->delete($this->getPDO());
 	}
 
@@ -184,7 +206,7 @@ class PostTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new post and insert to into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
 		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -196,7 +218,6 @@ class PostTest extends GigHubTest {
 		// grab the result from the array and validate it
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoPost->getVenueProfileId(), $this->venue->getVenueProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT2);
 		$this->assertEquals($pdoPost->getPostCreatedDate(), $this->VALID_POSTCREATEDDATE);
 		$this->assertEquals($pdoPost->getPostEventDate(), $this->VALID_POSTEVENTDATE);
@@ -221,7 +242,7 @@ class PostTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new post and insert to into mySQl
-		$post = new Post(null, $this->profile->getProfile(), $this->venue->getVenueProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
+		$post = new Post(null, $this->profile->getProfile(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
 		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectaions
@@ -233,7 +254,6 @@ class PostTest extends GigHubTest {
 		// grab the result from the array and validate it
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getProfileId(), $this->profile->getProfile());
-		$this->assertEquals($pdoPost->getVenueProfileId(), $this->venue->getVenueProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 		$this->assertEquals($pdoPost->getPostCreatedDate(), $this->VALID_POSTCREATEDDATE);
 		$this->assertEquals($pdoPost->getPostEventDate(), $this->VALID_POSTEVENTDATE);

@@ -227,7 +227,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @param \DateTime|string|null $newPostCreatedDate post date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newPostCreatedDate is not a valid object or string
-	 * @throws /\RangeException if $newPostCreatedDate is a date that does exist
+	 * @throws \RangeException if $newPostCreatedDate is a date that does exist
 	 **/
 	public function setPostCreatedDate($newPostCreatedDate = null) {
 		//base case: if the date is null, use the current date and time
@@ -237,7 +237,7 @@ class Post implements \JsonSerializable {
 		}
 		//store the post created date
 		try {
-			$newPostCreatedDate = self::DateTime($newPostCreatedDate);
+			$newPostCreatedDate = self::validateDateTime($newPostCreatedDate);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -263,7 +263,7 @@ class Post implements \JsonSerializable {
 	 * @throws \RangeException if $newPostEvent is a date that does not exist
 	 **/
 	public function setPostEventDate($newPostEventDate = null) {
-		//base case: if the ate is null, use the current date and time
+		//base case: if the date is null, use the current date and time
 		if($newPostEventDate === null) {
 			$this->postEventDate = new \DateTime();
 			return;

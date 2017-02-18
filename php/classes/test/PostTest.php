@@ -114,7 +114,7 @@ class PostTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert it into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE);
+		$post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
 		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

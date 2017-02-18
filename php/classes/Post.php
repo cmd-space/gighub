@@ -2,7 +2,7 @@
 namespace Edu\Cnm\GigHub;
 
 require_once("autoload.php");
-use ValidateDate;
+
 /**
  * Post class
  *
@@ -12,6 +12,7 @@ use ValidateDate;
  * @version 1.0.0
  */
 class Post implements \JsonSerializable {
+	use ValidateDate;
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId
@@ -70,7 +71,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occur
 	 **/
-	public function __construct(int $newPostId = null, int $newPostProfileId, int $newPostVenueId, string $newPostContent, string $newPostImageCloudinaryId, string $newPostTitle, $newPostCreatedDate = null, $newPostEventDate = null) {
+	public function __construct(int $newPostId = null, int $newPostProfileId, int $newPostVenueId, string $newPostContent, $newPostCreatedDate = null, $newPostEventDate = null, string $newPostImageCloudinaryId, string $newPostTitle) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostProfileId($newPostProfileId);
@@ -357,12 +358,13 @@ class Post implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO post( postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle) VALUES( :postProfileId, :postVenueId, :postContent, :postCreatedDate, :postEventDate, :postImageCloudinaryId, :postTitle)";
+		$query = "INSERT INTO post(postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle) VALUES( :postProfileId, :postVenueId, :postContent, :postCreatedDate, :postEventDate, :postImageCloudinaryId, :postTitle)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
 		$formattedDate = $this->postCreatedDate->format("Y-m-d H:i:s");
-		$parameters = ["postProfileId"=> $this-> postProfileId, "postVenueId"=> $this-> postVenueId, "postContent"=> $this-> postContent, "postEventDate"=> $this-> postEventDate, "postImageCloudinaryId"=> $this-> postImageCloudinaryId, "postTitle"=> $this-> postTitle, "postCreatedDate"=> $this-> $formattedDate];
+		$formattedDate2 = $this->postEventDate->format("Y-m-d H:i:s");
+		$parameters = ["postProfileId" => $this->postProfileId, "postVenueId" => $this->postVenueId, "postContent" => $this->postContent, "postCreatedDate" => $formattedDate, "postEventDate" => $formattedDate2, "postImageCloudinaryId" => $this->postImageCloudinaryId, "postTitle" => $this->postTitle];
 		$statement->execute($parameters);
 
 		//update the null postId with what mySQL just gave us

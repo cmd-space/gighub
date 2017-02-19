@@ -411,8 +411,9 @@ class Post implements \JsonSerializable {
 
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->postCreatedDate->format("Y-m-d H:i:s");
+		$formattedDate2 = $this->postEventDate->format("Y-m-d H:i:s");
 
-		$parameters = ["postProfileId"=> $this-> postProfileId, "postVenueId"=> $this-> postVenueId, "postContent"=> $this-> postContent, "postEventDate"=> $this-> postEventDate, "postImageCloudinaryId"=> $this-> postImageCloudinaryId, "postTitle"=> $this-> postTitle, "postCreatedDate"=> $this-> $formattedDate];
+		$parameters = ["postProfileId"=> $this-> postProfileId, "postVenueId"=> $this-> postVenueId, "postContent"=> $this-> postContent, "postCreatedDate"=> $formattedDate, "postEventDate"=> $formattedDate2, "postImageCloudinaryId"=> $this-> postImageCloudinaryId, "postTitle"=> $this-> postTitle, "postId" => $this->postId];
 		$statement->execute($parameters);
 	}
 
@@ -420,7 +421,7 @@ class Post implements \JsonSerializable {
 	 *gets the Post by contents
 	 *
 	 * @param \PDO $pdo PDO connection Object
-	 * @param string $postcontent to search for
+	 * @param string $postContent to search for
 	 * @return \SplFixedArray SplFixedArray of Posts found
 	 * @thorws \ PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type
@@ -438,16 +439,16 @@ class Post implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the Post content to the place holder in the template
-		$postContent = "%postContent%";
+		$postContent = "%$postContent%";
 		$parameters = ["postContent" => $postContent];
 		$statement->execute($parameters);
 
 		// build an array of Posts
-		$post = new \SplFixedArray($statement->rowCount());
+		$posts = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$post = new Post($row["postId"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
 				$posts [$posts->key()] = $post;
 				$posts->next();
 			}  catch(\Exception $exception) {
@@ -455,7 +456,7 @@ class Post implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($post);
+		return($posts);
 	}
 
 	/**
@@ -474,7 +475,7 @@ class Post implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT postId, postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle FROM post WHERE postContent LIKE :postContent";
+		$query = "SELECT postId, postProfileId, postVenueId, postContent, postCreatedDate, postEventDate, postImageCloudinaryId, postTitle FROM post WHERE postId LIKE :postId";
 		$statement = $pdo->prepare($query);
 
 		// bind the post id to the place holder in the template
@@ -487,7 +488,7 @@ class Post implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$post = new Post($row["postId"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -505,7 +506,7 @@ class Post implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getPostBYPostProfileId(\PDO $pdo, int $postProfileId) {
+	public static function getPostByPostProfileId(\PDO $pdo, int $postProfileId) {
 		//sanitize the profile id before searching
 		if($postProfileId <= 0) {
 			throw(new \RangeException("post profile id must be positive"));
@@ -554,7 +555,7 @@ class Post implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !==false) {
 			try {
-				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$post = new Post($row["postId"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
 				$posts[$posts->key()] = $post;
 				$posts->next();
 			} catch(\Exception $exception) {

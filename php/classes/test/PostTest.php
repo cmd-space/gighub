@@ -128,6 +128,18 @@ class PostTest extends GigHubTest {
 		$this->assertEquals($pdoPost->getPostImageCloudinaryId(), $this->VALID_POSTIMAGECLOUDINARYID);
 		$this->assertEquals($pdoPost->getPostTitle(), $this->VALID_POSTTITLE);
 	}
+
+	/**
+	 * test inserting a Post that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidPost() {
+		// create a Profile with a non null profile id and watch it fail /cry
+		$post = new Post(GigHubTest::INVALID_KEY, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE);
+		$post->insert($this->getPDO());
+	}
+
 	/**
 	 *test inserting a post, editing it, and then updating it
 	 */
@@ -265,4 +277,32 @@ class PostTest extends GigHubTest {
 		$this->assertEquals($pdoPost->getPostTitle(), $this->VALID_POSTTITLE);
 	}
 
+	/**
+	 *test grabbing a post by post profile id
+	 */
+	public function testGetValidPostByPostProfileId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount( "post" );
+
+		// create a new post and insert to into mySQL
+		$post = new Post( null, $this->profile->getProfileId(), $this->venue->getVenueId(), $this->VALID_POSTCONTENT, $this->VALID_POSTCREATEDDATE, $this->VALID_POSTEVENTDATE, $this->VALID_POSTIMAGECLOUDINARYID, $this->VALID_POSTTITLE );
+		$post->insert( $this->getPDO() );
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Post::getPostByPostProfileId($this->getPDO(), $post->getPostProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Post", $results);
+
+		// grab the result from the array and validate it
+		$pdoPost = $results[0];
+		$this->assertEquals( $numRows + 1, $this->getConnection()->getRowCount( "post" ) );
+		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
+		$this->assertEquals( $pdoPost->getPostVenueId(), $post->getPostVenueId() );
+		$this->assertEquals( $pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+		$this->assertEquals( $pdoPost->getPostCreatedDate(), $this->VALID_POSTCREATEDDATE );
+		$this->assertEquals( $pdoPost->getPostEventDate(), $this->VALID_POSTEVENTDATE );
+		$this->assertEquals( $pdoPost->getPostImageCloudinaryId(), $this->VALID_POSTIMAGECLOUDINARYID );
+		$this->assertEquals( $pdoPost->getPostTitle(), $this->VALID_POSTTITLE );
+	}
 }

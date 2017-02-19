@@ -1,7 +1,8 @@
 <?php
 namespace Edu\Cnm\Gighub\Test;
 
-use Edu\Cnm\Gighub\{OAuth, Post, Tag, ProfileType};
+use Edu\Cnm\Gighub\{OAuth, Post, Profile, Tag, ProfileType};
+use Edu\Cnm\Gighub\Test\GigHubTest;
 
 // grab the project test parameters
 require_once("GigHubTest.php");
@@ -18,6 +19,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see PostTag
  * @author Brandon Steider <bsteider@cnm.edu>
  **/
+
 class PostTagTest extends GigHubTest {
 	/**
 	 * content of the PostTag
@@ -28,7 +30,7 @@ class PostTagTest extends GigHubTest {
 	 * content of the updated PostTagId
 	 * @var string $VALID_POSTTAGID
 	 **/
-	protected $VALID_POSTTAGID = "PHPUnit test still passing";
+	protected $VALID_POSTTAGTAG = "PHPUnit test still passing";
 	/**
 	 * id of the post tag tag id
 	 * @var string $VALID_POSTTAGTAGID
@@ -52,9 +54,16 @@ class PostTagTest extends GigHubTest {
 	 private $profileType = null;
 
 	/**
+	 * content of the tag class
+	 * @var string for tag
+	 **/
+	protected $tag = null;
+
+	/**
 	 * create dependent objects to own the test
 	 * @var Profile
 	 **/
+
 	private $profile = null;
 
 	/**
@@ -90,8 +99,8 @@ class PostTagTest extends GigHubTest {
 		$this->OAuth = new OAuth(null, "Mail.ru");
 		$this->OAuth->insert($this->getPDO());
 
-		// create and insert a Profile
-		$this->profile = new Profile(null, "yep");
+		// create and insert a Profile to own the test ProfileTag
+		$this->profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), "bio break", "blahblahblah", "Albuquerque", "this is a toekn", "SoundClouduser","Long Duck Dong");
 		$this->profile->insert($this->getPDO());
 
 		// create and insert a venue
@@ -102,41 +111,47 @@ class PostTagTest extends GigHubTest {
 		$this->profileType = new ProfileType(null, "venue");
 		$this->profileType->insert($this->getPDO());
 
-		/** create profile tag
-		$this->profileTag = new ProfileTag(	$this->profileTagProfileId->
-	profileTagTagId,
-		$this->profileTag->insert($this->getPDO());
-		**/
-		//create and insert a Post to own the test
-		$this->post = new Post(null, $this->profile->getProfileId(), $this->venue->getVenueId(), "cockcontent", VALID_DATE, VALID_DATE2, "you can do whatever fam", "postTitle");
-		$this->post->insert($this->getPDO());
+	}
 
-		// create and insert a Tag to own the test
-		$this->tag = new Tag(null, "sausage");
-		$this->tag->insert($this->getPDO());
+	/**
+	 * test inserting a valid ProfileTag and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidPostTag() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("postTag");
 
-		// calculate the date (just use the time the unit test was setup...)
+//		var_dump($this->post);
 
-		$this->VALID_DATE = new \DateTime();
-		$this->VALID_DATE2 = new \DateTime();
+		// create a new PostTag and insert to into mySQL
+		$postTag = new PostTag($this->post->getPostId(), $this->tag->getTagId());
+		$postTag->insert($this->getPDO());
+
+//		var_dump($postTag);
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoPostTag = PostTag::getPostTagByPostTagTagIdAndPostTagPostId($this->getPDO(), $postTag->getPostTagPostId(), $postTag->getPostTagTagId());
+		var_dump($pdoPostTag);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		$this->assertEquals($pdoPostTag->getPostTagPostId(), $postTag->getPostTagPostId());
+		$this->assertEquals($pdoPostTag->getPostTagTagId(), $postTag->getPostTagTagId());
 
 	}
 
 	/**
 	 * test inserting a valid postTag and verify that the actual mySQL data matches
 	 **/
-	public function testInsertValidPostTag() {
+	//public function testInsertinvalidPostTag() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("postTag");
+		//$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new post tag and insert into mySQL
-		$postTag = new PostTag(null, $this->tag->gettagId(), $this->VALID_POSTTAGTAG);
+		//$postTag = new PostTag(null, $this->tag->gettagId(), $this->VALID_POSTTAGTAG);
 			
 			// grab the data from mySQL and enforce the fields match our expectations
-		$pdoPostTag= PostTag::getPostTagbyPostTagId($this->getPDO(), $postTag->getPostTagId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
-		$this->assertEquals($pdoPostTag->gettagId(), $this->postTag->getPostTagId());
-		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGTAGID);
+		//$pdoPostTag= PostTag::getPostTagbyPostTagId($this->getPDO(), $postTag->getPostTagId());
+		//$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		//$this->assertEquals($pdoPostTag->gettagId(), $this->postTag->getPostTagId());
+		//$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGTAGID);
 	}
 
 	/**
@@ -144,33 +159,33 @@ class PostTagTest extends GigHubTest {
 	 *
 	 * @expdctedException PDOException
 	 **/
-	public function testUpdateValidPostTag() {
+	//public function testUpdateValidPostTag() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("postTag");
+		//$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert into mySQL
-		$postTag = new PostTag($this->postTag->getPostTagPostId(), $this->postTag->getPostTagId());
-		$postTag->insert($this->getPDO());
+		//$postTag = new PostTag($this->postTag->getPostTagPostId(), $this->postTag->getPostTagId());
+		//$postTag->insert($this->getPDO());
 
 		// edit the PostTag and update it in mySQL
-		$postTag->setPostTagTagId($this->VALID_POSTTAGPOSTID);
-		$postTag->update($this->getPDO());
+		//$postTag->setPostTagTagId($this->VALID_POSTTAGPOSTID);
+		//$postTag->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoPostTag = PostTag::getPostTagByPostTagId($this->getPDO(), $postTag->getPostTagId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
-		$this->assertEuals($pdoPostTag->getPostTagPostId(), $this->postTagPost->getPostTagPostId());
-		$this->assertEquals($pdoPostTag->getPostTagTagId(), $this->VALID_POSTTAGPOASTID);
-	}
+		//$pdoPostTag = PostTag::getPostTagByPostTagId($this->getPDO(), //$postTag->getPostTagId());
+		//$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
+		//$this->assertEuals($pdoPostTag->getPostTagPostId(), //$this->postTagPost->getPostTagPostId());
+		//$this->assertEquals($pdoPostTag->getPostTagTagId(), //$this->VALID_POSTTAGPOASTID);
+	//}
 	/**
 	 * test updating a PostTat that does not exist
 	 *
 	 * @expectedException PDOException
 	 **/
-	public function testUpdateInvalidPostTag() {
+	//public function testUpdateInvalidPostTag() {
 		// create a PostTag, try to update it without actually updating it and watch it fail
-		$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId());
-		$postTag->update($this->getPDO());
-	}
+		//$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId());
+		//$postTag->update($this->getPDO());
+	// }
 	/**
 	 * test creating a PostTag and then deleting it
 	 **/
@@ -179,7 +194,7 @@ class PostTagTest extends GigHubTest {
 		$numRows = $this->getConnection()->getRowCount("postTag");
 
 		// create a new PostTag and insert to into mySQL
-		$postTag = new postTag(null, $this->postTagTagId->getPostTagTagId());
+		$postTag = new PostTag(null, $this->postTagTagId->getPostTagTagId()$this->tag->getTagId());
 		$postTag->insert($this->getPDO());
 
 		// delete the PostTag from mySQL
@@ -187,7 +202,7 @@ class PostTagTest extends GigHubTest {
 		$postTag->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the PostTag does not exist
-		$pdoPostTag = PostTag::getPostTagByPostTagId($this->getPDO(), $postTag->getPostTagId());
+		$pdoPostTag = PostTag::getPostTagByPostTagTagIdAndPostTagPostId($this->getPDO(), $postTag->getPostTagPostId(), $postTag->getPostTagTagId());
 		$this->assertNull($pdoPostTag);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("postTag"));
 	}
@@ -198,7 +213,7 @@ class PostTagTest extends GigHubTest {
 	 **/
 	public function testDeleteInvalidPostTag() {
 		// create a PostTag and try to delete it without actually inserting it
-		$postTag = new PostTag(null, $this->postTagPost->getPostTagPostId(), $this->VALID_POSTTAGCONTENT);
+	$postTag = new PostTag(GigHubTest::INVALID_KEY, GigHubTest::INVALID_KEY);
 		$postTag->delete($this->getPDO());
 	}
 
@@ -215,9 +230,9 @@ class PostTagTest extends GigHubTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = PostTag::getPostTagByPostTagTagId($this->getPDO(), $postTag->getPostTagTagId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ostTag"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Bsteider\\Gighub\\PostTag", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Gighub\\PostTag", $results);
 
 		// grab the result from the array and validate it
 		$pdoPostTag = $results[0];
@@ -229,7 +244,7 @@ class PostTagTest extends GigHubTest {
 	 **/
 	public function testGetInvalidPostTagByPostTagTagId() {
 		// grab a postTag by searching for content that does not exist
-		$postTag = PostTag::getPostTagByPostTagTagId($this->getPDO(), "you will find nothing");
+	$postTag = PostTag::getPostTagsByPostTagTagId($this->getPDO(), GigHubTest::INVALID_KEY);
 		$this->assertCount(0, $postTag);
 	}
 	/**
@@ -247,7 +262,7 @@ class PostTagTest extends GigHubTest {
 		$results = PostTag::getAllPostTags($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("postTag"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Bsteider\\Gighub\\PostTag", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Gighub\\PostTag", $results);
 
 		// grab the result from the array and validate it
 		$pdoPostTag = $results[0];
@@ -256,7 +271,6 @@ class PostTagTest extends GigHubTest {
 
 	}
 
-	}
 
 	/********************************************************
 	 * HELLO HI

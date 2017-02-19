@@ -107,7 +107,7 @@ class ProfileTagTest extends GigHubTest {
 	/**
 	 * test inserting a ProfileTag that already exists
 	 *
-	 * @expectedException PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidProfileTag() {
 		// create a ProfileTag with a non null profileTag id and watch it fail

@@ -518,14 +518,14 @@ class Post implements \JsonSerializable {
 
 		// bind the post profile id to the place holder in the template
 		$parameters = ["postProfileId" => $postProfileId];
-		$statement = $pdo->prepare($parameters);
+		$statement->execute($parameters);
 
 		// build an array of posts
-		$posts= new \SplFixedArray($statement->rowCount());
+		$posts = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) != false) {
 			try {
-				$post = new Post($row["postID"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
+				$post = new Post($row["postId"], $row["postProfileId"], $row["postVenueId"], $row["postContent"], $row["postCreatedDate"], $row["postEventDate"], $row["postImageCloudinaryId"], $row["postTitle"]);
 				$posts[$posts->key()] = $post;
 				$posts->next();
 			} catch(\Exception $exception) {

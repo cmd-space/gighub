@@ -276,7 +276,7 @@ class PostTagTest extends GigHubTest {
 	 * HELLO HI
 	 **
 	 ***
-	 ****
+	 ****.
 	 *****
 	 ******
 	 *******

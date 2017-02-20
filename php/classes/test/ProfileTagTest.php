@@ -51,10 +51,6 @@ class ProfileTagTest extends GigHubTest {
 	 * @var string for tag
 	 **/
 	protected $tag = null;
-	/**
-	 * profileTag
-	 */
-	protected $profileTag = null;
 
 	/**
 	 * create dependent objects before running each test
@@ -88,13 +84,9 @@ class ProfileTagTest extends GigHubTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profileTag");
 
-//		var_dump($this->profile);
-
 		// create a new ProfileTag and insert to into mySQL
 		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
 		$profileTag->insert($this->getPDO());
-
-//		var_dump($profileTag);
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagTagIdAndProfileTagProfileId($this->getPDO(), $profileTag->getProfileTagProfileId(), $profileTag->getProfileTagTagId());
@@ -118,36 +110,6 @@ class ProfileTagTest extends GigHubTest {
 	/**
 	 * test inserting a ProfileTag, editing it, and then updating it
 	 **/
-//	public function testUpdateValidProfileTag() {
-//		// count the number of rows and save it for later
-//		$numRows = $this->getConnection()->getRowCount("profileTag");
-//
-//		// create a new ProfileTag and insert to into mySQL
-//		$profileTag = new ProfileTag($this->profile->getProfileId(), $this->tag->getTagId());
-//		$profileTag->insert($this->getPDO());
-//
-//		// edit the ProfileTag and update it in mySQL
-//		$profileTag->setProfileTagTagId($this->VALID_PROFILETAGPROFILEID);
-//		$profileTag->update($this->getPDO());
-//
-//		// grab the data from mySQL and enforce the fields match our expectations
-//		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagId($this->getPDO(), $profileTag->getProfileTagId());
-//		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
-//		$this->assertEquals($pdoProfileTag->getProfileTagId(), $this->profile->TaggetProfileTagId());
-//		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $this->VALID_PROFILETAGPROFILEID);
-//	}
-
-//	/**
-//	 * test updating a ProfileTag that does not exist
-//	 *
-//	 * @expectedException PDOException
-//	 **/
-//	public function testUpdateInvalidProfileTag() {
-//		// create a ProfileTag, try to update it without actually updating it and watch it fail
-//		$profileTag = new ProfileTag();
-//		$profileTag->update($this->getPDO());
-//
-//	}
 
 	/**
 	 * test creating a ProfileTag and then deleting it

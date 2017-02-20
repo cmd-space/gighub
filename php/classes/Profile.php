@@ -28,32 +28,32 @@ class Profile implements \JsonSerializable {
 	private $profileTypeId;
 	/**
 	 * textual content of this profile bio
-	 * @var $profileBio
+	 * @var string $profileBio
 	 **/
 	private $profileBio;
 	/**
 	 * id for cloudinary image for this profile
-	 * @var $profileImageCloudinaryId
+	 * @var string $profileImageCloudinaryId
 	 **/
 	private $profileImageCloudinaryId;
 	/**
 	 * location content for this profile
-	 * @var $profileLocation
+	 * @var string $profileLocation
 	 **/
 	private $profileLocation;
 	/**
 	 * token content for OAuth for this profile
-	 * @var $profileOAuthToken
+	 * @var string $profileOAuthToken
 	 **/
 	private $profileOAuthToken;
 	/**
 	 * SoundCloud username content for this profile
-	 * @var $profileSoundCloudUser
+	 * @var string $profileSoundCloudUser
 	 **/
 	private $profileSoundCloudUser;
 	/**
 	 * username content for this profile
-	 * @var $profileUserName
+	 * @var string $profileUserName
 	 **/
 	private $profileUserName;
 

@@ -33,8 +33,8 @@ class PostTag implements \JsonSerializable {
 	 **/
 	public function __construct(int $newPostTagPostId, int $newPostTagTagId) {
 		try {
-			$this->setPostTagTagId($newPostTagTagId);
 			$this->setPostTagPostId($newPostTagPostId);
+			$this->setPostTagTagId($newPostTagTagId);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the calller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -147,11 +147,11 @@ class PostTag implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "DELETE FROM `postTag` WHERE postTagTagId = :postTagTagId AND PostTagPostId = :postTagPostId";
+		$query = "DELETE FROM postTag WHERE PostTagPostId = :postTagPostId AND postTagTagId = :postTagTagId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place hodlers in the template
-		$parameters = ["postTagTagId" => $this->postTagTagId, "postTagPostId" => $this->postTagTagId];
+		$parameters = ["postTagPostId" => $this->postTagPostId, "postTagTagId" => $this->postTagTagId];
 		$statement->execute($parameters);
 	}
 
@@ -175,16 +175,21 @@ class PostTag implements \JsonSerializable {
 			throw(new \PDOException("post tag post id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagTagId = :postTagTagId AND postTagPostId = :postTagPostId";
+		$query = "SELECT postTagPostId, postTagTagId FROM postTag WHERE postTagPostId = :postTagPostId AND postTagTagId = :postTagTagId";
 //		$statement->execute($parameters);
 		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in the template
+		$parameters = ["postTagPostId" => $postTagPostId, "postTagTagId" => $postTagTagId];
+		$statement->execute($parameters);
+
 		// grab the tag from mySQL
 		try {
 			$postTag = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$postTag = new PostTag($row["postTagTagId"], $row["postTagPostId"]);
+				$postTag = new PostTag($row["postTagPostId"], $row["postTagTagId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

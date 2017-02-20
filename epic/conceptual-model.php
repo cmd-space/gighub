@@ -84,7 +84,7 @@
 				</li>
 			</ul>
 			<h2>ERD</h2>
-			<img src="images/gighub.svg" alt="savage">
+			<img src="images/gighub%20copy.svg" alt="savage">
 		</main>
 	</body>
 </html>

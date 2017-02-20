@@ -73,15 +73,55 @@ try {
 			throw(new \InvalidArgumentException ("No content for Tag.", 405));
 		}
 
-		// make sure tweet date is accurate (optional field)
-		if(empty($requestObject->tweetDate) === true) {
-			$requestObject->tweetDate = new \DateTime();
-		}
-
-		//  make sure profileId is available
-		if(empty($requestObject->profileId) === true) {
-			throw(new \InvalidArgumentException ("No Profile ID.", 405));
-		}
-
 		//perform the actual put or post
 		if($method === "PUT") {
+
+			// retrieve the tag to update
+			$tag = Tag::getTagByTagId($pdo, $id);
+			if($tag === null) {
+				throw(new RuntimeException("Tag does not exist", 404));
+			}
+
+			// update all attributes
+			$tag->setTagContent($requestObject->tagContent);
+			$tag->update($pdo);
+
+		} else if($method === "POST") {
+
+			// create new tag and insert into the database
+			$tag = new Tag(null, $requestObject->profileId, $requestObject->tagContent, null);
+			$tag->insert($pdo);
+
+		}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		// retrieve the tag to be deleted
+		$tag = Tag::getTagByTagId($pdo, $id);
+		if($tag === null) {
+			throw(new RuntimeException("Tweet does not exist", 404));
+		}
+
+		// delete tweet
+		$tag->delete($pdo);
+
+		// update reply
+		$reply->message = "Tag deleted OK";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
+
+	// update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+// encode and return reply to front end caller
+echo json_encode($reply);

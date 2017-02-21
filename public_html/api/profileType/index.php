@@ -61,3 +61,45 @@ try {
 				$reply->data = $profileTypes;
 			}
 		}
+	} else if($method === "PUT" || $method === "POST") {
+
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+
+		//make sure tweet content is available (required field)
+		if(empty($requestObject->profileTypeName) === true) {
+			throw(new \InvalidArgumentException ("Y U NO include name for profile type?", 405));
+		}
+
+		//  make sure profileTypeId is available
+		if(empty($requestObject->profileTypeId) === true) {
+			throw(new \InvalidArgumentException ("No Profile Type ID.", 405));
+		}
+
+		//perform the actual put or post
+		if($method === "PUT") {
+
+			// retrieve the tweet to update
+			$profileType = ProfileType::getProfileTypeByProfileTypeId($pdo, $id);
+			if($profileType === null) {
+				throw(new RuntimeException("Profile Type does not exist", 404));
+			}
+
+			// update all attributes
+			$profileType->setProfileTypeName($requestObject->profileTypeName);
+			$profileType->update($pdo);
+
+			// update reply
+			$reply->message = "Profile Type updated OK";
+
+		} else if($method === "POST") {
+
+			// create new tweet and insert into the database
+			$profileType = new ProfileType(null, $requestObject->profileTypeName);
+			$profileType->insert($pdo);
+
+			// update reply
+			$reply->message = "Profile Type created OK";
+		}
+

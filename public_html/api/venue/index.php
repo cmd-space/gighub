@@ -135,3 +135,29 @@ try {
 		if($venue === null) {
 			throw(new RuntimeException("Venue does not exist", 404));
 		}
+
+		// delete profile
+		$venue->delete($pdo);
+
+		// update reply
+		$reply->message = "Venue deleted OK";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
+
+	// update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+// encode and return reply to front end caller
+echo json_encode($reply);

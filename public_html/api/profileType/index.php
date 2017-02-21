@@ -1,7 +1,7 @@
 <?php
 
 require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
-require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
+require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\ProfileType;
@@ -39,3 +39,25 @@ try {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
+	// handle GET request - if id is present, that ProfileType is returned, otherwise all ProfileTypes are returned
+	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
+
+		//get a specific ProfileType or all ProfileTypes and update reply
+		if(empty($id) === false) {
+			$profileType = ProfileType::getProfileTypeByProfileTypeId($pdo, $id);
+			if($profileType !== null) {
+				$reply->data = $profileType;
+			}
+		} else if(empty($content) === false) {
+			$profileTypes = ProfileType::getProfileTypesByProfileTypeName($pdo, $name);
+			if($profileTypes !== null) {
+				$reply->data = $profileTypes;
+			}
+		} else {
+			$profileTypes = ProfileType::getAllProfileTypes($pdo);
+			if($profileTypes !== null) {
+				$reply->data = $profileTypes;
+			}
+		}

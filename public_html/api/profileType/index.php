@@ -102,4 +102,24 @@ try {
 			// update reply
 			$reply->message = "Profile Type created OK";
 		}
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
+
+	// update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+// encode and return reply to front end caller
+echo json_encode($reply);
 

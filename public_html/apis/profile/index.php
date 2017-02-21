@@ -105,38 +105,67 @@ try {
 		if ( empty( $requestObject->profileType ) === true ) {
 			throw( new \InvalidArgumentException ( "No profile type for this Profile.", 405 ) );
 		}
-	}
 
-	//perform the actual put or post
-	if($method === "PUT") {
+		//perform the actual put or post
+		if ( $method === "PUT" ) {
 
-		// retrieve the profile to update
+			// retrieve the profile to update
+			$profile = Profile::getProfileByProfileId( $pdo, $id );
+			if ( $profile === null ) {
+				throw( new RuntimeException( "Profile does not exist", 404 ) );
+			}
+
+			// update all attributes
+			$profile->setProfileBio( $requestObject->profileBio );
+			$profile->setProfileImageCloudinaryId( $requestObject->profileImageCloudinaryId );
+			$profile->setProfileLocation( $requestObject->profileLocation );
+			$profile->setProfileOAuthToken( $requestObject->profileOAuthToken );
+			$profile->setProfileSoundCloudUser( $requestObject->profileSoundCloudUser );
+			$profile->setProfileUserName( $requestObject->profileUserName );
+			$profile->update( $pdo );
+
+			// update reply
+			$reply->message = "Profile updated OK";
+		} else if($method === "POST") {
+
+			// create new profile and insert into the database
+			$profile = new Profile(null, $requestObject->profileOAuthId, $requestObject->profileTypeId, $requestObject->profileBio, $requestObject->profileImageCloudinaryId, $requestObject->profileLocation, $requestObject->profileOAuthToken, $requestObject->profileSoundCloudUser, $requestObject->profileUserName);
+			$profile->insert($pdo);
+
+			// update reply
+			$reply->message = "Profile created OK";
+		}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		// retrieve the Profile to be deleted
 		$profile = Profile::getProfileByProfileId($pdo, $id);
 		if($profile === null) {
 			throw(new RuntimeException("Profile does not exist", 404));
 		}
 
-		// update all attributes
-		$profile->setProfileBio($requestObject->profileBio);
-		$profile->setProfileImageCloudinaryId($requestObject->profileImageCloudinaryId);
-		$profile->setProfileLocation($requestObject->profileLocation);
-		$profile->setProfileOAuthToken($requestObject->profileOAuthToken);
-		$profile->setProfileSoundCloudUser($requestObject->profileSoundCloudUser);
-		$profile->setProfileUserName($requestObject->profileUserName);
-		$profile->update($pdo);
+		// delete profile
+		$profile->delete($pdo);
 
 		// update reply
-		$reply->message = "Profile updated OK";
-
-	} else if($method === "POST") {
-
-		// create new profile and insert into the database
-		$profile = new Profile(null, $requestObject->profileOAuthId, $requestObject->profileTypeId, $requestObject->profileBio, $requestObject->profileImageCloudinaryId, $requestObject->profileLocation, $requestObject->profileOAuthToken, $requestObject->profileSoundCloudUser, $requestObject->profileUserName);
-		$profile->insert($pdo);
-
-		// update reply
-		$reply->message = "Profile created OK";
+		$reply->message = "Profile deleted OK";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
+		// update reply with exception information
+	} catch(Exception $exception) {
+		$reply->status = $exception->getCode();
+		$reply->message = $exception->getMessage();
+	} catch(TypeError $typeError) {
+		$reply->status = $typeError->getCode();
+		$reply->message = $typeError->getMessage();
+	}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
 }
-}
+
+// encode and return reply to front end caller
+echo json_encode($reply);

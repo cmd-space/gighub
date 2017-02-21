@@ -358,4 +358,41 @@ class VenueTest extends GigHubTest {
 		$this->assertCount(0, $venue);
 	}
 
+	/**
+	 * test grabbing a Venue by Venue Profile Id
+	 **/
+	public function testGetValidVenueByVenueProfileId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("venue");
+
+		// create a new Venue and insert to into mySQL
+		$venue = new Venue(null, $this->testProfile->getProfileId(), $this->VALID_VENUECITY, $this->VALID_VENUENAME, $this->VALID_VENUESTATE, $this->VALID_VENUESTREET1, $this->VALID_VENUESTREET2, $this->VALID_VENUEZIP);
+		$venue->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Venue::getVenueByVenueProfileId($this->getPDO(), $venue->getVenueProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\GigHub\\Venue", $results);
+
+		// grab the result from the array and validate it
+		$pdoVenue = $results[0];
+		$this->assertEquals($pdoVenue->getVenueProfileId(), $this->testProfile->getProfileId());
+		$this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_VENUECITY);
+		$this->assertEquals($pdoVenue->getVenueName(), $this->VALID_VENUENAME);
+		$this->assertEquals($pdoVenue->getVenueState(), $this->VALID_VENUESTATE);
+		$this->assertEquals($pdoVenue->getVenueStreet1(), $this->VALID_VENUESTREET1);
+		$this->assertEquals($pdoVenue->getVenueStreet2(), $this->VALID_VENUESTREET2);
+		$this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_VENUEZIP);
+	}
+
+	/**
+	 * test grabbing a Venue by Profile Id that does not exist
+	 **/
+	public function testGetInvalidVenueByVenueProfileId() {
+		// grab a venue by searching for name that does not exist
+		$venue = Venue::getVenueByVenueProfileId($this->getPDO(), "imaginary profile id, dummy");
+		$this->assertCount(0, $venue);
+	}
+
 }

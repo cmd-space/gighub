@@ -90,7 +90,7 @@ class PostTagTest extends GigHubTest {
 		parent::setUp();
 
 		// create and insert an OAuth to own the test ProfileTag
-		$this->oAuth = new OAuth( null, "Mail.ru" );
+		$this->oAuth = new oAuth( null, "Mail.ru" );
 		$this->oAuth->insert( $this->getPDO() );
 
 		// create dependent profile type

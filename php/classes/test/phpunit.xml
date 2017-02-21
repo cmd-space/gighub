@@ -1,14 +1,14 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="GigHub Data Design">
-			<file>OAuthTest.php</file>
-			<file>ProfileTypeTest.php</file>
-			<file>ProfileTest.php</file>
+			<!--<file>OAuthTest.php</file>-->
+			<!--<file>ProfileTypeTest.php</file>-->
+			<!--<file>ProfileTest.php</file>-->
 			<file>VenueTest.php</file>
-			<file>PostTest.php</file>
-			<file>Tag1Test.php</file>
-			<file>ProfileTagTest.php</file>
-			<file>PostTagTest.php</file>
+			<!--<file>PostTest.php</file>-->
+			<!--<file>Tag1Test.php</file>-->
+			<!--<file>ProfileTagTest.php</file>-->
+			<!--<file>PostTagTest.php</file>-->
 		</testsuite>
 	</testsuites>
 	<filter>

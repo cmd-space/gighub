@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\GigHub\Post\Test;
+namespace Edu\Cnm\GigHub\Test;
 
 //use Edu\Cnm\GigHub\OAuth;
 //use Edu\Cnm\GigHub\Profile\Test\ProfileTest;

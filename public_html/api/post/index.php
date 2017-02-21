@@ -77,4 +77,5 @@ if($method === "GET") {
 	if(empty($requestObject->postTitle) === true) {
 		throw(new \InvalidArgumentException ("No content for Title", 405));
 	}
+
 }

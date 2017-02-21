@@ -89,7 +89,22 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure profile venue id is available (required field)
+		//make sure venue id is available (required field)
 		if(empty($requestObject->venueId) === true) {
 			throw(new \InvalidArgumentException ("No venue id for this venue.", 405));
 		}
+
+		//make sure venue profile id is available (required field)
+		if ( empty( $requestObject->venueProfileId ) === true ) {
+			throw( new \InvalidArgumentException ( "No venue profile id for this venue.", 405 ) );
+		}
+
+		//perform the actual put or post
+		if ( $method === "PUT" ) {
+
+			// retrieve the venue to update
+			$venue = Venue::getVenueByVenueId( $pdo, $id );
+			if ( $venue === null ) {
+				throw( new RuntimeException( "Venue does not exist", 404 ) );
+			}
+

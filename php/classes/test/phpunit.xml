@@ -5,10 +5,10 @@
 			<!--<file>ProfileTypeTest.php</file>-->
 			<!--<file>ProfileTest.php</file>-->
 			<file>VenueTest.php</file>
-			<!--<file>PostTest.php</file>-->
-			<!--<file>Tag1Test.php</file>-->
-			<!--<file>ProfileTagTest.php</file>-->
-			<!--<file>PostTagTest.php</file>-->
+				<!--<file>PostTest.php</file>-->
+				<!--<file>Tag1Test.php</file>-->
+				<!--<file>ProfileTagTest.php</file>-->
+				<!--<file>PostTagTest.php</file>-->
 		</testsuite>
 	</testsuites>
 	<filter>
@@ -16,5 +16,4 @@
 			<directory suffix=".php">../</directory>
 		</whitelist>
 	</filter>
-
 </phpunit>

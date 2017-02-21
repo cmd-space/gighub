@@ -50,7 +50,7 @@ try {
 			if($profileType !== null) {
 				$reply->data = $profileType;
 			}
-		} else if(empty($content) === false) {
+		} else if(empty($name) === false) {
 			$profileTypes = ProfileType::getProfileTypesByProfileTypeName($pdo, $name);
 			if($profileTypes !== null) {
 				$reply->data = $profileTypes;
@@ -72,10 +72,10 @@ try {
 			throw(new \InvalidArgumentException ("Y U NO include name for profile type?", 405));
 		}
 
-		//  make sure profileTypeId is available
-		if(empty($requestObject->profileTypeId) === true) {
-			throw(new \InvalidArgumentException ("No Profile Type ID.", 405));
-		}
+//		//  make sure profileTypeId is available
+//		if(empty($requestObject->profileTypeId) === true) {
+//			throw(new \InvalidArgumentException ("No Profile Type ID.", 405));
+//		}
 
 		//perform the actual put or post
 		if($method === "PUT") {

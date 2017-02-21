@@ -4,7 +4,7 @@ require_once "autoloader.php";
 require_once "/lib/xsrf.php";
 require_once "/etc/apache2/GigHub-mysql/encrypted-config.php";
 
-use Edu\Cnm\Jramirez98\GigHub;
+use Edu\Cnm\GigHub\Post;
 
 /**
  *  api for post class
@@ -23,46 +23,54 @@ $reply->status = 200;
 $reply->data = null;
 
 try {
-		//grab the mySQL connection
-		$pdo = connectToEncryptedMySQL("/etc/apache2/gighub-mysql/post.ini");
+	//grab the mySQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/gighub-mysql/post.ini");
 
-		// determine which HTTP method was used
-		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	// determine which HTTP method was used
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-		// sanitize input
-		$id = filter_input(INPUT_GET, "ID", FILTER_VALIDATE_INT);
-		$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-		$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	// sanitize input
+	$id = filter_input(INPUT_GET, "ID", FILTER_VALIDATE_INT);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$venueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
+	$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$title = filter_input(INPUT_GET, "title", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-}
+	// make sure the id is valid for methods that require it
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+	}
 
 // handle GET request - if id is present, that post is returned, otherwise all posts are returned
-if($method === "GET") {
+	if($method === "GET") {
 
-	//gets a post by content
-	if(empty($content) === false) {
-		$post = Post::getPostByPostContent($pdo, $content);
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-	} else if(empty($postId) === false) {
-		$posts = Post::getPostByPostId($pdo, $postId);
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-	} else if(empty($profileId) === false) {
-		$posts = Post::getPostByPostProfileId($pdo, $profileId);
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-	}
-} else {
-	$posts = Post::getAllPosts($pdo);
-	if($posts !== null) {
-		$reply->data = $posts;
-	}
-}
-else if($method === "PUT" || $method === "POST") {
+		//gets a post by content
+		if(empty($content) === false) {
+			$post = Post::getPostByPostContent($pdo, $content);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+		} else if(empty($postId) === false) {
+			$posts = Post::getPostByPostId($pdo, $postId);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+		} else if(empty($profileId) === false) {
+			$posts = Post::getPostByPostProfileId($pdo, $profileId);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+	} else {
+			$posts = Post::getAllPosts($pdo);
+			if($posts !== null) {
+				$reply->data = $posts;
+				}
+			}
+		} else if($method === "PUT" || $method === "POST") {
+
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
 
 	// make sure post content is available (require field)
 	if(empty($requestObject->postContent) === true) {
@@ -99,7 +107,7 @@ else if($method === "PUT" || $method === "POST") {
 		$post = Post::getPostByPostId($pdo, $id);
 		if($post === null) {
 			throw(new RuntimeException("Post does no exist", 404));
-
+		}
 			// update all attributes
 			$post->setPostProfileId($requestObject->postProfileId);
 			$post->setPostVenueId($requestObject->postVenueId);
@@ -121,12 +129,15 @@ else if($method === "PUT" || $method === "POST") {
 			//update reply
 			$reply->insert($pdo);
 		}
+
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
 		//retrieve the post to be deleted
 		$post = Post::getPostByPostId($pdo, $id);
 		if($post === null) {
+			throw(new RuntimeException("post does not exist", 404));
+		}
 
 			// delete post
 			$post->delete($pdo);
@@ -148,5 +159,9 @@ else if($method === "PUT" || $method === "POST") {
 	}
 
 	header("Content-Type: application/json");
-	if($reply->data === null);
+	if($reply->data === null) {
+		unset($reply->data);
 }
+
+// encode and return reply to front end caller
+echo json_encode($reply);

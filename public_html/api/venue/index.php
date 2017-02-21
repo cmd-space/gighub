@@ -117,9 +117,21 @@ try {
 			$venue->setVenueZip($requestObject->venueZip);
 
 			// update reply
-			$reply->message = "Profile updated OK";
+			$reply->message = "Venue updated OK";
 		} else if($method === "POST") {
 
-			// create new profile and insert into the database
-			$profile = new Profile(null, $requestObject->venueProfileId, $requestObject->venueCity, $requestObject->venueName, $requestObject->venueState, $requestObject->venueStreet1, $requestObject->venueStreet2, $requestObject->venueZip);
-			$profile->insert($pdo);
+			// create new venue and insert into the database
+			$venue = new Venue(null, $requestObject->venueProfileId, $requestObject->venueCity, $requestObject->venueName, $requestObject->venueState, $requestObject->venueStreet1, $requestObject->venueStreet2, $requestObject->venueZip);
+			$venue->insert($pdo);
+
+			// update reply
+			$reply->message = "Venue created OK";
+		}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		// retrieve the Venue to be deleted
+		$venue = Venue::getVenueByVenueId($pdo, $id);
+		if($venue === null) {
+			throw(new RuntimeException("Venue does not exist", 404));
+		}

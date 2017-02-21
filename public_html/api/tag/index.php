@@ -10,12 +10,12 @@ use Edu\Cnm\GigHub\Tag;
 /**
  * api for the Tag class
  *
- * @author Brandon Steider find me on myspace <bsteider@cnm.edu>
+ * @author Brandon Steider aka Saltine <bsteider@cnm.edu>
  **/
 
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
-		session_start();
+	session_start();
 }
 
 //prepare an empty reply
@@ -24,11 +24,11 @@ $reply->status = 200;
 $reply->data = null;
 
 try {
-		//grab the mySQL connection
-		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
+	//grab the mySQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
-		//determine which HTTP method was used
-		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	//determine which HTTP method was used
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
@@ -38,12 +38,14 @@ try {
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
-	// handle GET request - if id is present, that tag is returned, otherwise all tags are returned
+
+
+	// handle GET request - if id is present, that Tag is returned, otherwise all Tags are returned
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific tag or all tags and update reply
+		//get a specific Tag or all Tags and update reply
 		if(empty($id) === false) {
 			$tag = Tag::getTagByTagId($pdo, $id);
 			if($tag !== null) {
@@ -66,9 +68,9 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure tag content is available (required field)
+		//make sure tweet content is available (required field)
 		if(empty($requestObject->tagContent) === true) {
-			throw(new \InvalidArgumentException ("No content for Tag.", 405));
+			throw(new \InvalidArgumentException ("No Tag content.", 405));
 		}
 
 		//perform the actual put or post
@@ -84,28 +86,19 @@ try {
 			$tag->setTagContent($requestObject->tagContent);
 			$tag->update($pdo);
 
+			// update reply
+			$reply->message = "Tag updated OK";
+
 		} else if($method === "POST") {
 
 			// create new tag and insert into the database
 			$tag = new Tag(null, $requestObject->tagContent);
 			$tag->insert($pdo);
 
+			// update reply
+			$reply->message = "Tag created OK";
 		}
-
-	} else if($method === "DELETE") {
-		verifyXsrf();
-
-		// retrieve the tag to be deleted
-		$tag = Tag::getTagByTagId($pdo, $id);
-		if($tag === null) {
-			throw(new RuntimeException("Tag does not exist", 404));
-		}
-
-		// delete tag
-		$tag->delete($pdo);
-
-		// update reply
-		$reply->message = "Tag deleted OK";
+		// TODO: Should we add a DELETE in our PDO?
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
@@ -118,7 +111,6 @@ try {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
-
 
 header("Content-type: application/json");
 if($reply->data === null) {

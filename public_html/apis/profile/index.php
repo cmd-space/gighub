@@ -89,5 +89,54 @@ try {
 //			if($tweets !== null) {
 //				$reply->data = $tweets;
 //			}
+//	}
+	} else if ( $method === "PUT" || $method === "POST" ) {
+
+		verifyXsrf();
+		$requestContent = file_get_contents( "php://input" );
+		$requestObject  = json_decode( $requestContent );
+
+		//make sure profile OAuth id is available (required field)
+		if ( empty( $requestObject->profileOAuthId ) === true ) {
+			throw( new \InvalidArgumentException ( "No profile OAuth id for this Profile.", 405 ) );
+		}
+
+		//make sure profile type is available (required field)
+		if ( empty( $requestObject->profileType ) === true ) {
+			throw( new \InvalidArgumentException ( "No profile type for this Profile.", 405 ) );
 		}
 	}
+
+	//perform the actual put or post
+	if($method === "PUT") {
+
+		// retrieve the profile to update
+		$profile = Profile::getProfileByProfileId($pdo, $id);
+		if($profile === null) {
+			throw(new RuntimeException("Profile does not exist", 404));
+		}
+
+		// update all attributes
+		$profile->setProfileBio($requestObject->profileBio);
+		$profile->setProfileImageCloudinaryId($requestObject->profileImageCloudinaryId);
+		$profile->setProfileLocation($requestObject->profileLocation);
+		$profile->setProfileOAuthToken($requestObject->profileOAuthToken);
+		$profile->setProfileSoundCloudUser($requestObject->profileSoundCloudUser);
+		$profile->setProfileUserName($requestObject->profileUserName);
+		$profile->update($pdo);
+
+		// update reply
+		$reply->message = "Profile updated OK";
+
+	} else if($method === "POST") {
+
+		// create new profile and insert into the database
+		$profile = new Profile(null, $requestObject->profileOAuthId, $requestObject->profileTypeId, $requestObject->profileBio, $requestObject->profileImageCloudinaryId, $requestObject->profileLocation, $requestObject->profileOAuthToken, $requestObject->profileSoundCloudUser, $requestObject->profileUserName);
+		$profile->insert($pdo);
+
+		// update reply
+		$reply->message = "Profile created OK";
+	}
+
+}
+}

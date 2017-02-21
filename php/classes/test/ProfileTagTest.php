@@ -90,7 +90,6 @@ class ProfileTagTest extends GigHubTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfileTag = ProfileTag::getProfileTagByProfileTagTagIdAndProfileTagProfileId($this->getPDO(), $profileTag->getProfileTagProfileId(), $profileTag->getProfileTagTagId());
-		var_dump($pdoProfileTag);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileTag"));
 		$this->assertEquals($pdoProfileTag->getProfileTagProfileId(), $profileTag->getProfileTagProfileId());
 		$this->assertEquals($pdoProfileTag->getProfileTagTagId(), $profileTag->getProfileTagTagId());

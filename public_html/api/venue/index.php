@@ -95,16 +95,31 @@ try {
 		}
 
 		//make sure venue profile id is available (required field)
-		if ( empty( $requestObject->venueProfileId ) === true ) {
-			throw( new \InvalidArgumentException ( "No venue profile id for this venue.", 405 ) );
+		if(empty($requestObject->venueProfileId) === true) {
+			throw(new \InvalidArgumentException ("No venue profile id for this venue.", 405));
 		}
 
 		//perform the actual put or post
-		if ( $method === "PUT" ) {
+		if($method === "PUT") {
 
 			// retrieve the venue to update
-			$venue = Venue::getVenueByVenueId( $pdo, $id );
-			if ( $venue === null ) {
-				throw( new RuntimeException( "Venue does not exist", 404 ) );
+			$venue = Venue::getVenueByVenueId($pdo, $id);
+			if($venue === null) {
+				throw(new RuntimeException("Venue does not exist", 404));
 			}
 
+			// update all attributes
+			$venue->setVenueCity($requestObject->venueCity);
+			$venue->setVenueName($requestObject->venueName);
+			$venue->setVenueState($requestObject->venueState);
+			$venue->setVenueStreet1($requestObject->venueStreet1);
+			$venue->setVenueStreet2($requestObject->venueStreet2);
+			$venue->setVenueZip($requestObject->venueZip);
+
+			// update reply
+			$reply->message = "Profile updated OK";
+		} else if($method === "POST") {
+
+			// create new profile and insert into the database
+			$profile = new Profile(null, $requestObject->venueProfileId, $requestObject->venueCity, $requestObject->venueName, $requestObject->venueState, $requestObject->venueStreet1, $requestObject->venueStreet2, $requestObject->venueZip);
+			$profile->insert($pdo);

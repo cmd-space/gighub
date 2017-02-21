@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
+require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\Tag;
@@ -15,7 +15,7 @@ use Edu\Cnm\GigHub\Tag;
 
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
-	session_start();
+		session_start();
 }
 
 //prepare an empty reply
@@ -25,7 +25,7 @@ $reply->data = null;
 
 try {
 		//grab the mySQL connection
-		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/tag.ini");
+		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
 		//determine which HTTP method was used
 		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -43,27 +43,25 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific tag or all tweets and update reply
+		//get a specific tag or all tags and update reply
 		if(empty($id) === false) {
-			$tweet = Tag::getTagByTagId($pdo, $id);
+			$tag = Tag::getTagByTagId($pdo, $id);
 			if($tag !== null) {
 				$reply->data = $tag;
 			}
+		} else if(empty($content) === false) {
+			$tags = Tag::getTagByTagContent($pdo, $content);
 			if($tags !== null) {
 				$reply->data = $tags;
 			}
-		} else if(empty($content) === false) {
-			$tags = Tag::getTagByTagContent($pdo, $content);
-			if($tag !== null) {
-				$reply->data = $tags;
-			}
 		} else {
-			$tags = Tags::getAllTags($pdo);
+			$tags = Tag::getAllTags($pdo);
 			if($tags !== null) {
 				$reply->data = $tags;
 			}
 		}
 	} else if($method === "PUT" || $method === "POST") {
+
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
@@ -89,20 +87,21 @@ try {
 		} else if($method === "POST") {
 
 			// create new tag and insert into the database
-			$tag = new Tag(null, $requestObject->profileId, $requestObject->tagContent, null);
+			$tag = new Tag(null, $requestObject->tagContent);
 			$tag->insert($pdo);
 
 		}
+
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
 		// retrieve the tag to be deleted
 		$tag = Tag::getTagByTagId($pdo, $id);
 		if($tag === null) {
-			throw(new RuntimeException("Tweet does not exist", 404));
+			throw(new RuntimeException("Tag does not exist", 404));
 		}
 
-		// delete tweet
+		// delete tag
 		$tag->delete($pdo);
 
 		// update reply
@@ -114,9 +113,12 @@ try {
 	// update reply with exception information
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
 } catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
+
 
 header("Content-type: application/json");
 if($reply->data === null) {

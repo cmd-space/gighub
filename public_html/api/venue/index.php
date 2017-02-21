@@ -57,6 +57,11 @@ try {
 				$reply->data = $venue;
 			}
 		} else if(empty($profileId) === false) {
+			$venue = Venue::getVenueByVenueProfileId($pdo, $profileId);
+			if($venue !== null) {
+				$reply->data = $venue;
+			}
+		} else if(empty($profileId) === false) {
 			$venue = Venue::getVenueByVenueName($pdo, $name);
 			if($venue !== null) {
 				$reply->data = $venue;

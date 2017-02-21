@@ -465,6 +465,44 @@ class Venue implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the venue by venueProfileId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $venueProfileId venue profile id to search for
+	 * @return Venue|null Venue found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVenueByVenueProfileId(\PDO $pdo, int $venueProfileId) {
+		// sanitize the venueId before searching
+		if($venueProfileId <= 0) {
+			throw(new \PDOException("venue profile id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT venueId, venueProfileId, venueCity, venueName, venueState, venueStreet1, venueStreet2, venueZip FROM venue WHERE venueProfileId = :venueProfileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the venue id to the place holder in the template
+		$parameters = ["venueProfileId" => $venueProfileId];
+		$statement->execute($parameters);
+
+		// grab the venue from mySQL
+		try {
+			$venue = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$venue = new Venue($row["venueId"], $row["venueProfileId"], $row["venueCity"], $row["venueName"], $row["venueState"], $row["venueStreet1"], $row["venueStreet2"], $row["venueZip"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($venue);
+	}
+
+	/**
 	 * gets the venue by venue name
 	 *
 	 * @param \PDO $pdo PDO connection object

@@ -423,7 +423,7 @@ class Post implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection Object
 	 * @param string $postContent to search for
 	 * @return \SplFixedArray SplFixedArray of Posts found
-	 * @thorws \ PDOException when mySQL related errors occur
+	 * @throws \ PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type
 	 **/
 	public static function getPostByPostContent(\PDO $pdo, string $postContent) {

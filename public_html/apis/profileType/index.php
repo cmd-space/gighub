@@ -1,7 +1,8 @@
 <?php
 
-require_once "../../../php/classes/autoload.php";
-require_once "../../lib/xsrf.php";
+( "/classes/autoload.php")
+require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\ProfileType;
@@ -38,3 +39,4 @@ try {
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
+

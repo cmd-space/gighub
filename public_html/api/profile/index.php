@@ -25,7 +25,7 @@ $reply->data = null;
 
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL( "/etc/apache2/capstone-mysql/profile.ini" );
+	$pdo = connectToEncryptedMySQL( "/etc/apache2/capstone-mysql/gighub.ini" );
 
 	//determine which HTTP method was used
 	$method = array_key_exists( "HTTP_X_HTTP_METHOD", $_SERVER ) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -153,7 +153,7 @@ try {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
-		// update reply with exception information
+	// update reply with exception information
 	} catch(Exception $exception) {
 		$reply->status = $exception->getCode();
 		$reply->message = $exception->getMessage();

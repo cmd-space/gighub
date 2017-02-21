@@ -1,7 +1,7 @@
 <?php
 
-require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\Venue;
@@ -41,22 +41,50 @@ try {
 	$zip = filter_input(INPUT_GET, "zip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
-	if ( ( $method === "DELETE" || $method === "PUT" ) && ( empty( $id ) === true || $id < 0 ) ) {
-		throw( new InvalidArgumentException( "id cannot be empty or negative", 405 ) );
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
 	// handle GET request - if id is present, that venue is returned, otherwise all profiles are returned
-	if ( $method === "GET" ) {
+	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
 		//get a specific venue or all venues and update reply
-		if ( empty( $id ) === false ) {
-			$venue = Venue::getVenueByVenueId( $pdo, $id );
-			if ( $venue !== null ) {
+		if(empty($id) === false) {
+			$venue = Venue::getVenueByVenueId($pdo, $id);
+			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if ( empty( $profileId ) === false ) {
-			$venue = Venue::getVenueByVenueProfileId( $pdo, $oAuthId );
-			if ( $venue !== null ) {
+		} else if(empty($profileId) === false) {
+			$venue = Venue::getVenueByVenueName($pdo, $name);
+			if($venue !== null) {
 				$reply->data = $venue;
+			}
+		} else if(empty($profileId) === false) {
+			$venue = Venue::getVenueByVenueCity($pdo, $city);
+			if($venue !== null) {
+				$reply->data = $venue;
+			}
+		} else if(empty($profileId) === false) {
+			$venue = Venue::getVenueByVenueStreet1($pdo, $street1);
+			if($venue !== null) {
+				$reply->data = $venue;
+			}
+		} else if(empty($profileId) === false) {
+			$venue = Venue::getVenueByVenueZip($pdo, $zip);
+			if($venue !== null) {
+				$reply->data = $venue;
+			}
+		}
+
+	} else if($method === "PUT" || $method === "POST") {
+
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+
+		//make sure profile venue id is available (required field)
+		if(empty($requestObject->venueId) === true) {
+			throw(new \InvalidArgumentException ("No venue id for this venue.", 405));
+		}

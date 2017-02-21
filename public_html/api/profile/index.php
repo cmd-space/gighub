@@ -51,7 +51,7 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific tweet or all tweets and update reply
+		//get a specific profile or all profiles and update reply
 		if ( empty( $id ) === false ) {
 			$profile = Profile::getProfileByProfileId( $pdo, $id );
 			if ( $profile !== null ) {

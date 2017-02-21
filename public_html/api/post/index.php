@@ -12,14 +12,29 @@ use Edu\Cnm\Jramirez98\GigHub;
  * @author Joseph Ramirez <jramirez98@cnm.edu>
  */
 
-// check session status. If it is not active, start the session.
+// verify session status. If it is not active, start the session.
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
-// Check an empty reply
+// prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
+$reply->data = null;
+
+try {
+		//grab the mySQL connection
+		$pdo = connectToEncryptedMySQL("/etc/apache2/gighub-mysql/post.ini");
+
+		// determine which HTTP method was used
+		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+
+		// sanitize input
+		$id = filter_input(INPUT_GET, "ID", FILTER_VALIDATE_INT);
+		$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+		$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+}
 
 // handle GET request - if id is present, that post is returned, otherwise all posts are returned
 if($method === "GET") {
@@ -47,7 +62,7 @@ if($method === "GET") {
 		$reply->data = $posts;
 	}
 }
-} else if($method === "PUT" || $method === "POST") {
+else if($method === "PUT" || $method === "POST") {
 
 	// make sure post content is available (require field)
 	if(empty($requestObject->postContent) === true) {
@@ -78,4 +93,60 @@ if($method === "GET") {
 		throw(new \InvalidArgumentException ("No content for Title", 405));
 	}
 
+	// perform the actual put or post
+	if($method === "PUT") {
+		// retrieve the post to update
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post === null) {
+			throw(new RuntimeException("Post does no exist", 404));
+
+			// update all attributes
+			$post->setPostProfileId($requestObject->postProfileId);
+			$post->setPostVenueId($requestObject->postVenueId);
+			$post->setPostContent($requestObject->postContent);
+			$post->setPostCreatedDate($requestObject->postCreatedDate);
+			$post->setEventDate($requestObject->postEventDate);
+			$post->setImageCloudinaryId($requestObject->postImageCloudinaryId);
+			$post->setPostTitle($requestObject->postTitle);
+
+			// update reply
+			$reply->message = "Post updated ok";
+
+		} else if($method === "Post") {
+
+			// create new post and insert into the database
+			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject->postImageCloudinaryId, $requestObject->postTitle);
+			$post->insert($pdo);
+
+			//update reply
+			$reply->insert($pdo);
+		}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		//retrieve the post to be deleted
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post === null) {
+
+			// delete post
+			$post->delete($pdo);
+
+			// update reply
+			$reply->message = "Post deleted Ok";
+
+		} else {
+			throw (new InvalidArgumentException("Invalid HTTP method request"));
+		}
+
+		// update reply with exception information
+	} catch(Exception $exception) {
+		$reply->status = $exception->getCode();
+		$reply->message = $exception->getMessage();
+	} catch(TypeError $typeError) {
+		$reply->status = $exception->getCode();
+		$reply->message = $exception->getMessage();
+	}
+
+	header("Content-Type: application/json");
+	if($reply->data === null);
 }

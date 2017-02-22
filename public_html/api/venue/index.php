@@ -61,22 +61,22 @@ try {
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($profileId) === false) {
-			$venue = Venue::getVenueByVenueName($pdo, $name);
-			if($venue !== null) {
-				$reply->data = $venue;
-			}
-		} else if(empty($profileId) === false) {
+		} else if(empty($city) === false) {
 			$venue = Venue::getVenueByVenueCity($pdo, $city);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($profileId) === false) {
+		} else if(empty($name) === false) {
+			$venue = Venue::getVenueByVenueName($pdo, $name);
+			if($venue !== null) {
+				$reply->data = $venue;
+			}
+		} else if(empty($street1) === false) {
 			$venue = Venue::getVenueByVenueStreet1($pdo, $street1);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($profileId) === false) {
+		} else if(empty($zip) === false) {
 			$venue = Venue::getVenueByVenueZip($pdo, $zip);
 			if($venue !== null) {
 				$reply->data = $venue;
@@ -89,10 +89,10 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure venue id is available (required field)
-		if(empty($requestObject->venueId) === true) {
-			throw(new \InvalidArgumentException ("No venue id for this venue.", 405));
-		}
+//		//make sure venue id is available (required field)
+//		if(empty($requestObject->venueId) === true) {
+//			throw(new \InvalidArgumentException ("No venue id for this venue.", 405));
+//		}
 
 		//make sure venue profile id is available (required field)
 		if(empty($requestObject->venueProfileId) === true) {

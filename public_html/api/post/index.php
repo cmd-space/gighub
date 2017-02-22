@@ -1,8 +1,8 @@
 <?php
 
-require_once "autoloader.php";
-require_once "/lib/xsrf.php";
-require_once "/etc/apache2/GigHub-mysql/encrypted-config.php";
+require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once("/etc/apache2/gighub-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\Post;
 
@@ -21,10 +21,12 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+// Here we create a new stdClass named $reply. a stdClass is basically an empty bucket we can use to store things in.
+//we will use this object named $reply to store the results of the call to our API. the status 200 line line adds a state variable to $reply called status and initializes with the integer 200 (success code). the proceeding line adds a state variable to $reply called data. This is where the result of the API call will be stored. we will also update $reply->message as we proceed through the API.
 
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/gighub-mysql/post.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/gighub-mysql/gighub.ini");
 
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];

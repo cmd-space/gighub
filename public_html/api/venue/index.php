@@ -115,6 +115,7 @@ try {
 			$venue->setVenueStreet1($requestObject->venueStreet1);
 			$venue->setVenueStreet2($requestObject->venueStreet2);
 			$venue->setVenueZip($requestObject->venueZip);
+			$venue->update($pdo);
 
 			// update reply
 			$reply->message = "Venue updated OK";

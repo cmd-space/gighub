@@ -2,7 +2,7 @@
 
 require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
 require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
-require_once("/etc/apache2/gighub-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\Post;
 
@@ -21,22 +21,25 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
 // Here we create a new stdClass named $reply. a stdClass is basically an empty bucket we can use to store things in.
 //we will use this object named $reply to store the results of the call to our API. the status 200 line line adds a state variable to $reply called status and initializes with the integer 200 (success code). the proceeding line adds a state variable to $reply called data. This is where the result of the API call will be stored. we will also update $reply->message as we proceed through the API.
 
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/gighub-mysql/gighub.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	// sanitize input
-	$id = filter_input(INPUT_GET, "ID", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$venueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
 	$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$title = filter_input(INPUT_GET, "title", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventDate= filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
+	$imageCloudinaryId= filter_input(INPUT_GET, "imageCloudinaryId",FILTER_SANITIZE_STRING);
 
 	// make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -45,30 +48,32 @@ try {
 
 // handle GET request - if id is present, that post is returned, otherwise all posts are returned
 	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
 
 		//gets a post by content
-		if(empty($content) === false) {
-			$post = Post::getPostByPostContent($pdo, $content);
-			if($posts !== null) {
-				$reply->data = $posts;
-			}
-		} else if(empty($postId) === false) {
-			$posts = Post::getPostByPostId($pdo, $postId);
-			if($posts !== null) {
-				$reply->data = $posts;
-			}
-		} else if(empty($profileId) === false) {
-			$posts = Post::getPostByPostProfileId($pdo, $profileId);
-			if($posts !== null) {
-				$reply->data = $posts;
-			}
+	if(empty($id) === false) {
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post !== null) {
+			$reply->data = $post;
+		}
+	} else if(empty($profileId) === false) {
+		$posts = Post::getPostByPostProfileId($pdo, $profileId);
+		if($posts !== null) {
+			$reply->data = $posts;
+		}
+	} else if(empty($content) === false) {
+		$posts = Post::getPostByPostContent($pdo, $content);
+		if($posts !== null) {
+			$reply->data = $posts;
+		}
 	} else {
-			$posts = Post::getAllPosts($pdo);
-			if($posts !== null) {
-				$reply->data = $posts;
-				}
-			}
-		} else if($method === "PUT" || $method === "POST") {
+		$posts = Post::getAllPosts($pdo);
+		if($posts !== null) {
+			$reply->data = $posts;
+		}
+	}
+} else if($method === "PUT" || $method === "POST") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -76,7 +81,7 @@ try {
 
 	// make sure post content is available (require field)
 	if(empty($requestObject->postContent) === true) {
-		throw(new \InvalidArgumentException ("No content for post.", 405));
+		throw(new \InvalidArgumentException ("this is shitty.", 405));
 	}
 	// make sure post created  date is accurate (optional field)
 	if(empty($requestObject->postCreatedDate) === true) {
@@ -91,7 +96,7 @@ try {
 		throw(new \InvalidArgumentException ("No Profile ID", 405));
 	}
 	// make sure VenueId is available
-	if(empty($requestObject->venueId) === true) {
+	if(empty($requestObject->postVenueId) === true) {
 		throw(new \InvalidArgumentException ("No Venue ID", 405));
 	}
 	// make sure the is a ImageCloudinaryId available
@@ -122,14 +127,14 @@ try {
 			// update reply
 			$reply->message = "Post updated ok";
 
-		} else if($method === "Post") {
+		} else if($method === "POST") {
 
 			// create new post and insert into the database
 			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject->postImageCloudinaryId, $requestObject->postTitle);
 			$post->insert($pdo);
 
 			//update reply
-			$reply->insert($pdo);
+			$reply->message = "Post created ok";
 		}
 
 	} else if($method === "DELETE") {

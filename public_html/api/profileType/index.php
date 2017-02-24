@@ -6,6 +6,13 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\ProfileType;
 
+/**
+ * 1. start off by creating an ordinary FB account
+ * 2. change account from personal to company/business account
+ * 3. create an app from the company account, and authorize developers to become FB developers for the app
+ * 4. search for composer FB OAuth package
+ */
+
 
 /**
  * api for the ProfileType class
@@ -32,7 +39,7 @@ try {
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileTypeName = filter_input(INPUT_GET, "profileTypeName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -50,8 +57,8 @@ try {
 			if($profileType !== null) {
 				$reply->data = $profileType;
 			}
-		} else if(empty($name) === false) {
-			$profileTypes = ProfileType::getProfileTypesByProfileTypeName($pdo, $name);
+		} else if(empty($profileTypeName) === false) {
+			$profileTypes = ProfileType::getProfileTypesByProfileTypeName($pdo, $profileTypeName);
 			if($profileTypes !== null) {
 				$reply->data = $profileTypes;
 			}
@@ -71,11 +78,6 @@ try {
 		if(empty($requestObject->profileTypeName) === true) {
 			throw(new \InvalidArgumentException ("Y U NO include name for profile type?", 405));
 		}
-
-//		//  make sure profileTypeId is available
-//		if(empty($requestObject->profileTypeId) === true) {
-//			throw(new \InvalidArgumentException ("No Profile Type ID.", 405));
-//		}
 
 		//perform the actual put or post
 		if($method === "PUT") {

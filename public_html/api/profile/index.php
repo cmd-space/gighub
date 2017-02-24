@@ -46,12 +46,12 @@ try {
 		throw( new InvalidArgumentException( "id cannot be empty or negative", 405 ) );
 	}
 
-	// handle GET request - if id is present, that profile is returned, otherwise all profiles are returned
+	// handle GET request - if id is present, that profile is returned
 	if ( $method === "GET" ) {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific profile or all profiles and update reply
+		//get a specific profile
 		if ( empty( $id ) === false ) {
 			$profile = Profile::getProfileByProfileId( $pdo, $id );
 			if ( $profile !== null ) {
@@ -83,28 +83,18 @@ try {
 				$reply->data = $profiles;
 			}
 		}
-
-//		else {
-//			$profiles = Profile::get($pdo);
-//			if($tweets !== null) {
-//				$reply->data = $tweets;
-//			}
-//	}
 	} else if ( $method === "PUT" || $method === "POST" ) {
 
 		verifyXsrf();
 		$requestContent = file_get_contents( "php://input" );
 		$requestObject  = json_decode( $requestContent );
 
-		//make sure profile OAuth id is available (required field)
-		if ( empty( $requestObject->profileOAuthId ) === true ) {
-			throw( new \InvalidArgumentException ( "No profile OAuth id for this Profile.", 405 ) );
+		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		if(empty($_SESSION["profileOAuthToken"]) === true || $_SESSION["profileOAuthToken"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
 		}
 
-		//make sure profile type is available (required field)
-		if ( empty( $requestObject->profileType ) === true ) {
-			throw( new \InvalidArgumentException ( "No profile type for this Profile.", 405 ) );
-		}
 
 		//perform the actual put or post
 		if ( $method === "PUT" ) {

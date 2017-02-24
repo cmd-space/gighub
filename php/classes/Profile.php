@@ -624,6 +624,46 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
+	 * gets profiles by profile OAuth token
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $profileOAuthToken OAuth token to search for
+	 * @return Profile|null Profile found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getProfileByProfileOAuthToken(\PDO $pdo, string $profileOAuthToken) {
+		// sanitize the user name before searching
+		$profileOAuthToken = trim($profileOAuthToken);
+		$profileOAuthToken = filter_var($profileOAuthToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileOAuthToken) === true) {
+			throw(new \PDOException("profile OAuth token is invalid, please come again"));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileOAuthId, profileTypeId, profileBio, profileImageCloudinaryId, profileLocation, profileOAuthToken, profileSoundCloudUser, profileUserName FROM profile WHERE profile.profileOAuthToken = :profileOAuthToken";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile user name to the placeholder in the template
+		$parameters = ["profileOAuthToken" => $profileOAuthToken];
+		$statement->execute($parameters);
+
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileOAuthId"], $row["profileTypeId"], $row["profileBio"], $row["profileImageCloudinaryId"], $row["profileLocation"], $row["profileOAuthToken"], $row["profileSoundCloudUser"], $row["profileUserName"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($profile);
+	}
+
+	/**
 	 * gets the Profile by primary key
 	 *
 	 * @param \PDO $pdo PDO connection object

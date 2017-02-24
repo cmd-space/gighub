@@ -63,34 +63,22 @@ try {
 				$reply->data = $tags;
 			}
 		}
-	} else if($method === "PUT" || $method === "POST") {
+	} else if($method === "POST") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure tweet content is available (required field)
+		// Make sure that only one can edit one's own profile
+		$profile = Tag::getTagByTagContent($pdo, $id);
+		if(empty($_SESSION["tag"]) === true || $_SESSION["tag"]->getTagContent() !== $profile->getTagContent()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this tag punk ass", 403));
+		}
+
+		//make sure tag content is available (required field)
 		if(empty($requestObject->tagContent) === true) {
 			throw(new \InvalidArgumentException ("No Tag content.", 405));
 		}
-
-		//perform the actual put or post
-		if($method === "PUT") {
-
-			// retrieve the tag to update
-			$tag = Tag::getTagByTagId($pdo, $id);
-			if($tag === null) {
-				throw(new RuntimeException("Tag does not exist", 404));
-			}
-
-			// update all attributes
-			$tag->setTagContent($requestObject->tagContent);
-			$tag->update($pdo);
-
-			// update reply
-			$reply->message = "Tag updated OK";
-
-		} else if($method === "POST") {
 
 			// create new tag and insert into the database
 			$tag = new Tag(null, $requestObject->tagContent);
@@ -98,9 +86,7 @@ try {
 
 			// update reply
 			$reply->message = "Tag created OK";
-		}
-		// TODO: Should we add a DELETE in our PDO?
-	} else {
+		} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 

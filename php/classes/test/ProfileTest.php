@@ -244,12 +244,6 @@ Burgdoggen drumstick brisket, porchetta kielbasa leberkas swine pig. Ball tip pi
 	}
 
 	/**
-	 * test inserting invalid/empty profile image cloudinary id
-	 *
-	 * @expectedException InvalidArgumentException
-	 */
-
-	/**
 	 * test grabbing a Profile by profile user name
 	 **/
 	public function testGetValidProfileByProfileUserName() {
@@ -427,6 +421,39 @@ Burgdoggen drumstick brisket, porchetta kielbasa leberkas swine pig. Ball tip pi
 	public function testGetInvalidProfileByProfileOAuthId() {
 		// grab a profile by searching for SoundCloud user that does not exist
 		$profile = Profile::getProfileByProfileOAuthId($this->getPDO(), 60000000);
+		$this->assertNull($profile);
+	}
+
+	/**
+	 * test grabbing a Profile by profile oauth token
+	 */
+	public function testGetValidProfileByProfileOAuthToken() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount('profile');
+
+		// create a new Profile and insert it into mySQL
+		$profile = new Profile(null, $this->oAuth->getOAuthId(), $this->profileType->getProfileTypeId(), $this->VALID_PROFILEBIO, $this->VALID_CLOUDINARYID, $this->VALID_PROFILELOCATION, $this->VALID_OAUTHTOKEN, $this->VALID_SOUNDCLOUDUSER, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce that fields match expectations
+		$pdoProfile = Profile::getProfileByProfileOAuthToken($this->getPDO(), $profile->getProfileOAuthToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileOAuthId(), $this->oAuth->getOAuthId());
+		$this->assertEquals($pdoProfile->getProfileTypeId(), $this->profileType->getProfileTypeId());
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILEBIO);
+		$this->assertEquals($pdoProfile->getProfileImageCloudinaryId(), $this->VALID_CLOUDINARYID);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_PROFILELOCATION);
+		$this->assertEquals($pdoProfile->getProfileOAuthToken(), $this->VALID_OAUTHTOKEN);
+		$this->assertEquals($pdoProfile->getProfileSoundCloudUser(), $this->VALID_SOUNDCLOUDUSER);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test grabbing a Profile by profile oauth token that does not exist
+	 */
+	public function testGetInvalidProfileByProfileOAuthToken() {
+		// grab a profile by searching for SoundCloud user that does not exist
+		$profile = Profile::getProfileByProfileOAuthToken($this->getPDO(), "You will not make this putt...");
 		$this->assertNull($profile);
 	}
 }

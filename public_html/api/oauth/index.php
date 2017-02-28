@@ -11,9 +11,9 @@ try {
 	$config = readConfig( "/etc/apache2/capstone-mysql/gighub.ini" );
 	$oauth  = json_decode( $config["oauth"] );
 
-	const REDIRECT_URI           = 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/oauth/';
-	const AUTHORIZATION_ENDPOINT = 'https://www.facebook.com/v2.8/dialog/oauth';
-	const TOKEN_ENDPOINT         = 'https://graph.facebook.com/v2.8/oauth/access_token';
+	$REDIRECT_URI           = 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/oauth/';
+	$AUTHORIZATION_ENDPOINT = 'https://www.facebook.com/v2.8/dialog/oauth';
+	$TOKEN_ENDPOINT         = 'https://graph.facebook.com/v2.8/oauth/access_token';
 
 	$client = new \OAuth2\Client( $oauth->facebook->clientId, $oauth->facebook->clientKey );
 	if ( ! isset( $_GET['code'] ) ) {

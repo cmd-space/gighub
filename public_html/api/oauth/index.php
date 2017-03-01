@@ -38,7 +38,7 @@ try {
 		$response = $client->getAccessToken( $TOKEN_ENDPOINT, 'authorization_code', $params );
 		parse_str( $response['result'], $info );
 		$client->setAccessToken( $info['access_token'] );
-		$response = $client->fetch( 'https://graph.facebook.com/1878867439052171' );
+		$response = $client->fetch( 'https://graph.facebook.com/me?client_id={' . $oauth->facebook->app_id . '}&client_secret={' . $oauth->facebook->secret_id . '}&grant_type=client_credentials' );
 //	    TODO: reinstate this foreach after var_dump verifies actual return values
       foreach ( $response['result'] as $result ) {
 			if ( $result['primary'] === true ) {

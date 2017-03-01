@@ -70,11 +70,10 @@ try {
 		$requestObject = json_decode($requestContent);
 
 		// Make sure that only one can edit one's own profile
-		$profile = Tag::getTagByTagContent($pdo, $id);
-		if(empty($_SESSION["tag"]) === true || $_SESSION["tag"]->getTagContent() !== $profile->getTagContent()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this tag punk ass bitch", 403));
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		if(empty($_SESSION["profileOAuthToken"]) === true || $_SESSION["profileOAuthToken"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
 		}
-
 		//make sure tag content is available (required field)
 		if(empty($requestObject->tagContent) === true) {
 			throw(new \InvalidArgumentException ("No Tag content.", 405));

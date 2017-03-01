@@ -1,76 +1,77 @@
 <?php
 
-namespace Edu\Cnm\GigHub\Profile;
+//grab the MySQL connection
+$pdo    = connectToEncryptedMySQL( "/etc/apache2/capstone-mysql/gighub.ini" );
+$config = readConfig( "/etc/apache2/capstone-mysql/gighub.ini" );
+$oauth  = json_decode( $config["oauth"] );
 
-require_once( dirname( __DIR__, 3 ) . "/php/classes/autoload.php" );
-require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
-require_once( dirname( __DIR__, 3 ) . "/vendor/autoload.php" );
-require_once( "/etc/apache2/capstone-mysql/encrypted-config.php" );
+$fb = new Facebook\Facebook([
+'app_id' => $oauth->facebook->app_id, // Replace {app-id} with your app id
+'app_secret' => $oauth->facebook->secret_id,
+'default_graph_version' => 'v2.8',
+]);
 
-use Edu\Cnm\GigHub\Profile;
-
-// verify the session, start if not active
-if(session_status() !== PHP_SESSION_ACTIVE) {
-	session_start();
-}
-// prepare an empty reply
-$reply = new \stdClass();
-$reply->status = 200;
-$reply->data = null;
+$helper = $fb->getRedirectLoginHelper();
 
 try {
-	//grab the MySQL connection
-	$pdo    = connectToEncryptedMySQL( "/etc/apache2/capstone-mysql/gighub.ini" );
-	$config = readConfig( "/etc/apache2/capstone-mysql/gighub.ini" );
-	$oauth  = json_decode( $config["oauth"] );
-
-	$REDIRECT_URI           = 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/oauth/';
-	$AUTHORIZATION_ENDPOINT = 'https://graph.facebook.com/v2.8/dialog/oauth';
-	$TOKEN_ENDPOINT         = 'https://graph.facebook.com/v2.8/oauth/access_token';
-
-	$client = new \OAuth2\Client( $oauth->facebook->app_id, $oauth->facebook->secret_id );
-	if ( ! isset( $_GET['code'] ) ) {
-		$auth_url = $client->getAuthenticationUrl( $AUTHORIZATION_ENDPOINT, $REDIRECT_URI );
-		header( 'Location: ' . $auth_url );
-		die( 'Redirect' );
-	} else {
-		$params   = array( 'code' => $_GET['code'], 'redirect_uri' => $REDIRECT_URI );
-		$response = $client->getAccessToken( $TOKEN_ENDPOINT, 'authorization_code', $params );
-		parse_str( $response['result'], $info );
-		$client->setAccessToken( $info['access_token'] );
-		$response = $client->fetch( 'https://graph.facebook.com/me/' );
-//	    TODO: reinstate this foreach after var_dump verifies actual return values
-      foreach ( $response['result'] as $result ) {
-			if ( $result['primary'] === true ) {
-				$profileOAuthToken = $result[''];
-				break;
-			}
-		}
-		//var_dump( $response, $response['result'] );
-		echo $response["result"];
-	}
-
-// TODO: uncomment below code after verifying var_dump data
-	// get profile by email to see if it exists, if it does not then create a new one
-	$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileOAuthToken);
-	if(empty($profile) === true) {
-		// create a new profile
-		$profile = new Profile(null, "Please update your profile content!", "Please update your location!");
-		$profile->insert($pdo);
-		$reply->message = "Welcome to GigHub! Party on!";
-	} else {
-		$reply->message = "So glad to see you back!";
-	}
-	//grab profile from database and put into a session
-	$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileOAuthToken);
-	$_SESSION["profile"] = $profile;
-	header("Location: ../../../");
-
-} catch(\Exception $exception) {
-	$reply->status = $exception->getCode();
-	$reply->message = $exception->getMessage();
-	$reply->trace = $exception->getTraceAsString();
-} catch(\TypeError $typeError) {
-	$reply->status = $typeError->getCode();
-	$reply->message = $typeError->getMessage();
+$accessToken = $helper->getAccessToken();
+} catch(Facebook\Exceptions\FacebookResponseException $e) {
+// When Graph returns an error
+echo 'Graph returned an error: ' . $e->getMessage();
+exit;
+} catch(Facebook\Exceptions\FacebookSDKException $e) {
+// When validation fails or other local issues
+echo 'Facebook SDK returned an error: ' . $e->getMessage();
+exit;
 }
+
+if (! isset($accessToken)) {
+if ($helper->getError()) {
+header('HTTP/1.0 401 Unauthorized');
+echo "Error: " . $helper->getError() . "\n";
+echo "Error Code: " . $helper->getErrorCode() . "\n";
+echo "Error Reason: " . $helper->getErrorReason() . "\n";
+echo "Error Description: " . $helper->getErrorDescription() . "\n";
+} else {
+header('HTTP/1.0 400 Bad Request');
+echo 'Bad request';
+}
+exit;
+}
+
+// Logged in
+echo '<h3>Access Token</h3>';
+var_dump($accessToken->getValue());
+
+// The OAuth 2.0 client handler helps us manage access tokens
+$oAuth2Client = $fb->getOAuth2Client();
+
+// Get the access token metadata from /debug_token
+$tokenMetadata = $oAuth2Client->debugToken($accessToken);
+echo '<h3>Metadata</h3>';
+var_dump($tokenMetadata);
+
+// Validation (these will throw FacebookSDKException's when they fail)
+$tokenMetadata->validateAppId($oauth->facebook->app_id); // Replace {app-id} with your app id
+// If you know the user ID this access token belongs to, you can validate it here
+//$tokenMetadata->validateUserId('123');
+$tokenMetadata->validateExpiration();
+
+if (! $accessToken->isLongLived()) {
+// Exchanges a short-lived access token for a long-lived one
+try {
+$accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+} catch (Facebook\Exceptions\FacebookSDKException $e) {
+echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
+exit;
+}
+
+echo '<h3>Long-lived</h3>';
+var_dump($accessToken->getValue());
+}
+
+$_SESSION['fb_access_token'] = (string) $accessToken;
+
+// User is logged in with a long-lived access token.
+// You can redirect them to a members-only page.
+header('Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile');

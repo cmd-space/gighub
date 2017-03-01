@@ -25,7 +25,7 @@ try {
 	$oauth  = json_decode( $config["oauth"] );
 
 	$REDIRECT_URI           = 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/oauth/';
-	$AUTHORIZATION_ENDPOINT = 'https://www.facebook.com/v2.8/dialog/oauth';
+	$AUTHORIZATION_ENDPOINT = 'https://graph.facebook.com/v2.8/dialog/oauth';
 	$TOKEN_ENDPOINT         = 'https://graph.facebook.com/v2.8/oauth/access_token';
 
 	$client = new \OAuth2\Client( $oauth->facebook->app_id, $oauth->facebook->secret_id );
@@ -38,7 +38,7 @@ try {
 		$response = $client->getAccessToken( $TOKEN_ENDPOINT, 'authorization_code', $params );
 		parse_str( $response['result'], $info );
 		$client->setAccessToken( $info['access_token'] );
-		$response = $client->fetch( 'https://graph.facebook.com/me?client_id={' . $oauth->facebook->app_id . '}&client_secret={' . $oauth->facebook->secret_id . '}&grant_type=client_credentials' );
+		$response = $client->fetch( 'https://graph.facebook.com/me/' );
 //	    TODO: reinstate this foreach after var_dump verifies actual return values
       foreach ( $response['result'] as $result ) {
 			if ( $result['primary'] === true ) {
@@ -46,7 +46,8 @@ try {
 				break;
 			}
 		}
-		var_dump( $response, $response['result'] );
+		//var_dump( $response, $response['result'] );
+		echo $response["result"];
 	}
 
 // TODO: uncomment below code after verifying var_dump data

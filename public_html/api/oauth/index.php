@@ -28,7 +28,7 @@ try {
 	$AUTHORIZATION_ENDPOINT = 'https://www.facebook.com/v2.8/dialog/oauth';
 	$TOKEN_ENDPOINT         = 'https://graph.facebook.com/v2.8/oauth/access_token';
 
-	$client = new \OAuth2\Client( $oauth->facebook->clientId, $oauth->facebook->clientKey );
+	$client = new \OAuth2\Client( $oauth->facebook->app_id, $oauth->facebook->secret_id );
 	if ( ! isset( $_GET['code'] ) ) {
 		$auth_url = $client->getAuthenticationUrl( $AUTHORIZATION_ENDPOINT, $REDIRECT_URI );
 		header( 'Location: ' . $auth_url );

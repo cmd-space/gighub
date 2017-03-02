@@ -1,8 +1,8 @@
 <?php
 
-require_once (dirname(__DIR__, 3) . "/vendor/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once (dirname(__DIR__, 2) . "/vendor/autoload.php");
+require_once (dirname(__DIR__, 2) . "/php/classes/autoload.php");
+require_once (dirname(__DIR__, 2) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\GigHub\Profile;
@@ -17,10 +17,10 @@ $pdo    = connectToEncryptedMySQL( "/etc/apache2/capstone-mysql/gighub.ini" );
 $config = readConfig( "/etc/apache2/capstone-mysql/gighub.ini" );
 $oauth  = json_decode( $config["oauth"] );
 
-$provider = new \League\OAuth2\Client\Provider\Facebook([
+$provider = new \League\OAuth2\Client\Provider\GenericProvider([
 'clientId'                => $oauth->facebook->app_id,    // The client ID assigned to you by the provider
 'clientSecret'            => $oauth->facebook->secret_id,   // The client password assigned to you by the provider
-'redirectUri'             => 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile',
+'redirectUri'             => 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/',
 'urlAuthorize'            => 'https://www.facebook.com/v2.8/dialog/oauth',
 'urlAccessToken'          => 'https://graph.facebook.com/v2.8/oauth/access_token',
 'urlResourceOwnerDetails' => 'https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/facebook-login'
@@ -58,6 +58,7 @@ try {
 $accessToken = $provider->getAccessToken('authorization_code', [
 'code' => $_GET['code']
 ]);
+
 
 // We have an access token, which we may use in authenticated
 // requests against the service provider's API.

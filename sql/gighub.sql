@@ -34,7 +34,7 @@ CREATE TABLE profile (
 	profileBio VARCHAR(669),
 	profileImageCloudinaryId VARCHAR(32),
 	profileLocation VARCHAR(128),
-	profileOAuthToken VARCHAR(64),
+	profileOAuthToken VARCHAR(200),
 	profileSoundCloudUser VARCHAR(32),
 	profileUserName VARCHAR(64),
 	-- to make something optional, exclude the not null

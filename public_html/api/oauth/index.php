@@ -20,7 +20,7 @@ $oauth  = json_decode( $config["oauth"] );
 $fb = new Facebook\Facebook([
 'app_id' => $oauth->facebook->app_id, // Replace {app-id} with your app id
 'app_secret' => $oauth->facebook->secret_id,
-'default_graph_version' => 'v2.8',
+'default_graph_version' => 'v2.2',
 ]);
 
 $helper = $fb->getRedirectLoginHelper();

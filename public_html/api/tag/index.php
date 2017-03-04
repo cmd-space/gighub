@@ -72,7 +72,7 @@ try {
 		// Make sure that only one can edit one's own profile
 		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
 		if(empty($_SESSION["profileOAuthToken"]) === true || $_SESSION["profileOAuthToken"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you? It's a quick little task. Just do it.", 403));
 		}
 		//make sure tag content is available (required field)
 		if(empty($requestObject->tagContent) === true) {

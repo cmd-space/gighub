@@ -87,7 +87,15 @@ if ( ! $accessToken->isLongLived() ) {
 }
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
+var_dump($_SESSION['fb_access_token']);
 
-// User is logged in with a long-lived access token.
-// You can redirect them to a members-only page.
-header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile' );
+// logic to check if profile already exists
+$profile = Profile::getProfileByProfileOAuthToken($pdo, $_SESSION['fb_access_token']);
+$_SESSION['profile'] = $profile;
+if(empty($_SESSION["fb_access_token"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+	throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you? It's a quick little task. Just do it.", 403));
+} elseif ($_SESSION['profile']) {
+	// User is logged in with a long-lived access token.
+	// You can redirect them to a members-only page.
+	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' );
+}

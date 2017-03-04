@@ -102,7 +102,19 @@ if(!empty($profile)) {
 	// You can redirect them to a members-only page.
 	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' . $profile_id );
 } else {
+	$data = array(
+		"profileId" => null,
+		"profileOAuthId" => 1,
+		"profileTypeId" => 0,
+		"profileBio" => "change me!",
+		"profileImageCloudinaryId" => "",
+		"profileLocation" => "unkown",
+		"profileOAuthToken" => $_SESSION['fb_access_token'],
+		"profileSoundCloudUser" => "",
+		"profileUserName" => "change me!"
+	);
+	$json = json_encode($data);
 	// User is logged in with a long-lived access token.
 	// You can redirect them to profile to post new profile
-	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' );
+	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' . $json );
 }

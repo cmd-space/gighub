@@ -103,6 +103,7 @@ if(!empty($profile)) {
 } else {
 	// create new profile
 	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", "change me!");
+	$newProfile->insert($pdo);
 	// retrieve profile id to redirect to their new profile
 	$newId = $newProfile->getProfileId();
 	// set session data for new profile

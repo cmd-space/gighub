@@ -100,21 +100,16 @@ if(!empty($profile)) {
 	$profile_id = $_SESSION['profile']->getProfileId();
 	// User is logged in with a long-lived access token.
 	// You can redirect them to a members-only page.
-	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' . $profile_id );
+	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/post/' );
 } else {
-	$data = array(
-		"profileId" => null,
-		"profileOAuthId" => 1,
-		"profileTypeId" => 0,
-		"profileBio" => "change me!",
-		"profileImageCloudinaryId" => "",
-		"profileLocation" => "unkown",
-		"profileOAuthToken" => $_SESSION['fb_access_token'],
-		"profileSoundCloudUser" => "",
-		"profileUserName" => "change me!"
-	);
-	$json = json_encode($data);
+	// create new profile
+	$profile = new Profile(null, 1, 0, "change me!", "", "", "unknown", $_SESSION['fb_access_token'], "", "change me!");
+	// retrieve profile id to redirect to their new profile
+	$newId = $profile->getProfileId();
+	// set session data for new profile
+	$_SESSION['profile'] = $profile;
+
 	// User is logged in with a long-lived access token.
-	// You can redirect them to profile to post new profile
-	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' . $json );
+	// You can redirect them to profile to update new profile
+	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/profile/' . $newId );
 }

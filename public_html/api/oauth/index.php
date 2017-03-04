@@ -103,7 +103,8 @@ if(!empty($profile)) {
 	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/post/' );
 } else {
 	// create new profile
-	$profile = new Profile(null, 1, 0, "change me!", "", "", "unknown", $_SESSION['fb_access_token'], "", "change me!");
+	$profile = new Profile(null, 1, 1, "change me!", "", "", "unknown", $_SESSION['fb_access_token'], "", "change me!");
+	$profile->insert($pdo);
 	// retrieve profile id to redirect to their new profile
 	$newId = $profile->getProfileId();
 	// set session data for new profile

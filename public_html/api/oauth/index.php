@@ -102,11 +102,11 @@ if(!empty($profile)) {
 	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/post/' );
 } else {
 	// create new profile
-	$profile = new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", "change me!");
+	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", "change me!");
 	// retrieve profile id to redirect to their new profile
-	$newId = $profile->getProfileId();
+	$newId = $newProfile->getProfileId();
 	// set session data for new profile
-	$_SESSION['profile'] = $profile;
+	$_SESSION['profile'] = $newProfile;
 
 	// User is logged in with a long-lived access token.
 	// You can redirect them to profile to update new profile

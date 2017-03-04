@@ -58,7 +58,6 @@ var_dump( $accessToken->getValue() );
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
 
-var_dump( $oAuth2Client->debugToken );
 
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken( $accessToken );
@@ -103,8 +102,7 @@ if(!empty($profile)) {
 	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/post/' );
 } else {
 	// create new profile
-	$profile = new Profile(null, 1, 1, "change me!", "", "", "unknown", $_SESSION['fb_access_token'], "", "change me!");
-	$profile->insert($pdo);
+	$profile = new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", "change me!");
 	// retrieve profile id to redirect to their new profile
 	$newId = $profile->getProfileId();
 	// set session data for new profile

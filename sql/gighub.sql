@@ -33,7 +33,8 @@ CREATE TABLE profile (
 	profileTypeId INT UNSIGNED NOT NULL,
 	profileBio VARCHAR(669),
 	profileImageCloudinaryId VARCHAR(32),
-	profileLocation VARCHAR(128),
+	profileLocation VARfullfffulfull
+	CHAR(128),
 	profileOAuthToken VARCHAR(200),
 	profileSoundCloudUser VARCHAR(32),
 	profileUserName VARCHAR(64),

@@ -311,7 +311,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		// verify that profile OAuth token content will fit in the database
-		if(strlen($newProfileOAuthToken) > 64) {
+		if(strlen($newProfileOAuthToken) > 200) {
 			throw(new \RangeException("that profile OAuth token is too darn big!"));
 		}
 

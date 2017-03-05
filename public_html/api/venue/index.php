@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\GigHub\Venue;
+use Edu\Cnm\GigHub\{Profile, Venue};
 
 
 /**
@@ -89,6 +89,11 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
+		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+		}
 
 		//make sure venue profile id is available (required field)
 		if(empty($requestObject->venueProfileId) === true) {
@@ -126,6 +131,12 @@ try {
 		}
 	} else if($method === "DELETE") {
 		verifyXsrf();
+
+		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+		}
 
 		// retrieve the Venue to be deleted
 		$venue = Venue::getVenueByVenueId($pdo, $id);

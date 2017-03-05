@@ -92,10 +92,9 @@ try {
 
 		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
 		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
-		if(empty($_SESSION["profileOAuthToken"]) === true || $_SESSION["profileOAuthToken"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
 			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
 		}
-
 
 		//perform the actual put or post
 		if ( $method === "PUT" ) {
@@ -128,6 +127,12 @@ try {
 		}
 	} else if($method === "DELETE") {
 		verifyXsrf();
+
+		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+		}
 
 		// retrieve the Profile to be deleted
 		$profile = Profile::getProfileByProfileId($pdo, $id);

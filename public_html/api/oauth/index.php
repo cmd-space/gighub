@@ -7,8 +7,6 @@ require_once( "/etc/apache2/capstone-mysql/encrypted-config.php" );
 
 use Edu\Cnm\GigHub\Profile;
 
-$userNameCounter = 0;
-
 //verify the session, start if not active
 if ( session_status() !== PHP_SESSION_ACTIVE ) {
 	session_start();
@@ -103,16 +101,15 @@ if(!empty($profile)) {
 	// You can redirect them to a members-only page.
 	header( 'Location: https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/post/' );
 } else {
+	// generate unique-ish username to be changed by user later
+	$uniqueUserName = uniqid('user');
 	// create new profile
-	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", $userNameCounter);
+	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", $uniqueUserName);
 	$newProfile->insert($pdo);
 	// retrieve profile id to redirect to their new profile
 	$newId = $newProfile->getProfileId();
 	// set session data for new profile
 	$_SESSION['profile'] = $newProfile;
-
-	// increment value of userNameCounter
-	$userNameCounter++;
 
 	// User is logged in with a long-lived access token.
 	// You can redirect them to profile to update new profile

@@ -75,7 +75,13 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure tweet content is available (required field)
+		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+		}
+
+		//make sure profile type content is available (required field)
 		if(empty($requestObject->profileTypeName) === true) {
 			throw(new \InvalidArgumentException ("Y U NO include name for profile type?", 405));
 		}

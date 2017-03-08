@@ -5,7 +5,7 @@
 
 <body>
 
-<div class="container">x
+<div class="container">
 	<img src="../images/GigHubLogoWhite.png"><br><br>
 </div>
 

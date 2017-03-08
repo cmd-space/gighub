@@ -1,11 +1,13 @@
 <?php
 
-require_once (dirname(__DIR__, 3) . "/vendor/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\GigHub\{Profile, ProfileType};
+use Edu\Cnm\GigHub\{
+	Profile, ProfileType
+};
 
 /**
  * api for the ProfileType class
@@ -60,48 +62,6 @@ try {
 			if($profileTypes !== null) {
 				$reply->data = $profileTypes;
 			}
-		}
-	} else if($method === "PUT" || $method === "POST") {
-
-		verifyXsrf();
-		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode($requestContent);
-
-		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
-		}
-
-		//make sure profile type content is available (required field)
-		if(empty($requestObject->profileTypeName) === true) {
-			throw(new \InvalidArgumentException ("Y U NO include name for profile type?", 405));
-		}
-
-		//perform the actual put or post
-		if($method === "PUT") {
-
-			// retrieve the tweet to update
-			$profileType = ProfileType::getProfileTypeByProfileTypeId($pdo, $id);
-			if($profileType === null) {
-				throw(new RuntimeException("Profile Type does not exist", 404));
-			}
-
-			// update all attributes
-			$profileType->setProfileTypeName($requestObject->profileTypeName);
-			$profileType->update($pdo);
-
-			// update reply
-			$reply->message = "Profile Type updated OK";
-
-		} else if($method === "POST") {
-
-			// create new tweet and insert into the database
-			$profileType = new ProfileType(null, $requestObject->profileTypeName);
-			$profileType->insert($pdo);
-
-			// update reply
-			$reply->message = "Profile Type created OK";
 		}
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));

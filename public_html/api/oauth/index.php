@@ -53,7 +53,7 @@ if ( ! isset( $accessToken ) ) {
 
 // Logged in
 echo '<h3>Access Token</h3>';
-var_dump( $accessToken->getValue() );
+//var_dump( $accessToken->getValue() );
 
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
@@ -62,7 +62,7 @@ $oAuth2Client = $fb->getOAuth2Client();
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken( $accessToken );
 echo '<h3>Metadata</h3>';
-var_dump( $tokenMetadata );
+//var_dump( $tokenMetadata );
 
 // Validation (these will throw FacebookSDKException's when they fail)
 $tokenMetadata->validateAppId( $oauth->facebook->app_id ); // Replace {app-id} with your app id
@@ -70,7 +70,7 @@ $tokenMetadata->validateAppId( $oauth->facebook->app_id ); // Replace {app-id} w
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
 
-var_dump( $accessToken );
+//var_dump( $accessToken );
 
 if ( ! $accessToken->isLongLived() ) {
 // Exchanges a short-lived access token for a long-lived one
@@ -86,7 +86,7 @@ if ( ! $accessToken->isLongLived() ) {
 }
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
-var_dump($_SESSION['fb_access_token']);
+//var_dump($_SESSION['fb_access_token']);
 if(empty($_SESSION["fb_access_token"]) === true) {
 	throw(new \InvalidArgumentException("Please return to homepage and sign up or login", 403));
 }

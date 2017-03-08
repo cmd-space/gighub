@@ -1,9 +1,9 @@
-<body>
-	<div class="wrapper">
-
-		content
-
-		<div class="push"></div>
-	</div>
-	<footer class="footer"></footer>
-</body>
+<!DOCTYPE html>
+<html>
+	<body></body>
+	<footer>
+		<div class="footer footer-static bottom">
+			<p>This is a static navbar</p>
+		</div>
+	</footer>
+</html>

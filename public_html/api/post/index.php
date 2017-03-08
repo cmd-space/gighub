@@ -81,14 +81,14 @@ try {
 		$requestObject = json_decode($requestContent);
 
 		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
 		}
 
 	// make sure post content is available (require field)
 	if(empty($requestObject->postContent) === true) {
-		throw(new \InvalidArgumentException ("this is shitty.", 405));
+		throw(new \InvalidArgumentException ("No post content", 405));
 	}
 	// make sure post created  date is accurate (optional field)
 	if(empty($requestObject->postCreatedDate) === true) {
@@ -148,9 +148,9 @@ try {
 		verifyXsrf();
 
 		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
 		}
 
 		//retrieve the post to be deleted

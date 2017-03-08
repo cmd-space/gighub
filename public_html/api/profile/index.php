@@ -23,7 +23,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
-var_dump($_SESSION);
+
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL( "/etc/apache2/capstone-mysql/gighub.ini" );
@@ -90,14 +90,14 @@ try {
 		$requestContent = file_get_contents( "php://input" );
 		$requestObject  = json_decode( $requestContent );
 
-		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
-		}
-
 		//perform the actual put or post
 		if ( $method === "PUT" ) {
+
+			// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
+			$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+				throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you?", 403));
+			}
 
 			// retrieve the profile to update
 			$profile = Profile::getProfileByProfileId( $pdo, $id );

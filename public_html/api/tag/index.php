@@ -70,7 +70,7 @@ try {
 		$requestObject = json_decode($requestContent);
 
 		// Make sure that only one can edit one's own profile
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $oAuthToken);
+		$profile = Profile::getProfileByProfileOAuthToken($pdo, $_SESSION['fbUserId']);
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
 			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you? It's a quick little task. Just do it.", 403));
 		}

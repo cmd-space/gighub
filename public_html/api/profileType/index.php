@@ -8,14 +8,6 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\GigHub\{Profile, ProfileType};
 
 /**
- * 1. start off by creating an ordinary FB account
- * 2. change account from personal to company/business account
- * 3. create an app from the company account, and authorize developers to become FB developers for the app
- * 4. search for composer FB OAuth package
- */
-
-
-/**
  * api for the ProfileType class
  *
  * @author Mason Crane <cmd-space.com>

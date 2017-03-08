@@ -3,7 +3,6 @@
 
 <?php require_once("lib/head-utils.php");?>
 
-	<link rel="stylesheet" href="css/style.css">
 
 <body>
 
@@ -27,4 +26,4 @@
 
 </body>
 
-</html>x
+</html>

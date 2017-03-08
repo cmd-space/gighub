@@ -3,6 +3,8 @@
 
 <?php require_once("lib/head-utils.php");?>
 
+	<link rel="stylesheet" href="css/style.css">
+
 <body>
 
 	<div id="fb-root"></div>
@@ -18,6 +20,7 @@
 <div class="container">
 	<img src="../images/GigHubWhite.png">
 </div>
+
 	<div class="container">
 		<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false"></div>
 	</div>

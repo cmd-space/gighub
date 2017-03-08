@@ -98,7 +98,8 @@ try {
 
 $user = $response->getGraphUser();
 
-echo 'id: ' . $user['id'];
+var_dump($user['id']);
+die();
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
 //var_dump($_SESSION['fb_access_token']);

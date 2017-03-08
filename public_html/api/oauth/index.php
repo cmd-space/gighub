@@ -87,7 +87,7 @@ if ( ! $accessToken->isLongLived() ) {
 
 try {
 	// Returns a `Facebook\FacebookResponse` object
-	$response = $fb->get('/me?fields=id,name,email', $accessToken);
+	$response = $fb->get('/me?fields=id,name,email,user_location', $accessToken);
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
 	echo 'Graph returned an error: ' . $e->getMessage();
 	exit;
@@ -98,17 +98,16 @@ try {
 
 $user = $response->getGraphUser();
 
-var_dump($user['id']);
-die();
+$_SESSION['fbUserId'] = $user['id'];
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
 //var_dump($_SESSION['fb_access_token']);
-if(empty($_SESSION["fb_access_token"]) === true) {
+if(empty($_SESSION["fb_access_token"] || empty($_SESSION['fbUserId']) === true)) {
 	throw(new \InvalidArgumentException("Please return to homepage and sign up or login", 403));
 }
 
 // logic to check if profile already exists
-$profile = Profile::getProfileByProfileOAuthToken($pdo, $_SESSION['fb_access_token']);
+$profile = Profile::getProfileByProfileOAuthToken($pdo, $_SESSION['fbUserId']);
 
 if(!empty($profile)) {
 	$_SESSION['profile'] = $profile;
@@ -120,7 +119,7 @@ if(!empty($profile)) {
 	// generate unique-ish username to be changed by user later
 	$uniqueUserName = uniqid('user');
 	// create new profile
-	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", "unknown", $_SESSION['fb_access_token'], "something", $uniqueUserName);
+	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", $user['user_location'], $_SESSION['fbUserId'], "something", $uniqueUserName);
 	$newProfile->insert($pdo);
 	// retrieve profile id to redirect to their new profile
 	$newId = $newProfile->getProfileId();

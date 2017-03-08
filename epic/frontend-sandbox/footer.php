@@ -1,5 +1,9 @@
-<footer class="footer">
-	<div class="container">
-		<p class="text-muted">Place sticky footer content here.</p>
+<body>
+	<div class="wrapper">
+
+		content
+
+		<div class="push"></div>
 	</div>
-</footer>
+	<footer class="footer"></footer>
+</body>

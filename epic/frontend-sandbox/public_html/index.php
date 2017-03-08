@@ -40,24 +40,16 @@
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
 						<li><a href="#">Link</a></li>
-								<li><a href="#">Sign Out</a></li>
 							</ul>
-						</li>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Sign Out</a></li>
 					</ul>
-					<form class="navbar-form navbar-left">
+					<form class="navbar-form navbar-right">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Search">
+							<input type="text" class="form-control" placeholder="search no work fuk off m8">
 						</div>
 						<button type="submit" class="btn btn-default">Submit</button>
 					</form>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Link</a></li>
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
-							</ul>
 						</li>
 					</ul>
 				</div><!-- /.navbar-collapse -->

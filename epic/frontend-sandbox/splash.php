@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<?php require_once("lib/head-utils.php");?>
-
+<?php require_once("lib/head-utils.php"); ?>
 
 <body>
 

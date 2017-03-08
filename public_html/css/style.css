@@ -2,6 +2,10 @@ html {
 	height: 100%;
 	width: 100%;
 }
+
+
 body {
 	background-color: #252b37;
+	font-family: 'Orbitron', sans-serif;
+	margin: 0px;
 }

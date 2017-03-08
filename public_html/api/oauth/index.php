@@ -87,7 +87,7 @@ if ( ! $accessToken->isLongLived() ) {
 
 try {
 	// Returns a `Facebook\FacebookResponse` object
-	$response = $fb->get('/me?fields=id,name,email,user_location', $accessToken);
+	$response = $fb->get('/me?fields=id,name,email,location', $accessToken);
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
 	echo 'Graph returned an error: ' . $e->getMessage();
 	exit;
@@ -119,7 +119,8 @@ if(!empty($profile)) {
 	// generate unique-ish username to be changed by user later
 	$uniqueUserName = uniqid('user');
 	// create new profile
-	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", $user['user_location'], $_SESSION['fbUserId'], "something", $uniqueUserName);
+	$userLocation = $user['location']['name'] ?? "Sonoyta, Sonora";
+	$newProfile= new Profile(null, 1, 1, "change me!", "dakota fanning", $userLocation, $_SESSION['fbUserId'], "something", $uniqueUserName);
 	$newProfile->insert($pdo);
 	// retrieve profile id to redirect to their new profile
 	$newId = $newProfile->getProfileId();

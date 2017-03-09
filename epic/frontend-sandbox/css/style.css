@@ -14,3 +14,14 @@ body {
 	text-align: center;
 	transform: translate(-50%, -50%);
 }
+
+@media only screen and (min-width: 768px) {
+	.text-right-sm {
+		text-align: right;
+	}
+}
+
+footer {
+	background-color: black;
+	padding: 2rem 0;
+}

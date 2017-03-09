@@ -28,17 +28,13 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
+
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-
-	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
 
 
 	// handle GET request - if id is present, that Tag is returned, otherwise all Tags are returned
@@ -70,8 +66,13 @@ try {
 		$requestObject = json_decode($requestContent);
 
 		// Make sure that only one can edit one's own profile
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $_SESSION['fbUserId']);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+		//$profile = Profile::getProfileByProfileOAuthToken($pdo, $_SESSION['fbUserId']);
+
+
+		//if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+			//throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you? It's a quick little task. Just do it.", 403));
+		//}
+		if(empty($_SESSION["profile"] === true) || $_SESSION["profile"]->getProfileTypeId() === 1) {
 			throw(new \InvalidArgumentException("You do not have permission to edit this profile... Login, why don't you? It's a quick little task. Just do it.", 403));
 		}
 		//make sure tag content is available (required field)

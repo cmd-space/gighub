@@ -36,10 +36,6 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileTypeName = filter_input(INPUT_GET, "profileTypeName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
 
 	// handle GET request - if id is present, that ProfileType is returned, otherwise all ProfileTypes are returned
 	if($method === "GET") {

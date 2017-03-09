@@ -5,7 +5,7 @@ require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
 require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\GigHub\{Profile, Post};
+use Edu\Cnm\GigHub\{Profile, Post, Venue};
 
 /**
  *  api for post class
@@ -87,7 +87,7 @@ try {
 
 		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
 		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $requestObject) {
 			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
 		}
 
@@ -149,6 +149,16 @@ try {
 			$reply->message = "Post updated ok";
 
 		} else if($method === "POST") {
+
+		$venue = Venue::getVenueByVenueProfileId($pdo, $_SESSION["profile"]->getProfileId());
+
+		var_dump($_SESSION);
+		
+
+
+		if(empty($_SESSION["profile"]) === true || $venue->getVenueProfileId() !== $requestObject->postProfileId) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
+		}
 
 			// create new post and insert into the database
 			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $cloudinaryResult["public_id"], $requestObject->postTitle);

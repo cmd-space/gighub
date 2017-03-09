@@ -16,7 +16,7 @@
 	<img src="../images/GigHubWhite.png" class="img-responsive center-block">
 </div>
 
-	<div class="container">
+	<div class="container center">
 		<div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>
 	</div>
 

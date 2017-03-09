@@ -30,6 +30,11 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
+	// Cloudinary setup. Big thanks to the sprout-swap.com team!
+	$config = readConfig("/etc/apache2/capstone-mysql/gighub.ini");
+	$cloudinary = json_decode($config["cloudinary"]);
+	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
@@ -115,6 +120,15 @@ try {
 		throw(new \InvalidArgumentException ("No content for Title", 405));
 	}
 
+		// again, thanks to the team at sprout-swap.com!
+		//assigning variables to the user image name, MIME type, and image extension
+		$tempUserFileName = $_FILES["userImage"]["tmp_name"];
+		$userFileType = $_FILES["userImage"]["type"];
+		$userFileExtension = strtolower(strrchr($_FILES["userImage"]["name"], "."));
+
+		//upload image to cloudinary and get public id
+		$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["userImage"]["tmp_name"]);
+
 	// perform the actual put or post
 	if($method === "PUT") {
 		// retrieve the post to update
@@ -127,8 +141,8 @@ try {
 			$post->setPostVenueId($requestObject->postVenueId);
 			$post->setPostContent($requestObject->postContent);
 			$post->setPostCreatedDate($requestObject->postCreatedDate);
-			$post->setEventDate($requestObject->postEventDate);
-			$post->setImageCloudinaryId($requestObject->postImageCloudinaryId);
+			$post->setPostEventDate($requestObject->postEventDate);
+			$post->setPostImageCloudinaryId($cloudinaryResult["public_id"]);
 			$post->setPostTitle($requestObject->postTitle);
 
 			// update reply
@@ -137,7 +151,7 @@ try {
 		} else if($method === "POST") {
 
 			// create new post and insert into the database
-			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject->postImageCloudinaryId, $requestObject->postTitle);
+			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $cloudinaryResult["public_id"], $requestObject->postTitle);
 			$post->insert($pdo);
 
 			//update reply

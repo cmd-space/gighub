@@ -1,4 +1,3 @@
-<?php require_once("lib/head-utils.php"); ?>
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->

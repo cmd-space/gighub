@@ -9,3 +9,10 @@ body {
 .center {
 	text-align: center;
 }
+
+#footer {
+	background-color: black;
+	width:100%;
+	height:50px;
+	color:white;
+}

@@ -19,6 +19,8 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
+
+
 //prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
@@ -28,10 +30,13 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 12);
+
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
+	// TODO: fix variable names to reflect what is
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$city = filter_input(INPUT_GET, "city", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -90,12 +95,9 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this venue... Login, why don't you?", 403));
-		}
 
+
+		// FIXME: add rest of the required fields
 		//make sure venue profile id is available (required field)
 		if(empty($requestObject->venueProfileId) === true) {
 		throw(new \InvalidArgumentException ("This is where it is dying", 405));
@@ -108,6 +110,11 @@ try {
 			$venue = Venue::getVenueByVenueId($pdo, $id);
 			if($venue === null) {
 				throw(new RuntimeException("Venue does not exist", 404));
+			}
+
+
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $venue->getVenueProfileId()) {
+				throw(new \InvalidArgumentException("You do not have permission to edit this venue... Login, why don't you?", 403));
 			}
 
 			// update all attributes
@@ -123,6 +130,12 @@ try {
 			$reply->message = "Venue updated OK";
 		} else if($method === "POST") {
 
+			//FIXME change permissions
+			if(empty($_SESSION["profile"]) === true) {
+				throw(new \InvalidArgumentException("You do not have permission to edit this venue... Login, why don't you?", 403));
+			}
+
+
 			// create new venue and insert into the database
 			$venue = new Venue(null, $requestObject->venueProfileId, $requestObject->venueCity, $requestObject->venueName, $requestObject->venueState, $requestObject->venueStreet1, $requestObject->venueStreet2, $requestObject->venueZip);
 			$venue->insert($pdo);
@@ -133,17 +146,16 @@ try {
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
-		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this venue... Login, why don't you?", 403));
-		}
-
 		// retrieve the Venue to be deleted
 		$venue = Venue::getVenueByVenueId($pdo, $id);
 		if($venue === null) {
 			throw(new RuntimeException("Venue does not exist", 404));
 		}
+
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $venue->getVenueProfileId()) {
+			throw(new \InvalidArgumentException("You do not have permission to edit this venue... Login, why don't you?", 403));
+		}
+
 
 		// delete profile
 		$venue->delete($pdo);

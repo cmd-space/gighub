@@ -34,15 +34,14 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	// TODO: fix variable names to reflect what is
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-	$city = filter_input(INPUT_GET, "city", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$state = filter_input(INPUT_GET, "state", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$street1 = filter_input(INPUT_GET, "street1", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$street2 = filter_input(INPUT_GET, "street2", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$zip = filter_input(INPUT_GET, "zip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$venueId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$venueProfileId = filter_input(INPUT_GET, "VenueProfileId", FILTER_VALIDATE_INT);
+	$venueCity = filter_input(INPUT_GET, "VenueCity", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$venueName = filter_input(INPUT_GET, "VenueName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$venueState = filter_input(INPUT_GET, "VenueState", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$venueStreet1 = filter_input(INPUT_GET, "VenueStreet1", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$venueStreet2 = filter_input(INPUT_GET, "VenueStreet2", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$venueZip = filter_input(INPUT_GET, "VenueZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -56,32 +55,32 @@ try {
 
 		//get a specific venue or all venues and update reply
 		if(empty($id) === false) {
-			$venue = Venue::getVenueByVenueId($pdo, $id);
+			$venue = Venue::getVenueByVenueId($pdo, $Id);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($profileId) === false) {
-			$venue = Venue::getVenueByVenueProfileId($pdo, $profileId);
+		} else if(empty($venueProfileId) === false) {
+			$venue = Venue::getVenueByVenueProfileId($pdo, $venueProfileId);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($city) === false) {
-			$venue = Venue::getVenueByVenueCity($pdo, $city);
+		} else if(empty($venueCity) === false) {
+			$venue = Venue::getVenueByVenueCity($pdo, $venueCity);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($name) === false) {
-			$venue = Venue::getVenueByVenueName($pdo, $name);
+		} else if(empty($venueName) === false) {
+			$venue = Venue::getVenueByVenueName($pdo, $venueName);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($street1) === false) {
-			$venue = Venue::getVenueByVenueStreet1($pdo, $street1);
+		} else if(empty($venueStreet1) === false) {
+			$venue = Venue::getVenueByVenueStreet1($pdo, $venueStreet1);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
-		} else if(empty($zip) === false) {
-			$venue = Venue::getVenueByVenueZip($pdo, $zip);
+		} else if(empty($venueZip) === false) {
+			$venue = Venue::getVenueByVenueZip($pdo, $venueZip);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
@@ -95,10 +94,24 @@ try {
 
 
 
-		// FIXME: add rest of the required fields
 		//make sure venue profile id is available (required field)
 		if(empty($requestObject->venueProfileId) === true) {
 		throw(new \InvalidArgumentException ("This is where it is dying", 405));
+		}
+		if(empty($requestObject->venueCity) === true) {
+			throw(new \InvalidArgumentException ("This is where it is dying", 405));
+		}
+		if(empty($requestObject->venueName) === true) {
+			throw(new \InvalidArgumentException ("This is where it is dying", 405));
+		}
+		if(empty($requestObject->venueState) === true) {
+			throw(new \InvalidArgumentException ("This is where it is dying", 405));
+		}
+		if(empty($requestObject->venueStreet1) === true) {
+			throw(new \InvalidArgumentException ("This is where it is dying", 405));
+		}
+		if(empty($requestObject->venueZip) === true) {
+			throw(new \InvalidArgumentException ("This is where it is dying", 405));
 		}
 
 		//perform the actual put or post
@@ -128,7 +141,7 @@ try {
 			$reply->message = "Venue updated OK";
 		} else if($method === "POST") {
 
-			//FIXME change permissions
+
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("You do not have permission to edit this venue... Login, why don't you?", 403));
 			}

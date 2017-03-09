@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -22,11 +22,43 @@
 		<title>GigHub</title>
 	</head>
 	<body>
-		<div class="container"
+		<div class="container">
+		<header>
+			<h1>Post Create View</h1>
+		</header>
+
+		<div class="container">
+		<div class="form">
 			  <div class="row">
 				  <div class="col-md-4">
-					  <p>Create Post</p>
+					  <p>Image:</p>
+				  </div>
+				  <div class="col-lg-6">
+					  <p>Image from cloudinary</p>
 				  </div>
 			  </div>
+			<div class="col-md-4">
+				<p>Title</p>
+			</div>
+			<div class="col-md-6">
+				<p> tile of the post </p>
+			</div>
+				<div class="col-md-4">
+					<p>Content</p>
+				</div>
+				<div class="col-lg-6">
+					<p> describe your show! <br> whats it going to be about? <br>No im not going.</p>
+				</div>
+				<div class="col-md-4">
+					<p>Event Date</p>
+				</div>
+				<div class="col-md-4">
+					<p> Post the Event Date</p>
+				</div>
+				<div class="col-md-4">
+					<button> Create Post</button>
+				</div>
+		</div>
+	</div>
 	</body>
 </html>

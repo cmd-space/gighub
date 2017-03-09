@@ -55,7 +55,7 @@ try {
 
 		//get a specific venue or all venues and update reply
 		if(empty($id) === false) {
-			$venue = Venue::getVenueByVenueId($pdo, $Id);
+			$venue = Venue::getVenueByVenueId($pdo, $id);
 			if($venue !== null) {
 				$reply->data = $venue;
 			}

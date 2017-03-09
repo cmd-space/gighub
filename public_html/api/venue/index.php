@@ -34,7 +34,7 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$venueId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$venueProfileId = filter_input(INPUT_GET, "VenueProfileId", FILTER_VALIDATE_INT);
 	$venueCity = filter_input(INPUT_GET, "VenueCity", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$venueName = filter_input(INPUT_GET, "VenueName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

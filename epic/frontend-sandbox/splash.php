@@ -11,18 +11,13 @@
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
 
-
-	<div class="container">
-		<div class="center-splash">
+	<div class="container center-splash">
 	<img src="../images/GigHubWhite.png" class="img-responsive center-block">
 
-			<div class="container center">
 				<div class="fb-login-button visible-md-inline visible-lg-inline" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>
-			</div>
 
-	<div class="container center">
+
 		<div class="fb-login-button visible-xs-inline visible-sm-inline" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false"></div>
-	</div>
 	</div>
 
 </body>

@@ -1,11 +1,11 @@
 <footer class="navbar-fixed-bottom">
-	<div class="container">
+	<div class="container" id="footer">
 		<div class="row">
 			<div class="col-sm-6">
-				=^. .^=
+				About Us
 			</div>
 			<div class="col-sm-6 text-right-sm">
-				Meow!
+				Contact Us
 			</div>
 		</div>
 	</div>

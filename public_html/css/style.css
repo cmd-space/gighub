@@ -1,11 +1,39 @@
-html {
-	height: 100%;
-	width: 100%;
-}
+/*html {*/
+	/*height: 100%;*/
+	/*width: 100%;*/
+/*}*/
 
+
+/*body {*/
+	/*background-color: #252b37;*/
+	/*font-family: 'Orbitron', sans-serif;*/
+	/*margin: 0px;*/
+/*}*/
+
+
+/*html {*/
+/*height: 100%;*/
+/*width: 100%;*/
+/*}*/
 
 body {
-	background-color: #252b37;
-	font-family: 'Orbitron', sans-serif;
-	margin: 0px;
+	background-color: #252b37 !important;
 }
+
+.navbar {
+	min-height: 10%;
+	font-size: 1rem;
+	width: 100%;
+	padding-bottom: 20px;
+	margin-bottom: 0px;
+}
+
+.navbar-inverse{
+	border-radius: 0;
+}
+
+#footer {
+	background-color: aqua;
+	color: red;
+}
+

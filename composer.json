@@ -1,6 +1,8 @@
 {
   "require": {
     "cloudinary/cloudinary_php": "dev-master",
-    "facebook/graph-sdk" : "~5.0"
+    "facebook/graph-sdk" : "~5.0",
+    "guzzlehttp/guzzle": "~6.0"
+
   }
 }

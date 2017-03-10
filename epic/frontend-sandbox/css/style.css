@@ -27,4 +27,26 @@ footer {
 	color:white;
 }
 
+.formandsignout {
+	right: 5rem;
+	top: .5rem;
+	position: absolute;
+}
+
+.logo {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+.logo {
+	display: flex;
+	align-items: center;
+}
+
+.navbar {
+	height:100px;
+}
 

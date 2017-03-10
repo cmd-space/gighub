@@ -43,6 +43,7 @@ footer {
 }
 .logo {
 	display: flex;
+	z-index:100;
 	align-items: center;
 }
 
@@ -50,5 +51,23 @@ footer {
 	height:100px;
 }
 
+.links {
+	padding-top:20%;
+}
 
+.logo-image {
+	width:20%;
+}
+
+@media only screen and (min-width: 1344px) {
+	.logo {
+		text-align: center;
+	}
+}
+
+@media only screen and (max-width: 750px) {
+	.logo-image {
+		width:30%;
+	}
+}
 

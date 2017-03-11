@@ -40,13 +40,13 @@ try {
 	//TODO: Make INPUT_GET variables reflect what the variables are in the class, and clean up unneeded INPUTS
 
 	// sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-	$venueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
-	$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$title = filter_input(INPUT_GET, "title", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$eventDate = filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
-	$imageCloudinaryId = filter_input(INPUT_GET, "imageCloudinaryId", FILTER_SANITIZE_STRING);
+	$postId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$postProfileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$postVenueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
+	$postContent = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postTitle = filter_input(INPUT_GET, "title", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postEventDate = filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
+	$postImageCloudinaryId = filter_input(INPUT_GET, "imageCloudinaryId", FILTER_SANITIZE_STRING);
 
 	// make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -61,18 +61,18 @@ try {
 		//TODO: make get bys match what is in the INPUT gets
 
 		//gets a post by content
-		if(empty($id) === false) {
-			$post = Post::getPostByPostId($pdo, $id);
-			if($post !== null) {
-				$reply->data = $post;
+		if(empty($postId) === false) {
+			$postId = Post::getPostByPostId($pdo, $postId);
+			if($postId !== null) {
+				$reply->data = $postId;
 			}
-		} else if(empty($profileId) === false) {
-			$posts = Post::getPostByPostProfileId($pdo, $profileId);
+		} else if(empty($ppostProfileId) === false) {
+			$posts = Post::getPostByPostProfileId($pdo, $postProfileId);
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
-		} else if(empty($content) === false) {
-			$posts = Post::getPostByPostContent($pdo, $content);
+		} else if(empty($postContent) === false) {
+			$posts = Post::getPostByPostContent($pdo, $postContent);
 			if($posts !== null) {
 				$reply->data = $posts;
 			}

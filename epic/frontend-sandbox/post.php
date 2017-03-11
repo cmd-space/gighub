@@ -28,37 +28,34 @@
 		</header>
 
 		<div class="container">
-		<div class="form">
-			  <div class="row">
-				  <div class="col-md-4">
-					  <p>Image:</p>
-				  </div>
-				  <div class="col-lg-6">
-					  <p>Image from cloudinary</p>
-				  </div>
-			  </div>
-			<div class="col-md-4">
-				<p>Title</p>
+		<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+				Launch demo modal
+			</button>
+
+			<!-- Modal -->
+			<button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-md-6">
-				<p> tile of the post </p>
-			</div>
-				<div class="col-md-4">
-					<p>Content</p>
-				</div>
-				<div class="col-lg-6">
-					<p> describe your show! <br> whats it going to be about? <br>No im not going.</p>
-				</div>
-				<div class="col-md-4">
-					<p>Event Date</p>
-				</div>
-				<div class="col-md-4">
-					<p> Post the Event Date</p>
-				</div>
-				<div class="col-md-4">
-					<button> Create Post</button>
-				</div>
-		</div>
-	</div>
 	</body>
+
+	<script>
+
+	</script>
 </html>

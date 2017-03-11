@@ -1,20 +1,27 @@
 <?php
-if(session_status() !== PHP_SESSION_ACTIVE) {
+if ( session_status() !== PHP_SESSION_ACTIVE ) {
 	session_start();
 }
+//setXsrfCookie();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<base href="<?php echo dirname($_SERVER["PHP_SELF"]) . "/"; ?>" />
+		<meta charset="UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-		<title>Angular 2 Example</title>
+		<!-- Google Fonts -->
+		<link
+			href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,700italic,700|Playfair+Display:400,400italic'
+			rel='stylesheet' type='text/css'>
+
+		<base href="<?php echo dirname( $_SERVER["PHP_SELF"] ) . "/"; ?>"/>
+
+		<title>GigHub</title>
 	</head>
-	<body>
+	<body class="sfooter">
 		<!-- This custom tag much match your Angular @Component selector name in app/app.component.ts -->
-		<angular2-example-app>Loading&hellip;</angular2-example-app>
+		<gighub-app>Loading&hellip;</gighub-app>
 	</body>
 </html>

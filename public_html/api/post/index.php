@@ -30,11 +30,6 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
-	// Cloudinary setup. Big thanks to the sprout-swap.com team!
-	$config = readConfig("/etc/apache2/capstone-mysql/gighub.ini");
-	$cloudinary = json_decode($config["cloudinary"]);
-	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
-
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
@@ -119,15 +114,6 @@ try {
 	if(empty($requestObject->postTitle) === true) {
 		throw(new \InvalidArgumentException ("No content for Title", 405));
 	}
-
-		// again, thanks to the team at sprout-swap.com!
-		//assigning variables to the user image name, MIME type, and image extension
-		$tempUserFileName = $_FILES["userImage"]["tmp_name"];
-		$userFileType = $_FILES["userImage"]["type"];
-		$userFileExtension = strtolower(strrchr($_FILES["userImage"]["name"], "."));
-
-		//upload image to cloudinary and get public id
-		$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["userImage"]["tmp_name"]);
 
 	// perform the actual put or post
 	if($method === "PUT") {

@@ -24,8 +24,6 @@
 
 					</ul>
 
-
-
 					<div class="formandsignout">
 					<ul class="nav navbar-nav navbar-right">
 						<li class="active links"><a href="#">Sign Out</a></li>
@@ -36,7 +34,7 @@
 						</div>
 						<button type="submit" class="btn btn-default active links submit">Submit</button>
 					</form>
-				</div
-			</div>><!-- /.navbar-collapse -->
+				</div>
+			</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>

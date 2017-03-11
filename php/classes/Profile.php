@@ -74,7 +74,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newProfileId = null, int $newProfileOAuthId, int $newProfileTypeId, string $newProfileBio, string $newProfileImageCloudinaryId, string $newProfileLocation, string $newProfileOAuthToken, string $newProfileSoundCloudUser, string $newProfileUserName) {
+	public function __construct(int $newProfileId = null, int $newProfileOAuthId, int $newProfileTypeId, string $newProfileBio, string $newProfileImageCloudinaryId = null, string $newProfileLocation, string $newProfileOAuthToken, string $newProfileSoundCloudUser, string $newProfileUserName) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileOAuthId($newProfileOAuthId);
@@ -235,7 +235,10 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if $newProfileImageCloudinaryId is > 32 characters
 	 * @throws \TypeError if $newProfileImageCloudinaryId is not a string
 	 **/
-	public function setProfileImageCloudinaryId(string $newProfileImageCloudinaryId) {
+	public function setProfileImageCloudinaryId(string $newProfileImageCloudinaryId = null) {
+		if($newProfileImageCloudinaryId === null) {
+			$this->profileImageCloudinaryId = null;
+		}
 		// verify that profile image Cloudinary id is secure
 		$newProfileImageCloudinaryId = trim($newProfileImageCloudinaryId);
 		$newProfileImageCloudinaryId = filter_var($newProfileImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

@@ -71,7 +71,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occur
 	 **/
-	public function __construct(int $newPostId = null, int $newPostProfileId, int $newPostVenueId, string $newPostContent, $newPostCreatedDate = null, $newPostEventDate = null, string $newPostImageCloudinaryId, string $newPostTitle) {
+	public function __construct(int $newPostId = null, int $newPostProfileId, int $newPostVenueId, string $newPostContent, $newPostCreatedDate = null, $newPostEventDate = null, string $newPostImageCloudinaryId = null, string $newPostTitle) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostProfileId($newPostProfileId);
@@ -297,7 +297,10 @@ class Post implements \JsonSerializable {
 	 * @throws \RangeException if $newPostImageCloudinaryId is > 32 characters
 	 * @throws \TypeError if $newPostImageCloudinaryId is not a string
 	 **/
-	public function setPostImageCloudinaryId(string $newPostImageCloudinaryId) {
+	public function setPostImageCloudinaryId(string $newPostImageCloudinaryId = null) {
+		if($newPostImageCloudinaryId === null) {
+			$this->postImageCloudinaryId = null;
+		}
 		// verify the post image cloudinary id is secure
 		$newPostImageCloudinaryId = trim($newPostImageCloudinaryId);
 		$newPostImageCloudinaryId = filter_var($newPostImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

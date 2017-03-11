@@ -1,5 +1,5 @@
 <?php require_once( "lib/head-utils.php" ); ?>
-<bodyclass="sfooter">
+<body class="sfooter">
 <div class="sfooter-content">
 	<?php require_once( "nav.php" ); ?>
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#profileModal">

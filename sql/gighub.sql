@@ -29,15 +29,15 @@ CREATE TABLE profile (
 	-- auto_increment tells mySQL to number them {1, 2, 3, ...}
 	-- not null means the attribute is required!
 	profileId                INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	profileOAuthId           INT UNSIGNED                NOT NULL,
-	profileTypeId            INT UNSIGNED                NOT NULL,
+	profileOAuthId           INT UNSIGNED NOT NULL,
+	profileTypeId            INT UNSIGNED NOT NULL,
 	profileBio               VARCHAR(669),
 	profileImageCloudinaryId VARCHAR(32),
 	profileLocation
 									 CHAR(128),
 	profileOAuthToken        VARCHAR(200),
 	profileSoundCloudUser    VARCHAR(32),
-	profileUserName          VARCHAR(64),z
+	profileUserName          VARCHAR(64),
 	-- to make something optional, exclude the not null
 	-- to make sure duplicate data cannot exist, create a unique index
 	INDEX (profileLocation),

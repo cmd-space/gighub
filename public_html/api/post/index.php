@@ -141,7 +141,7 @@ try {
 			$post->setPostContent($requestObject->postContent);
 			$post->setPostCreatedDate($requestObject->postCreatedDate);
 			$post->setPostEventDate($requestObject->postEventDate);
-			//$post->setPostImageCloudinaryId($cloudinaryResult["public_id"]);
+			$post->setPostImageCloudinaryId($requestObject->postImageCloudinaryId);
 			$post->setPostTitle($requestObject->postTitle);
 
 			// update reply
@@ -156,7 +156,7 @@ try {
 			}
 
 			// create new post and insert into the database
-			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject-> $cloudinaryResult["public_id"], $requestObject->postTitle);
+			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject->postImageCloudinaryId, $requestObject->postTitle);
 			$post->insert($pdo);
 
 			//update reply

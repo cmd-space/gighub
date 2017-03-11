@@ -8,8 +8,9 @@ import {FacebookLoginComponent} from "./components/facebooklogin-component";
 import {FeedComponent} from "./components/feed-component";
 import {VenueComponent} from "./components/venue-component";
 import {VenueDetailComponent} from "./components/venuedetail-component";
+import {ProfileComponent} from "./components/profile-component";
 
-export const allAppComponents = [HomeComponent, MainNavComponent, AboutComponent, ContactComponent, FeedComponent, FacebookLoginComponent, VenueComponent, VenueDetailComponent, NotFoundComponent];
+export const allAppComponents = [HomeComponent, MainNavComponent, AboutComponent, ContactComponent, FeedComponent, FacebookLoginComponent, VenueComponent, VenueDetailComponent, ProfileComponent, NotFoundComponent];
 
 export const routes: Routes = [
 	{path: "feed", component: FeedComponent},
@@ -17,6 +18,7 @@ export const routes: Routes = [
 	{path: "venue/:venueId", component: VenueDetailComponent},
 	{path: "about", component: AboutComponent},
 	{path: "contact", component: ContactComponent},
+	{path: "profile", component: ProfileComponent},
 	{path: "", component: HomeComponent},
 	{path: "**", component: NotFoundComponent}
 ];

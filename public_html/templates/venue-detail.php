@@ -1,2 +1,2 @@
 <main-nav></main-nav>
-<h1>{{ venueId }}</h1>
+<h1>{{ venue.venueName }}</h1>

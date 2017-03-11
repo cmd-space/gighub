@@ -1,11 +1,13 @@
 <?php
 
-require_once (dirname(__DIR__, 3) . "/vendor/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/classes/autoload.php");
-require_once (dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\GigHub\{Profile, Post, Venue};
+use Edu\Cnm\GigHub\{
+	Profile, Post, Venue
+};
 
 /**
  *  api for post class
@@ -30,8 +32,12 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
+	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 13);
+
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+
+	//TODO: Make INPUT_GET variables reflect what the variables are in the class, and clean up unneeded INPUTS
 
 	// sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
@@ -39,8 +45,8 @@ try {
 	$venueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
 	$content = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$title = filter_input(INPUT_GET, "title", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$eventDate= filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
-	$imageCloudinaryId= filter_input(INPUT_GET, "imageCloudinaryId",FILTER_SANITIZE_STRING);
+	$eventDate = filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
+	$imageCloudinaryId = filter_input(INPUT_GET, "imageCloudinaryId", FILTER_SANITIZE_STRING);
 
 	// make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -52,83 +58,90 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
+		//TODO: make get bys match what is in the INPUT gets
+
 		//gets a post by content
-	if(empty($id) === false) {
-		$post = Post::getPostByPostId($pdo, $id);
-		if($post !== null) {
-			$reply->data = $post;
+		if(empty($id) === false) {
+			$post = Post::getPostByPostId($pdo, $id);
+			if($post !== null) {
+				$reply->data = $post;
+			}
+		} else if(empty($profileId) === false) {
+			$posts = Post::getPostByPostProfileId($pdo, $profileId);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+		} else if(empty($content) === false) {
+			$posts = Post::getPostByPostContent($pdo, $content);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+		} else {
+			$posts = Post::getAllPosts($pdo);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
 		}
-	} else if(empty($profileId) === false) {
-		$posts = Post::getPostByPostProfileId($pdo, $profileId);
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-	} else if(empty($content) === false) {
-		$posts = Post::getPostByPostContent($pdo, $content);
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-	} else {
-		$posts = Post::getAllPosts($pdo);
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-	}
-} else if($method === "PUT" || $method === "POST") {
+	} else if($method === "PUT" || $method === "POST") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $requestObject) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
+		var_dump($requestObject);
+
+
+		// make sure VenueId is available
+		if(empty($requestObject->postVenueId) === true) {
+			throw(new \InvalidArgumentException ("No Venue ID", 405));
 		}
 
-	// make sure post content is available (require field)
-	if(empty($requestObject->postContent) === true) {
-		throw(new \InvalidArgumentException ("No post content", 405));
-	}
-	// make sure post created  date is accurate (optional field)
-	if(empty($requestObject->postCreatedDate) === true) {
-		$requestObject->postCreatedDate = new \DateTime();
-	}
-	// make sure post Event date is accurate (optional field)
-	if(empty($requestObject->postEventDate) === true) {
-		$requestObject->postEventDate = new \DateTime();
-	}
-	// make sure profileId is available
-	if(empty($requestObject->postProfileId) === true) {
-		throw(new \InvalidArgumentException ("No Profile ID", 405));
-	}
-	// make sure VenueId is available
-	if(empty($requestObject->postVenueId) === true) {
-		throw(new \InvalidArgumentException ("No Venue ID", 405));
-	}
-	// make sure the is a ImageCloudinaryId available
-	if(empty($requestObject->postImageCloudinaryId) === true) {
-		throw(new \InvalidArgumentException ("No Venue ID", 405));
-	}
-	// make sure there is a PostTitle in the Post
-	if(empty($requestObject->postTitle) === true) {
-		throw(new \InvalidArgumentException ("No content for Title", 405));
-	}
-
-	// perform the actual put or post
-	if($method === "PUT") {
-		// retrieve the post to update
-		$post = Post::getPostByPostId($pdo, $id);
-		if($post === null) {
-			throw(new RuntimeException("Post does no exist", 404));
+		// make sure post content is available (require field)
+		if(empty($requestObject->postContent) === true) {
+			throw(new \InvalidArgumentException ("No post content", 405));
 		}
+		// make sure post created  date is accurate (optional field)
+		if(empty($requestObject->postCreatedDate) === true) {
+			$requestObject->postCreatedDate = new \DateTime();
+		}
+		// make sure post Event date is accurate (optional field)
+		if(empty($requestObject->postEventDate) === true) {
+			$requestObject->postEventDate = new \DateTime();
+		}
+		// make sure profileId is available
+		if(empty($requestObject->postProfileId) === true) {
+			throw(new \InvalidArgumentException ("No Profile ID", 405));
+		}
+
+		// make sure the is a ImageCloudinaryId available
+		if(empty($requestObject->postImageCloudinaryId) === true) {
+			throw(new \InvalidArgumentException ("No Image ID", 405));
+		}
+		// make sure there is a PostTitle in the Post
+		if(empty($requestObject->postTitle) === true) {
+			throw(new \InvalidArgumentException ("No content for Title", 405));
+		}
+
+		// perform the actual put or post
+		if($method === "PUT") {
+
+			// retrieve the post to update
+			$post = Post::getPostByPostId($pdo, $id);
+			if($post === null) {
+				throw(new RuntimeException("Post does no exist", 404));
+			}
+
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $post->getPostProfileId()) {
+				throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
+			}
+
 			// update all attributes
 			$post->setPostProfileId($requestObject->postProfileId);
 			$post->setPostVenueId($requestObject->postVenueId);
 			$post->setPostContent($requestObject->postContent);
 			$post->setPostCreatedDate($requestObject->postCreatedDate);
 			$post->setPostEventDate($requestObject->postEventDate);
-			$post->setPostImageCloudinaryId($cloudinaryResult["public_id"]);
+			//$post->setPostImageCloudinaryId($cloudinaryResult["public_id"]);
 			$post->setPostTitle($requestObject->postTitle);
 
 			// update reply
@@ -136,18 +149,14 @@ try {
 
 		} else if($method === "POST") {
 
-		$venue = Venue::getVenueByVenueProfileId($pdo, $_SESSION["profile"]->getProfileId());
+			$venue = Venue::getVenueByVenueProfileId($pdo, $_SESSION["profile"]->getProfileId());
 
-		var_dump($_SESSION);
-		
-
-
-		if(empty($_SESSION["profile"]) === true || $venue->getVenueProfileId() !== $requestObject->postProfileId) {
-			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
-		}
+			if(empty($_SESSION["profile"]) === true || $venue->getVenueProfileId() !== $requestObject->postProfileId) {
+				throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
+			}
 
 			// create new post and insert into the database
-			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $cloudinaryResult["public_id"], $requestObject->postTitle);
+			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject-> $cloudinaryResult["public_id"], $requestObject->postTitle);
 			$post->insert($pdo);
 
 			//update reply
@@ -157,40 +166,38 @@ try {
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post === null) {
+			throw(new RuntimeException("Post does no exist", 404));
+		}
 		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileOAuthToken($pdo, $profileId);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileOAuthToken() !== $profile->getProfileOAuthToken()) {
+		$profile = Profile::getProfileByProfileId($pdo, $profileId);
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileOAuthToken()) {
 			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
 		}
 
-		//retrieve the post to be deleted
-		$post = Post::getPostByPostId($pdo, $id);
-		if($post === null) {
-			throw(new RuntimeException("post does not exist", 404));
-		}
+		// delete post
+		$post->delete($pdo);
 
-			// delete post
-			$post->delete($pdo);
+		// update reply
+		$reply->message = "Post deleted Ok";
 
-			// update reply
-			$reply->message = "Post deleted Ok";
-
-		} else {
-			throw (new InvalidArgumentException("Invalid HTTP method request"));
-		}
-
-		// update reply with exception information
-	} catch(Exception $exception) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
-	} catch(TypeError $typeError) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
-	header("Content-Type: application/json");
-	if($reply->data === null) {
-		unset($reply->data);
+	// update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+
+header("Content-Type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
 }
 
 // encode and return reply to front end caller

@@ -34,7 +34,7 @@
 						<div class="form-group">
 							<input type="text" class="form-control" placeholder="search no work fuk off m8">
 						</div>
-						<button type="submit" class="btn btn-default active links">Submit</button>
+						<button type="submit" class="btn btn-default active links submit">Submit</button>
 					</form>
 				</div
 			</div>><!-- /.navbar-collapse -->

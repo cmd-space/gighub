@@ -40,21 +40,16 @@ export class PostService extends BaseService {
 	}
 
 	postPost(post: Post) : Observable<Status> {
-
 		return(this.http.post(this.postUrl, post)
 			.map(this.extractMessage)
 			.catch(this.handleError));
-
 	}
 	putPost(post: Post) : Observable<Post>{
-
 		return(this.http.put(this.postUrl + post.postId, post)
 			.map(this.extractMessage)
 			.catch(this.handleError));
-
 	}
 	deletePost(post: Post) : Observable<Post>{
-
 		return(this.http.delete(this.postUrl + post.postId)
 			.map(this.extractMessage)
 			.catch(this.handleError));

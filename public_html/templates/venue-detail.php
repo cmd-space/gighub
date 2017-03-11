@@ -1,1 +1,2 @@
-<h1>Moo</h1>
+<main-nav></main-nav>
+<h1>{{ venueId }}</h1>

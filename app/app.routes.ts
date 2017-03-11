@@ -8,9 +8,9 @@ import {ContactComponent} from "./components/contact-component";
 export const allAppComponents = [HomeComponent, MainNavComponent, AboutComponent, ContactComponent, NotFoundComponent];
 
 export const routes: Routes = [
-	{path: "", component: HomeComponent},
 	{path: "about", component: AboutComponent},
 	{path: "contact", component: ContactComponent},
+	{path: "", component: HomeComponent},
 	{path: "**", component: NotFoundComponent}
 ];
 

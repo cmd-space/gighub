@@ -19,13 +19,13 @@ export class TagService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getTagByTagContent(tagContent: string) : Observable<Tag> {
+	getTagByTagContent(tagContent: string) : Observable<Tag[]> {
 		return (this.http.get(this.tagUrl + tagContent)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getAllTags() : Observable<Tag> {
+	getAllTags() : Observable<Tag[]> {
 		return (this.http.get(this.tagUrl)
 			.map(this.extractData)
 			.catch(this.handleError));

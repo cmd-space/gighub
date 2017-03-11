@@ -25,25 +25,25 @@ export class ProfileService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getProfileByProfileTypeId(profileTypeId: number) : Observable<Profile> {
+	getProfileByProfileTypeId(profileTypeId: number) : Observable<Profile[]> {
 		return (this.http.get(this.profileUrl + profileTypeId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getProfileByLocationContent(profileLocation: string) : Observable<Profile> {
+	getProfileByLocationContent(profileLocation: string) : Observable<Profile[]> {
 		return (this.http.get(this.profileUrl + profileLocation)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getProfileBySoundCloudUser(profileSoundCloudUser: string) : Observable<Profile> {
+	getProfileBySoundCloudUser(profileSoundCloudUser: string) : Observable<Profile[]> {
 		return (this.http.get(this.profileUrl + profileSoundCloudUser)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getProfileByProfileUserName(profileUserName: string) : Observable<Profile> {
+	getProfileByProfileUserName(profileUserName: string) : Observable<Profile[]> {
 		return (this.http.get(this.profileUrl + profileUserName)
 			.map(this.extractData)
 			.catch(this.handleError));
@@ -55,7 +55,7 @@ export class ProfileService extends BaseService {
 			.catch(this.handleError));
 
 	}
-	deletePost(profile: Profile) : Observable<Profile>{
+	deleteProfile(profile: Profile) : Observable<Profile>{
 		return(this.http.delete(this.profileUrl + profile.profileId)
 			.map(this.extractMessage)
 			.catch(this.handleError));

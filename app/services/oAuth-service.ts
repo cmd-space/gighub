@@ -5,14 +5,14 @@ import {BaseService} from "./base-service";
 import {OAuth} from "../classes/oAuth";
 
 @Injectable()
-export class PostService extends BaseService {
+export class OAuthService extends BaseService {
 	constructor(protected http: Http) {
 		super(http);
 	}
 
 	private oAuthUrl = "api/oauth/";
 
-	getAllOAuths(): Observable<OAuth> {
+	getAllOAuths(): Observable<OAuth[]> {
 		return (this.http.get(this.oAuthUrl)
 			.map(this.extractData)
 			.catch(this.handleError));

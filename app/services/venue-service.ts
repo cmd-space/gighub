@@ -25,25 +25,25 @@ export class VenueService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getVenueByVenueCity(venueCity: string) : Observable<Venue> {
+	getVenueByVenueCity(venueCity: string) : Observable<Venue[]> {
 		return(this.http.get(this.venueUrl + venueCity)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getVenueByVenueName(venueName: string) : Observable<Venue> {
+	getVenueByVenueName(venueName: string) : Observable<Venue[]> {
 		return(this.http.get(this.venueUrl + venueName)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getVenueByVenueStreet1(venueStreet1: string) : Observable<Venue> {
+	getVenueByVenueStreet1(venueStreet1: string) : Observable<Venue[]> {
 		return(this.http.get(this.venueUrl + venueStreet1)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getVenueByVenueZip(venueZip: string) : Observable<Venue> {
+	getVenueByVenueZip(venueZip: string) : Observable<Venue[]> {
 		return(this.http.get(this.venueUrl + venueZip)
 			.map(this.extractData)
 			.catch(this.handleError));

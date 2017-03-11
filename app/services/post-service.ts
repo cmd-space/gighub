@@ -15,7 +15,7 @@ export class PostService extends BaseService {
 
 	private postUrl = "api/post/";
 
-	getAllPosts() : Observable<Post> {
+	getAllPosts() : Observable<Post[]> {
 		return(this.http.get(this.postUrl)
 			.map(this.extractData)
 			.catch(this.handleError));
@@ -27,13 +27,13 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getPostByPostProfileId(postProfileId: number) : Observable<Post> {
+	getPostByPostProfileId(postProfileId: number) : Observable<Post[]> {
 		return(this.http.get(this.postUrl + postProfileId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getPostByPostContent(postContent: string) : Observable<Post> {
+	getPostByPostContent(postContent: string) : Observable<Post[]> {
 		return(this.http.get(this.postUrl + postContent)
 			.map(this.extractData)
 			.catch(this.handleError));

@@ -1,5 +1,5 @@
 {
-  "name": "angular2-example",
+  "name": "gighub-app",
   "version": "1.0.0",
   "license": "Apache-2.0",
   "author": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dylan-mcdonald/angular2-example.git"
+    "url": "git@github.com:cmd-space/gighub.git"
   },
   "dependencies": {
     "@angular/common": "~2.4.7",

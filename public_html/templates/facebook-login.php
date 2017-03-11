@@ -27,4 +27,4 @@ $permissions = ['email', 'user_location']; // Optional permissions
 //TODO change the url to actual api url
 $loginUrl = $helper->getLoginUrl('https://bootcamp-coders.cnm.edu/~jramirez98/gighub/public_html/api/oauth/', $permissions);
 
-echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+echo '<a href="' . htmlspecialchars($loginUrl) . '" class="btn btn-info"><i class="fa fa-facebook-official"></i>Sign up/Login with Facebook!</a>';

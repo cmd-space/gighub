@@ -31,6 +31,7 @@ footer {
 	right: 5rem;
 	top: .5rem;
 	position: absolute;
+	z-index: 15;
 }
 
 .logo {
@@ -43,7 +44,7 @@ footer {
 }
 .logo {
 	display: flex;
-	z-index:100;
+	z-index:15;
 	align-items: center;
 }
 
@@ -72,5 +73,5 @@ footer {
 }
 
 .submit {
-	padding:.5rem;
+	padding:5px;
 }

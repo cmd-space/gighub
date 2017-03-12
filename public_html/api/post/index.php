@@ -32,7 +32,9 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/gighub.ini");
 
-	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 13);
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 31);
+
+	//var_dump($_SESSION);
 
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -40,11 +42,11 @@ try {
 	//TODO: Make INPUT_GET variables reflect what the variables are in the class, and clean up unneeded INPUTS
 
 	// sanitize input
-	$postId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-	$postVenueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
-	$postContent = filter_input(INPUT_GET, "content", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$postTitle = filter_input(INPUT_GET, "title", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postVenueId = filter_input(INPUT_GET, "postVenueId", FILTER_VALIDATE_INT);
+	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postTitle = filter_input(INPUT_GET, "postTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postEventDate = filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
 	$postImageCloudinaryId = filter_input(INPUT_GET, "imageCloudinaryId", FILTER_SANITIZE_STRING);
 
@@ -66,7 +68,7 @@ try {
 			if($postId !== null) {
 				$reply->data = $postId;
 			}
-		} else if(empty($ppostProfileId) === false) {
+		} else if(empty($postProfileId) === false) {
 			$posts = Post::getPostByPostProfileId($pdo, $postProfileId);
 			if($posts !== null) {
 				$reply->data = $posts;
@@ -87,9 +89,6 @@ try {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-
-		var_dump($requestObject);
-
 
 		// make sure VenueId is available
 		if(empty($requestObject->postVenueId) === true) {
@@ -148,19 +147,28 @@ try {
 			$reply->message = "Post updated ok";
 
 		} else if($method === "POST") {
+			if(empty($_SESSION["profile"]) === false) {
 
-			$venue = Venue::getVenueByVenueProfileId($pdo, $_SESSION["profile"]->getProfileId());
+				$venue = Venue::getVenueByVenueProfileId($pdo, $_SESSION["profile"]->getProfileId());
 
-			if(empty($_SESSION["profile"]) === true || $venue->getVenueProfileId() !== $requestObject->postProfileId) {
-				throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
+				if($venue !== null) {
+
+					if($venue->getVenueProfileId() !== $requestObject->postProfileId) {
+						throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
+					}
+
+					// create new post and insert into the database
+					$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject->postImageCloudinaryId, $requestObject->postTitle);
+					$post->insert($pdo);
+
+					//update reply
+					$reply->message = "Post created ok";
+				} elseif($venue === null) {
+					throw (new InvalidArgumentException("I die here", 403));
+				}
+			} else if(empty($_SESSION["profile"] === true)) {
+				throw(new \InvalidArgumentException("You are not a Venue", 403));
 			}
-
-			// create new post and insert into the database
-			$post = new Post(null, $requestObject->postProfileId, $requestObject->postVenueId, $requestObject->postContent, $requestObject->postCreatedDate, $requestObject->postEventDate, $requestObject->postImageCloudinaryId, $requestObject->postTitle);
-			$post->insert($pdo);
-
-			//update reply
-			$reply->message = "Post created ok";
 		}
 
 	} else if($method === "DELETE") {
@@ -171,8 +179,7 @@ try {
 			throw(new RuntimeException("Post does no exist", 404));
 		}
 		// Make sure that only one can edit one's own profile <--- referenced from https://github.com/zlaudick/dev-connect
-		$profile = Profile::getProfileByProfileId($pdo, $profileId);
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileOAuthToken()) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $post->getPostProfileId()) {
 			throw(new \InvalidArgumentException("You do not have permission to edit this post... Login, why don't you?", 403));
 		}
 

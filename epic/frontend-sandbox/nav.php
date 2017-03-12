@@ -21,6 +21,8 @@
 
 						<li class="active links"><a href="#">Profile<span class="sr-only">(current)</span></a></li>
 						<li class="active links"><a  href="#">Feed</a></li>
+						<li class="active links"><a  href="#">post</a></li>
+
 
 					</ul>
 

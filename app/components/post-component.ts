@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Post} from "../classes/post";
-import {postService} from "../services/post-service";
+import {PostService} from "../services/post-service";
 import {Status} from "../classes/status";
 import "rxjs/add/operator/switchMap";
 
@@ -13,7 +13,7 @@ export class postComponent implements OnInit {
 	post: Post = new Post(null, null, null, null, null, null, null, null);
 	status: Status = null;
 
-	constructor(private postService: postService, private route: ActivatedRoute) {
+	constructor(private postService: PostService, private route: ActivatedRoute) {
 	}
 
 	ngOnInit(): void {

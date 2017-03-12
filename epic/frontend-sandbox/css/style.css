@@ -49,11 +49,11 @@ footer {
 }
 
 .navbar {
-	height:100px;
+	height:85px;
 }
 
 .links {
-	padding-top:20%;
+	padding-top:1%;
 }
 
 .logo-image {
@@ -74,4 +74,8 @@ footer {
 
 .submit {
 	padding:5px;
+}
+
+#feed {
+	text-align:center;
 }

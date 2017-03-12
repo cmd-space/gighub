@@ -7,10 +7,10 @@ import "rxjs/add/operator/switchMap";
 
 
 @Component({
-	templateUrl: "./templates/profile.php"
+	templateUrl: "./templates/viewprofile.php"
 })
 
-export class ProfileComponent implements OnInit {
+export class ViewProfileComponent implements OnInit {
 	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null);
 	status: Status = null;
 

@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base-service";
 import {Profile} from "../classes/profile";
-// import {Status} from "../classes/status";
+import {Status} from "../classes/status";
 
 @Injectable()
 export class ProfileService extends BaseService {

@@ -16,6 +16,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 			href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,700italic,700|Playfair+Display:400,400italic'
 			rel='stylesheet' type='text/css'>
 
+		<link rel="stylesheet" href="../public_html/css/style.css">
+
 		<base href="<?php echo dirname( $_SERVER["PHP_SELF"] ) . "/"; ?>"/>
 
 		<title>GigHub</title>

@@ -5,7 +5,7 @@ import {PostService} from "../services/post-service";
 import {Status} from "../classes/status";
 import "rxjs/add/operator/switchMap";
 
-@component({
+@Component({
 	templateUrl: "./templates/post.php"
 })
 

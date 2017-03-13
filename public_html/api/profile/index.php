@@ -105,7 +105,6 @@ try {
 
 			// update all attributes
 			$profile->setProfileBio($requestObject->profileBio);
-			$profile->setProfileImageCloudinaryId($cloudinaryResult["public_id"]);
 			$profile->setProfileLocation($requestObject->profileLocation);
 			$profile->setProfileOAuthToken($requestObject->profileOAuthToken);
 			$profile->setProfileSoundCloudUser($requestObject->profileSoundCloudUser);

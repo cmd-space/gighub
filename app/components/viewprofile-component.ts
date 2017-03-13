@@ -26,7 +26,7 @@ import "rxjs/add/operator/switchMap";
 			.subscribe(profile => this.profile = profile);
 	}
 
-	editProfile() : void {
+	putProfile() : void {
 		this.profileService.putProfile(this.profile).subscribe(status => this.status = status);
 	}
 }

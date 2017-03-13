@@ -7,7 +7,7 @@
 <div class="row">
 	<div class="col-md-4"></div>
 	<div class="col-md-4">
-		<form action="#">
+		<form #profileForm="ngForm" name="profileForm" id="profileForm" (ngSubmit)="putProfile();" novalidate>
 			<div class="form-group">
 				<label for="inputFile">Profile Image</label>
 				<input type="file" class="form-control" id="inputFile">
@@ -16,9 +16,9 @@
 			<div class="form-group">
 				<label for="profileType">Profile Type</label>
 				<select name="profileType" class="form-control" id="profileType" [(ngModel)]="profile.profileTypeId" #profileType="ngModel">
-					<option value="1">Fan</option>
-					<option value="2">Artist</option>
-					<option value="3">Venue</option>
+					<option [value]="1">Fan</option>
+					<option [value]="2">Artist</option>
+					<option [value]="3">Venue</option>
 				</select>
 			</div>
 			<div class="form-group">
@@ -42,7 +42,7 @@
 						 placeholder="current SoundCloud user name here..." [(ngModel)]="profile.profileSoundCloudUser" #profileSoundCloudUser="ngModel">
 			</div>
 
-			<button class="btn btn-info" type="submit">Save</button>
+			<button class="btn btn-lg btn-info" type="submit" [disabled]="profileForm.invalid"><i class="fa fa-check"></i>&nbsp;Save</button>
 		</form>
 	</div>
 </div>

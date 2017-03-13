@@ -7,10 +7,7 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">Post Title</h3>
 				</div>
-				<div class="panel-body">
-					<a class="thumbnail">
 						<img src="" alt="">
-					</a>
 					Feed content
 				</div>
 			</div>

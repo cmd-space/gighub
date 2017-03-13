@@ -49,13 +49,12 @@ export class ProfileService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	putProfile(profile: Profile) : Observable<Profile>{
+	putProfile(profile: Profile) : Observable<Status>{
 		return(this.http.put(this.profileUrl + profile.profileId, profile)
 			.map(this.extractMessage)
 			.catch(this.handleError));
-
 	}
-	deleteProfile(profile: Profile) : Observable<Profile>{
+	deleteProfile(profile: Profile) : Observable<Status>{
 		return(this.http.delete(this.profileUrl + profile.profileId)
 			.map(this.extractMessage)
 			.catch(this.handleError));

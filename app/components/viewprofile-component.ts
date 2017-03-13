@@ -10,7 +10,7 @@ import "rxjs/add/operator/switchMap";
 	templateUrl: "./templates/viewprofile.php"
 })
 
-export class ViewProfileComponent implements OnInit {
+	export class ViewProfileComponent implements OnInit {
 	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null);
 	status: Status = null;
 
@@ -23,8 +23,10 @@ export class ViewProfileComponent implements OnInit {
 	getProfileByProfileId() : void {
 		this.route.params
 			.switchMap((params : Params) => this.profileService.getProfileByProfileId(+params["profileId"]))
-			.subscribe(reply => this.profile = reply);
-
+			.subscribe(profile => this.profile = profile);
 	}
 
+	editProfile() : void {
+		this.profileService.putProfile(this.profile).subscribe(status => this.status = status);
+	}
 }

@@ -6,6 +6,7 @@ import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
 import {VenueService} from "./services/venue-service";
 import {ProfileService} from "./services/profile-service";
+import {PostService} from "./services/post-service";
 
 const moduleDeclarations = [AppComponent];
 
@@ -13,6 +14,6 @@ const moduleDeclarations = [AppComponent];
 	imports:      [BrowserModule, FormsModule, HttpModule, routing],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
-	providers:    [appRoutingProviders, VenueService, ProfileService]
+	providers:    [appRoutingProviders, VenueService, ProfileService, PostService]
 })
 export class AppModule {}

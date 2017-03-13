@@ -13,7 +13,7 @@ import "rxjs/add/operator/switchMap";
 export class FeedComponent implements OnInit {
 	post: Post = new Post(null, null, null, null, null, null, null, null);
 	status: Status = null;
-	post: Posts[] = [];
+	posts: Post[] = [];
 
 
 	constructor(
@@ -37,6 +37,6 @@ export class FeedComponent implements OnInit {
 
 	getAllPosts() : void {
 		this.postService.getAllPosts()
-			.subscribe(posts => this.post = posts);
+			.subscribe(posts => this.posts = posts);
 	}
 }

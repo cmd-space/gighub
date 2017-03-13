@@ -1,6 +1,6 @@
 <main-nav></main-nav>
 <div class="container" id="feed">
-	<div class="row">
+	<div class="row" *ngFor="let  of applicationCohorts" (click)="switchApplication(applicationCohort.info[0]);">
 		<div class="col-md-2"></div>
 		<div class="col-md-8 pull-left">
 			<div class="panel panel-primary">

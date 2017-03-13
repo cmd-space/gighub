@@ -1,5 +1,3 @@
-// this is compliments of Rochelle Lewis https://github.com/rlewis2892/meow-app-2/blob/master/public_html/templates/signup.php
-// This is all filler for now
 <main-nav></main-nav>
 
 <main class="bg">

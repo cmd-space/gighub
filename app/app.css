@@ -1,3 +1,81 @@
-.orange {
-	color: orange;
+/*html {*/
+/*height: 100%;*/
+/*width: 100%;*/
+/*}*/
+
+body {
+	background-color: #252b37 !important;
+}
+
+.center-splash {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	transform: translate(-50%, -50%);
+}
+
+@media only screen and (min-width: 768px) {
+	.text-right-sm {
+		text-align: right;
+	}
+}
+
+footer {
+	background-color: black;
+	padding: 2rem 0;
+	color:white;
+}
+
+.formandsignout {
+	right: 5rem;
+	top: .5rem;
+	position: absolute;
+	z-index: 15;
+}
+
+.logo {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+.logo {
+	display: flex;
+	z-index:15;
+	align-items: center;
+}
+
+.navbar {
+	height:85px;
+}
+
+.links {
+	padding-top:1%;
+}
+
+.logo-image {
+	width:20%;
+}
+
+@media only screen and (min-width: 1344px) {
+	.logo {
+		text-align: center;
+	}
+}
+
+@media only screen and (max-width: 750px) {
+	.logo-image {
+		width:30%;
+	}
+}
+
+.submit {
+	padding:5px;
+}
+
+#feed {
+	text-align:center;
 }

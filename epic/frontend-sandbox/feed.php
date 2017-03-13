@@ -1,10 +1,10 @@
 <?php require_once("lib/head-utils.php"); ?>
-/**
- * Created by PhpStorm.
- * User: josephramirez
- * Date: 3/11/17
- * Time: 2:30 PM
- */
+<!--/**-->
+<!-- * Created by PhpStorm.-->
+<!-- * User: josephramirez-->
+<!-- * Date: 3/11/17-->
+<!-- * Time: 2:30 PM-->
+<!-- */-->
 <body>
 	<?php require_once("nav.php"); ?>
 	<div class="container" id="feed">

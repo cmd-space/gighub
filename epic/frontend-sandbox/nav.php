@@ -11,7 +11,7 @@
 		</div>
 		<div class="logo">
 			<div class="col-xs-12 text-center">
-				<img class="logo-image" src="../images/logowhitehorizontal.png"/>
+				<img class="logo-image" src="../../public_html/images/logowhitehorizontal.png"/>
 
 			</div>
 		</div>

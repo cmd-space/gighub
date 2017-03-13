@@ -3,7 +3,7 @@
 		<div class="row">
 
 			<div class="col-sm-6 text-left-sm">
-				<img src="../images/gighubdude.png" height="40"/>
+				<img src="../../public_html/images/gighubdude.png" height="40"/>
 			</div>
 
 			<div class="col-md-6 c text-right-sm ">

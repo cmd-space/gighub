@@ -15,7 +15,7 @@
 
 	<div class="container center-splash">
 		<!-------GigHub Logo------->
-		<img src="../images/GigHubWhite.png" class="img-responsive center-block">
+		<img src="../../public_html/images/GigHubWhite.png" class="img-responsive center-block">
 
 		<!-------Button for desktop (FB login)------->
 		<div class="fb-login-button visible-md-inline visible-lg-inline" data-max-rows="1" data-size="xlarge"

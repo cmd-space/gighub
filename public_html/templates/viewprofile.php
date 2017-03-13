@@ -10,7 +10,18 @@
 		<p class="text-center">{{ profile.profileBio }}</p>
 	</div>
 </div>
-
+<?php
+session_start();
+if(empty($_SESSION['profile']) === true) {
+?>
+	 <div class="row">
+		 <div class="col-xs-12">
+			 <p class="text-center">Please Login if you would like to edit your profile. That'd be great.</p>
+		 </div>
+	 </div>
+<?php
+} else {
+?>
 <div class="row">
 	<div class="col-xs-12">
 		<h1 class="text-center">Editing {{ profile.profileUserName }}</h1>
@@ -72,6 +83,6 @@
 
 			<button class="btn btn-lg btn-info" type="submit" [disabled]="profileForm.invalid"><i class="fa fa-check"></i>&nbsp;Save</button>
 		</form>
-		<pre>{{ profile | json }}</pre>
 	</div>
 </div>
+<?php } ?>

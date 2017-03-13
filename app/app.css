@@ -7,7 +7,7 @@ body {
 	background-color: #252b37 !important;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, label {
 	color: #ffffff;
 }
 
@@ -27,7 +27,8 @@ h1, h2, h3, h4, h5, h6, p {
 
 footer {
 	background-color: black;
-	padding: 2rem 0;
+	padding: 1rem 0;
+	margin-top: 1rem;
 	color:white;
 }
 

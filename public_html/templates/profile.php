@@ -15,7 +15,7 @@
 			</div>
 			<div class="form-group">
 				<label for="profileType">Profile Type</label>
-				<select name="profileType" class="form-control" id="profileType">
+				<select name="profileType" class="form-control" id="profileType" [(ngModel)]="profile.profileTypeId" #profileType="ngModel">
 					<option value="1">Fan</option>
 					<option value="2">Artist</option>
 					<option value="3">Venue</option>
@@ -24,23 +24,25 @@
 			<div class="form-group">
 				<label for="profileUserName">Profile User Name</label>
 				<input class="form-control" type="text" id="profileUserName" name="profileUserName"
-						 placeholder="current user name here...">
+						 placeholder="current user name here..." [(ngModel)]="profile.profileUserName" #profileUserName="ngModel">
 			</div>
 			<div class="form-group">
 				<label for="profileBio">Profile Bio</label>
 				<textarea class="form-control" name="profileBio" id="profileBio" cols="20" rows="7"
-							 placeholder="This will become their current profile bio..."></textarea>
+							 placeholder="This will become their current profile bio..." [(ngModel)]="profile.profileBio" #profileBio="ngModel"></textarea>
 			</div>
 			<div class="form-group">
 				<label for="profileLocation">Location</label>
 				<input class="form-control" type="text" id="profileLocation" name="profileLocation"
-						 placeholder="current user location here...">
+						 placeholder="current user location here..." [(ngModel)]="profile.profileLocation" #profileLocation="ngModel">
 			</div>
 			<div class="form-group">
 				<label for="profileSoundCloudUser">SoundCloud User Name (optional)</label>
 				<input class="form-control" type="text" id="profileSoundCloudUser" name="profileSoundCloudUser"
-						 placeholder="current SoundCloud user name here...">
+						 placeholder="current SoundCloud user name here..." [(ngModel)]="profile.profileSoundCloudUser" #profileSoundCloudUser="ngModel">
 			</div>
+
+			<button class="btn btn-info" type="submit">Save</button>
 		</form>
 	</div>
 </div>

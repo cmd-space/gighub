@@ -4,13 +4,13 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>Sign Up Here</h1>
+				<h1>Contact Us</h1>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-6">
-				<p>Sniff other cat's butt and hang jaw half open thereafter. Sun bathe soft kitty warm kitty little ball of furr stretch, or lick the curtain just to be annoying for pooping rainbow while flying in a toasted bread costume in space sit in box for eats owners hair then claws head.</p>
+				<p>Have any questions for the GigHub Team? Get in touch below.</p>
 			</div>
 			<div class="col-md-6">
 				<!--Begin Contact Form-->

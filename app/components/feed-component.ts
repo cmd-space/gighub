@@ -21,7 +21,7 @@ export class FeedComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.getPostByPostId();
+		// this.getPostByPostId();
 		this.getAllPosts();
 	}
 

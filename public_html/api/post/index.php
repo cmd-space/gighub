@@ -65,17 +65,17 @@ try {
 				$reply->data = $postId;
 			}
 		} else if(empty($postProfileId) === false) {
-			$posts = Post::getPostByPostProfileId($pdo, $postProfileId);
+			$posts = Post::getPostByPostProfileId($pdo, $postProfileId)->toArray();
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
 		} else if(empty($postContent) === false) {
-			$posts = Post::getPostByPostContent($pdo, $postContent);
+			$posts = Post::getPostByPostContent($pdo, $postContent)->toArray();
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
 		} else {
-			$posts = Post::getAllPosts($pdo);
+			$posts = Post::getAllPosts($pdo)->toArray();
 			if($posts !== null) {
 				$reply->data = $posts;
 			}

@@ -22,6 +22,7 @@
 			ul {
 				background-color: #252b37;
 				color: white;
+				padding: 0 15%;
 			}
 		</style>
 	</head>

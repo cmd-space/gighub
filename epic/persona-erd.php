@@ -7,8 +7,6 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>GigHub Persona's & ERD</title>
 
-
-
 		<style>
 			body {
 				background-color: #252b37

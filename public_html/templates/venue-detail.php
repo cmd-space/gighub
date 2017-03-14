@@ -94,8 +94,18 @@ if(empty($_SESSION['venue']) === false) {
 				</div>
 			</div>
 
-
+			<button class="btn btn-lg btn-info" type="submit" [disabled]="venueForm.invalid"><i class="fa fa-check"></i>&nbsp;Save</button>
 		</form>
 	</div>
 </div>
+
+	<?php
+} else {
+	?>
+	<div class="row">
+		<div class="col-xs-12">
+			<p class="text-center">Please Login if you would like to edit your Venue profile.</p>
+		</div>
+	</div>
+<?php } ?>
 }

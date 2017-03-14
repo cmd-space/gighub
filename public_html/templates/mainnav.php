@@ -1,3 +1,9 @@
+<?php
+require_once(dirname(__DIR__, 2) . "/php/classes/autoload.php");
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
+?>
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -11,7 +17,7 @@
 		</div>
 		<div class="logo">
 			<div class="col-xs-12 text-center">
-				<img class="logo-image" src="../images/logowhitehorizontal.png"/>
+				<img class="logo-image" src="images/logowhitehorizontal.png"/>
 
 			</div>
 		</div>
@@ -19,9 +25,9 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 
-				<li class="active links"><a href="#">Profile<span class="sr-only">(current)</span></a></li>
-				<li class="active links"><a  href="#">Feed</a></li>
-				<li class="active links"><a  href="#">post</a></li>
+				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/profile/<?php echo $_SESSION['profile']->getProfileId(); ?>">Profile</a></li>
+				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed">Feed</a></li>
+				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/post">post</a></li>
 
 
 			</ul>

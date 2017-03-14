@@ -84,3 +84,8 @@ footer {
 #feed {
 	text-align:center;
 }
+
+#splashLogo {
+	height: auto;
+	max-width: 50rem;
+}

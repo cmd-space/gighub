@@ -44,12 +44,12 @@ export class PostService extends BaseService {
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
-	putPost(post: Post) : Observable<Post>{
+	putPost(post: Post) : Observable<Status>{
 		return(this.http.put(this.postUrl + post.postId, post)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
-	deletePost(post: Post) : Observable<Post>{
+	deletePost(post: Post) : Observable<Status>{
 		return(this.http.delete(this.postUrl + post.postId)
 			.map(this.extractMessage)
 			.catch(this.handleError));

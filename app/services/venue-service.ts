@@ -54,12 +54,12 @@ export class VenueService extends BaseService {
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
-	putVenue(venue: Venue) : Observable<Venue>{
+	putVenue(venue: Venue) : Observable<Status>{
 		return(this.http.put(this.venueUrl + venue.venueId, venue)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
-	deleteVenue(venue: Venue) : Observable<Venue>{
+	deleteVenue(venue: Venue) : Observable<Status>{
 		return(this.http.delete(this.venueUrl + venue.venueId)
 			.map(this.extractMessage)
 			.catch(this.handleError));

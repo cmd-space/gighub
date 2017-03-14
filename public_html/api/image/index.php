@@ -45,14 +45,14 @@ try {
 	$postId    = filter_input( INPUT_POST, "postId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
 
 	//make sure the id is valid for methods that require it
-	if ( ( $method === "POST" ) &&
-	     (
-		     ( empty( $profileId ) === true || $profileId < 0 ) &&
-		     ( empty( $postId ) === true || $postId < 0 )
-	     )
-	) {
-		throw( new InvalidArgumentException( "id cannot be empty or negative", 405 ) );
-	}
+//	if ( ( $method === "POST" ) &&
+//	     (
+//		     ( empty( $profileId ) === true || $profileId < 0 ) &&
+//		     ( empty( $postId ) === true || $postId < 0 )
+//	     )
+//	) {
+//		throw( new InvalidArgumentException( "id cannot be empty or negative", 405 ) );
+//	}
 
 	if ( $method === "POST" ) {
 

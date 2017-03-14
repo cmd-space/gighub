@@ -24,7 +24,13 @@ export class VenueDetailComponent implements OnInit {
 		this.route.params
 			.switchMap((params : Params) => this.venueService.getVenueByVenueId(+params["venueId"]))
 			.subscribe(reply => this.venue = reply);
-
 	}
 
+	putVenue() : void {
+		this.venueService.putVenue(this.venue).subscribe(status => this.status = status);
+	}
+
+	postVenue() : void {
+		this.venueService.postVenue(this.venue).subscribe(status => this.status = status);
+	}
 }

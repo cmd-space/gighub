@@ -9,7 +9,7 @@ import "rxjs/add/operator/switchMap";
 	templateUrl: "./templates/post.php"
 })
 
-export class postComponent implements OnInit {
+export class PostComponent implements OnInit {
 	post: Post = new Post(null, null, null, null, null, null, null, null);
 	status: Status = null;
 
@@ -24,6 +24,13 @@ export class postComponent implements OnInit {
 		this.route.params
 			.switchMap((params : Params) => this.postService.getPostByPostId(+params["postId"]))
 			.subscribe(reply => this.post= reply);
+	}
 
+	putPost() : void {
+		this.postService.putPost(this.post).subscribe(status => this.status = status);
+	}
+
+	postPost() : void {
+		this.postService.postPost(this.post).subscribe(status => this.status = status);
 	}
 }

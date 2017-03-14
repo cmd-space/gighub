@@ -7,12 +7,12 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 
 <form action="#">
 	<div class="form-group">
-		<label for="inputFile">Profile Image</label>
+		<label for="inputFile">Post Image</label>
 		<input type="file" class="form-control" id="inputFile">
 		<p class="help-block">Choose your post image</p>
 	</div>
 	<div class="form-group">
-		<label for="postTitle">Title</label>
+		<label for="postTitle">Post Title</label>
 		<input class="form-control" type="text" id="profileUserName" name="profileUserName"
 				 placeholder="current user name here...">
 	</div>

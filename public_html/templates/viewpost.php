@@ -37,8 +37,8 @@ if(empty($_SESSION['post']) === false) {
 				<div class="form-group">
 					<label for="postTitle">Post Title</label>
 					<select name="postTitle" class="form-control" id="postTitle" [(ngModel)]="post.postTitleId" #postTitle="ngModel" required>
-						<option [value]="2">Artist</option>
-						<option [value]="3">Venue</option>
+						<option [value]="1">Artist</option>
+						<option [value]="2">Venue</option>
 					</select>
 					<div [hidden]="postTitle.valid || postTitle.pristine" class="alert alert-danger" role="alert">
 						<p *ngIf="postTitle.errors?.required">Bloop</p>

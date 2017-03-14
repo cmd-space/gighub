@@ -32,7 +32,7 @@ if(empty($_SESSION['post']) === false) {
 				<div class="form-group">
 					<label for="inputFile">Post Image</label>
 					<input type="file" class="form-control" name="inputFile" id="inputFile">
-					<p class="help-block">Choose your profile image</p>
+					<p class="help-block">Choose your post image</p>
 				</div>
 
 				<div class="form-group">
@@ -56,8 +56,8 @@ if(empty($_SESSION['post']) === false) {
 
 				<div class="form-group">
 					<label for="postEventDate">Event Date</label>
-					<input class="form-control" type="text" id="profileLocation" name="profileLocation"
-							 placeholder="current user location here..." [(ngModel)]="profile.profileLocation" #profileLocation="ngModel" required>
+					<input class="form-control" type="text" id="postEventDate" name="postEventDate"
+							 placeholder="current user location here..." [(ngModel)]="post.postEventDate" #postEventDate="ngModel" required>
 					<div [hidden]="postEventDate.valid || postEventDate.pristine" class="alert alert-danger" role="alert">
 						<p *ngIf="postEventDate.errors?.required">Bloop</p>
 					</div>
@@ -72,7 +72,7 @@ if(empty($_SESSION['post']) === false) {
 	?>
 	<div class="row">
 		<div class="col-xs-12">
-			<p class="text-center">Please Login if you would like to edit your profile. That'd be great.</p>
+			<p class="text-center">Please Login if you would like to edit your post. That'd be great.</p>
 		</div>
 	</div>
 <?php } ?>

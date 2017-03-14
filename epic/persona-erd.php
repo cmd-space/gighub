@@ -32,7 +32,7 @@
 		</main>
 
 		<h1>ERD:</h1>
-		<img src="../public_html/images/gighub.svg"
+		<img src="../public_html/images/gighub copy.svg"
 
 	</body>
 </html>

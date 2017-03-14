@@ -61,7 +61,7 @@ if(empty($_SESSION['venue']) === false) {
 			<!-- Address 2 Block -->
 			<div class="form-group">
 				<label for="venueStreet2">Street Address 2</label>
-					<input class="form-control" type="text" id="venueStreet2" name="venueStreet2" placeholder="Optional Secondary Street Address..." [(ngModel)]="venue.venueStreet2" #venueStreet2="ngmModel" required>
+					<input class="form-control" type="text" id="venueStreet2" name="venueStreet2" 				placeholder="Optional Secondary Street Address..." [(ngModel)]="venue.venueStreet2" #venueStreet2="ngmModel" required>
 				<div [hidden]="venueStreet2.valid || venueStreet2.prestine" class="alert alert-danger" role="alert">
 					<p *ngIf="venueStreet2.errors?.required">Flop</p>
 				</div>
@@ -77,7 +77,13 @@ if(empty($_SESSION['venue']) === false) {
 			</div>
 
 			<!-- Venue State Block -->
-
+			<div class="form-group">
+				<label for="venueState">State</label>
+				<input class="form-control" type="text" id="venueState" name="venueState" placeholder="Current user state initials..." [(ngModel)]="venue.venueCity" #venueState="ngModel" required>
+				<div [hidden]="venueState.valid || venueState.prestine" class="alert alert-danger" role="alert">
+					<p *ngIf="venueState.errors?.required">Flop</p>
+				</div>
+			</div>
 		</form>
 	</div>
 </div>

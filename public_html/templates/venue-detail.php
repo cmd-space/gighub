@@ -68,6 +68,15 @@ if(empty($_SESSION['venue']) === false) {
 			</div>
 
 			<!--Venue City Block -->
+			<div class="form-group">
+				<label for="venueCity">City</label>
+				<input class="form-control" type="text" id="venueCity" name="venueCity" placeholder="Current user city name..." [(ngModel)]="venue.venueCity" #venueCity="ngModel" required>
+				<div [hidden]="venueCity.valid || venueCity.prestine" class="alert alert-danger" role="alert">
+					<p *ngIf="venueCity.errors?.required">Flop</p>
+				</div>
+			</div>
+
+			<!-- Venue State Block -->
 
 		</form>
 	</div>

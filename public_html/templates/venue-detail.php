@@ -8,7 +8,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 <main-nav></main-nav>
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-3">
 		<h1 class="text-center">{{ venue.venueName }}</h1>
 		<img src="https://www.fillmurray.com/140/200" alt="ALL the BMs" class="img-responsive center-block">
 		<h2 class="text-center">{{venue.venueStreet1}}</h2>
@@ -104,7 +104,7 @@ if(empty($_SESSION['venue']) === false) {
 	?>
 	<div class="row">
 		<div class="col-xs-12">
-			<p class="text-center">Please Login if you would like to edit your Venue profile.</p>
+			<p class="text-center">D E N I E D!! Login if you would like to edit your Venue profile.</p>
 		</div>
 	</div>
 <?php } ?>

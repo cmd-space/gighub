@@ -40,7 +40,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 				</ul>
 				<form class="navbar-form navbar-right">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="search no work fuk off m8">
+						<input type="text" class="form-control" placeholder="search GigHub">
 					</div>
 					<button type="submit" class="btn btn-default active links submit">Submit</button>
 				</form>

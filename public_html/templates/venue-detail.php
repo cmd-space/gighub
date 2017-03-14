@@ -84,6 +84,17 @@ if(empty($_SESSION['venue']) === false) {
 					<p *ngIf="venueState.errors?.required">Flop</p>
 				</div>
 			</div>
+
+			<!-- Venue Zip Code -->
+			<div class="form-group">
+				<label for="venueZip">Zip Code</label>
+				<input class="form-control" type="text" id="venueZip" name="venueZip" placeholder="Venues zip code is..." [(ngModel)]="venue.venueZip" #venueZip="ngModel" required>
+				<div *ngIf="venueZip.valid || venueZip.prestine" class="alert alert-danger" role="alert">
+					<p *ngIf="venueZip.errors?.required">Flop</p>
+				</div>
+			</div>
+
+
 		</form>
 	</div>
 </div>

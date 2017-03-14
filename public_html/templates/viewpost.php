@@ -17,42 +17,22 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		</div>
 	</div>
 <?php
-if(empty($_SESSION['profile']) === false) {
+if(empty($_SESSION['post']) === false) {
 	?>
 	<div class="row">
 		<div class="col-xs-12">
-			<h1 class="text-center">Editing {{ profile.profileUserName }}</h1>
+			<h1 class="text-center">Editing {{ post.postId }}</h1>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
-			<form #profileForm="ngForm" name="profileForm" id="profileForm" (ngSubmit)="putProfile();" novalidate>
+			<form #postForm="ngForm" name="postForm" id="postForm" (ngSubmit)="putPost();" novalidate>
 				<div class="form-group">
-					<label for="inputFile">Profile Image</label>
+					<label for="inputFile">Post Image</label>
 					<input type="file" class="form-control" name="inputFile" id="inputFile">
 					<p class="help-block">Choose your profile image</p>
-				</div>
-				<div class="form-group">
-					<label for="profileType">Profile Type</label>
-					<select name="profileType" class="form-control" id="profileType" [(ngModel)]="profile.profileTypeId" #profileType="ngModel" required>
-						<option [value]="1">Fan</option>
-						<option [value]="2">Artist</option>
-						<option [value]="3">Venue</option>
-					</select>
-					<div [hidden]="profileType.valid || profileType.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="profileType.errors?.required">Bloop</p>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="profileUserName">Profile User Name</label>
-					<input class="form-control" type="text" id="profileUserName" name="profileUserName"
-							 placeholder="current user name here..." [(ngModel)]="profile.profileUserName" #profileUserName="ngModel" required>
-					<div [hidden]="profileUserName.valid || profileUserName.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="profileUserName.errors?.required">Bloop</p>
-					</div>
 				</div>
 
 				<div class="form-group">
@@ -64,19 +44,11 @@ if(empty($_SESSION['profile']) === false) {
 					</div>
 				</div>
 
-				<div class="form-group">
-					<label for="profileSoundCloudUser">Post Image</label>
-					<input class="form-control" type="text" id="postImage" name="postImage"
-							 placeholder="Post Image Here..." [(ngModel)]="post.postImage" #postImage="ngModel">
-					<div [hidden]="postImage.valid || postImage.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="postImage.errors?.required">Bloop</p>
-					</div>
-				</div>
 
 				<div class="form-group">
 					<label for="postContent">Post Content</label>
 					<input class="form-control" type="text" id="postContent" name="postContent"
-							 placeholder="Post Content Here..." [(ngModel)]="post.postContent #postContent="ngModel">
+							 placeholder="Post Content Here..." [(ngModel)]="post.postContent" #postContent="ngModel">
 					<div [hidden]="postContent.valid || postContent.pristine" class="alert alert-danger" role="alert">
 						<p *ngIf="postContent.errors?.required">Bloop</p>
 					</div>
@@ -86,8 +58,8 @@ if(empty($_SESSION['profile']) === false) {
 					<label for="postEventDate">Event Date</label>
 					<input class="form-control" type="text" id="profileLocation" name="profileLocation"
 							 placeholder="current user location here..." [(ngModel)]="profile.profileLocation" #profileLocation="ngModel" required>
-					<div [hidden]="profileLocation.valid || profileLocation.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="profileLocation.errors?.required">Bloop</p>
+					<div [hidden]="postEventDate.valid || postEventDate.pristine" class="alert alert-danger" role="alert">
+						<p *ngIf="postEventDate.errors?.required">Bloop</p>
 					</div>
 				</div>
 

@@ -20,7 +20,12 @@
 			ul {
 				background-color: #252b37;
 				color: white;
-				padding: 0 15%;
+				padding: 0 20%;
+			}
+
+			a {
+				background-color: #252b37;
+				color: white;
 			}
 		</style>
 	</head>
@@ -57,9 +62,17 @@
 			<center>
 				<br><br>
 
-				<h1>ERD:</h1>
-				<img src="../public_html/images/gighub copy.svg" alt="GigHub ERD">
-			</center>
+				<center>
+					<h1>ERD:</h1>
+					<img src="../public_html/images/GigHubERD.png" alt="GigHub ERD" height="900">
+					<br><br>
+				</center>
+
+				<center>
+					<a href="url">
+						<strong><big>Activate GigHub!</big></strong>
+					</a>
+				</center>
 		</main>
 
 	</body>

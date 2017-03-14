@@ -10,8 +10,10 @@ import {VenueComponent} from "./components/venue-component";
 import {VenueDetailComponent} from "./components/venuedetail-component";
 import {ProfileComponent} from "./components/profile-component";
 import {ViewProfileComponent} from "./components/viewprofile-component";
+import {FileUploadComponent} from "./components/fileupload-component";
+import {FileSelectDirective} from 'ng2-file-upload';
 
-export const allAppComponents = [HomeComponent, MainNavComponent, AboutComponent, ContactComponent, FeedComponent, FacebookLoginComponent, VenueComponent, VenueDetailComponent, ProfileComponent, ViewProfileComponent, NotFoundComponent];
+export const allAppComponents = [HomeComponent, MainNavComponent, AboutComponent, ContactComponent, FeedComponent, FacebookLoginComponent, VenueComponent, VenueDetailComponent, ProfileComponent, ViewProfileComponent, NotFoundComponent, FileUploadComponent, FileSelectDirective];
 
 export const routes: Routes = [
 	{path: "feed", component: FeedComponent},
@@ -21,6 +23,7 @@ export const routes: Routes = [
 	{path: "contact", component: ContactComponent},
 	{path: "profile", component: ProfileComponent},
 	{path: "profile/:profileId", component: ViewProfileComponent},
+	{path: "file-upload", component: FileUploadComponent},
 	{path: "", component: HomeComponent},
 	{path: "**", component: NotFoundComponent}
 ];

@@ -17,67 +17,80 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		</div>
 	</div>
 <?php
-if(empty($_SESSION['post']) === false) {
+if(empty($_SESSION['profile']) === false) {
 	?>
 	<div class="row">
 		<div class="col-xs-12">
-			<h1 class="text-center">Editing {{ post.postContent }}</h1>
+			<h1 class="text-center">Editing {{ profile.profileUserName }}</h1>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
-			<form #profileForm="ngForm" name="postForm" id="postForm" (ngSubmit)="putPost();" novalidate>
+			<form #profileForm="ngForm" name="profileForm" id="profileForm" (ngSubmit)="putProfile();" novalidate>
 				<div class="form-group">
-					<label for="inputFile">Post Image</label>
+					<label for="inputFile">Profile Image</label>
 					<input type="file" class="form-control" name="inputFile" id="inputFile">
-					<p class="help-block">Choose your post image</p>
+					<p class="help-block">Choose your profile image</p>
 				</div>
 				<div class="form-group">
-					<label for="postTitle">Post Title</label>
-					<select name="postTitle" class="form-control" id="postTitle" [(ngModel)]="post.postTitleId" #postTitle="ngModel" required>
-						<option [value]="1">Artist</option>
-						<option [value]="2">Venue</option>
+					<label for="profileType">Profile Type</label>
+					<select name="profileType" class="form-control" id="profileType" [(ngModel)]="profile.profileTypeId" #profileType="ngModel" required>
+						<option [value]="1">Fan</option>
+						<option [value]="2">Artist</option>
+						<option [value]="3">Venue</option>
 					</select>
+					<div [hidden]="profileType.valid || profileType.pristine" class="alert alert-danger" role="alert">
+						<p *ngIf="profileType.errors?.required">Bloop</p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="profileUserName">Profile User Name</label>
+					<input class="form-control" type="text" id="profileUserName" name="profileUserName"
+							 placeholder="current user name here..." [(ngModel)]="profile.profileUserName" #profileUserName="ngModel" required>
+					<div [hidden]="profileUserName.valid || profileUserName.pristine" class="alert alert-danger" role="alert">
+						<p *ngIf="profileUserName.errors?.required">Bloop</p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="postTitle">Post Title</label>
+					<textarea class="form-control" name="postType" id="postType" cols="20" rows="7"
+								 placeholder="This is where you put the title. put it." [(ngModel)]="post.postTitle" #postTitle="ngModel" required></textarea>
 					<div [hidden]="postTitle.valid || postTitle.pristine" class="alert alert-danger" role="alert">
 						<p *ngIf="postTitle.errors?.required">Bloop</p>
 					</div>
 				</div>
+
 				<div class="form-group">
-					<label for="postId">Post Name</label>
-					<input class="form-control" type="text" id="postId" name="postId"
-							 placeholder="current user name here..." [(ngModel)]="post.postId" #postId="ngModel" required>
-					<div [hidden]="postId.valid || postId.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="postId.errors?.required">Bloop</p>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="postTitle">Post Title</label>
-					<textarea class="form-control" name="postTitle" id="postTitle" cols="20" rows="7"
-								 placeholder="This will become their current post title..." [(ngModel)]="post.postTitle" #profileBio="ngModel" required></textarea>
-					<div [hidden]="postcontent.valid || postContent.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="postContent.errors?.required">Bloop</p>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="postEventDate">Event Date</label>
-					<input class="form-control" type="text" id="postEventDate" name="postEventDate"
-							 placeholder="current Event Date Here..." [(ngModel)]="post.postEventDate" #postEventDate="ngModel" required>
-					<div [hidden]="postEventDate.valid || postEventDate.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="postEventDate.errors?.required">Bloop</p>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="profileSoundCloudUser">SoundCloud User Name (optional)</label>
-					<input class="form-control" type="text" id="profileSoundCloudUser" name="profileSoundCloudUser"
-							 placeholder="current SoundCloud user name here..." [(ngModel)]="profile.profileSoundCloudUser" #profileSoundCloudUser="ngModel">
-					<div [hidden]="profileSoundCloudUser.valid || profileSoundCloudUser.pristine" class="alert alert-danger" role="alert">
-						<p *ngIf="profileSoundCloudUser.errors?.required">Bloop</p>
+					<label for="profileSoundCloudUser">Post Image</label>
+					<input class="form-control" type="text" id="postImage" name="postImage"
+							 placeholder="Post Image Here..." [(ngModel)]="post.postImage" #postImage="ngModel">
+					<div [hidden]="postImage.valid || postImage.pristine" class="alert alert-danger" role="alert">
+						<p *ngIf="postImage.errors?.required">Bloop</p>
 					</div>
 				</div>
 
-				<button class="btn btn-lg btn-info" type="submit" [disabled]="profileForm.invalid"><i class="fa fa-check"></i>&nbsp;Save</button>
+				<div class="form-group">
+					<label for="postContent">Post Content</label>
+					<input class="form-control" type="text" id="postContent" name="postContent"
+							 placeholder="Post Content Here..." [(ngModel)]="post.postContent #postContent="ngModel">
+					<div [hidden]="postContent.valid || postContent.pristine" class="alert alert-danger" role="alert">
+						<p *ngIf="postContent.errors?.required">Bloop</p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="postEventDate">Event Date</label>
+					<input class="form-control" type="text" id="profileLocation" name="profileLocation"
+							 placeholder="current user location here..." [(ngModel)]="profile.profileLocation" #profileLocation="ngModel" required>
+					<div [hidden]="profileLocation.valid || profileLocation.pristine" class="alert alert-danger" role="alert">
+						<p *ngIf="profileLocation.errors?.required">Bloop</p>
+					</div>
+				</div>
+
 			</form>
 		</div>
 	</div>

@@ -9,10 +9,8 @@
 	</head>
 
 	<body>
-
-		<header>
+		<main>
 			<h1>Persona's:</h1>
-		</header>
 			<ul>
 				<li>
 					<strong>Venues :</strong> A venue would utilize our site for two main reasons. First off, the feed makes
@@ -31,8 +29,10 @@
 					even Address. When messaging goes live GigHub will turn into a social community.
 				</li>
 			</ul>
+		</main>
 
-
+		<h1>ERD:</h1>
+		<img src="../public_html/images/gighub.svg"
 
 	</body>
 </html>

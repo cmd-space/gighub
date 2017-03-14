@@ -5,11 +5,11 @@ import {Cookie} from "ng2-cookies";
 const URL = './api/image/';
 
 @Component({
-	selector: 'file-upload',
-	templateUrl: './template/file-upload.php'
+	// selector: 'file-upload',
+	templateUrl: './templates/file-upload.php'
 })
 export class FileUploadComponent implements OnInit {
-	public uploader:FileUploader = new FileUploader({url: URL, headers: [{name: "X-XSRF-TOKEN", value: Cookie.get("XSRF-TOKEN")}]});
+	public uploader:FileUploader = new FileUploader({url: URL+'/31', headers: [{name: "X-XSRF-TOKEN", value: Cookie.get("XSRF-TOKEN")}]});
 	public hasBaseDropZoneOver:boolean = false;
 	public hasAnotherDropZoneOver:boolean = false;
 

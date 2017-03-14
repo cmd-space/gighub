@@ -6,7 +6,7 @@ import {Status} from "../classes/status";
 import "rxjs/add/operator/switchMap";
 
 @Component({
-	templateUrl: "./templates/post.php"
+	templateUrl: "./templates/viewpost.php"
 })
 
 export class PostComponent implements OnInit {

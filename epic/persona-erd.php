@@ -10,6 +10,8 @@
 
 	<body>
 		<main>
+			<img src="../public_html/images/GigHubWhite.png" alt="GigHub">
+
 			<h1>Persona's:</h1>
 			<ul>
 				<li>
@@ -25,14 +27,16 @@
 				</li>
 				<li>
 					<strong>Fans :</strong> As of right now a fan is mostly a spectator. It is a place you can log on to to
-					see what is going on in an area. Functionality includes the ability to search venues by City, Zip, and
-					even Address. When messaging goes live GigHub will turn into a social community.
+					see what is going on in an area. Functionality includes the ability to search venues by Name, City, Zip, and
+					even Address. When messaging goes live GigHub will start to evolve into a social community.
 				</li>
 			</ul>
 		</main>
 
 		<h1>ERD:</h1>
-		<img src="../public_html/images/gighub copy.svg"
+		<img src="../public_html/images/gighub copy.svg" alt="GigHub ERD">
+
+
 
 	</body>
 </html>

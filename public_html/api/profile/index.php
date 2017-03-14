@@ -66,22 +66,22 @@ try {
 				$reply->data = $profile;
 			}
 		} else if ( empty( $profileTypeId ) === false ) {
-			$profiles = Profile::getProfileByProfileTypeId( $pdo, $profileTypeId );
+			$profiles = Profile::getProfileByProfileTypeId( $pdo, $profileTypeId )->toArray();
 			if ( $profiles !== null ) {
 				$reply->data = $profiles;
 			}
 		} else if ( empty( $profileLocation ) === false ) {
-			$profiles = Profile::getProfileByLocationContent( $pdo, $profileLocation );
+			$profiles = Profile::getProfileByLocationContent( $pdo, $profileLocation )->toArray();
 			if ( $profiles !== null ) {
 				$reply->data = $profiles;
 			}
 		} else if ( empty( $profileSoundCloudUser ) === false ) {
-			$profiles = Profile::getProfileBySoundCloudUser( $pdo, $profileSoundCloudUser );
+			$profiles = Profile::getProfileBySoundCloudUser( $pdo, $profileSoundCloudUser )->toArray();
 			if ( $profiles !== null ) {
 				$reply->data = $profiles;
 			}
 		} else if ( empty( $profileUserName ) === false ) {
-			$profiles = Profile::getProfileByProfileUserName( $pdo, $profileUserName );
+			$profiles = Profile::getProfileByProfileUserName( $pdo, $profileUserName )->toArray();
 			if ( $profiles !== null ) {
 				$reply->data = $profiles;
 			}

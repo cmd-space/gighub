@@ -49,12 +49,12 @@ try {
 				$reply->data = $profileType;
 			}
 		} else if(empty($profileTypeName) === false) {
-			$profileTypes = ProfileType::getProfileTypesByProfileTypeName($pdo, $profileTypeName);
+			$profileTypes = ProfileType::getProfileTypesByProfileTypeName($pdo, $profileTypeName)->toArray();
 			if($profileTypes !== null) {
 				$reply->data = $profileTypes;
 			}
 		} else {
-			$profileTypes = ProfileType::getAllProfileTypes($pdo);
+			$profileTypes = ProfileType::getAllProfileTypes($pdo)->toArray();
 			if($profileTypes !== null) {
 				$reply->data = $profileTypes;
 			}

@@ -49,12 +49,12 @@ try {
 				$reply->data = $tag;
 			}
 		} else if(empty($content) === false) {
-			$tags = Tag::getTagByTagContent($pdo, $content);
+			$tags = Tag::getTagByTagContent($pdo, $content)->toArray();
 			if($tags !== null) {
 				$reply->data = $tags;
 			}
 		} else {
-			$tags = Tag::getAllTags($pdo);
+			$tags = Tag::getAllTags($pdo)->toArray();
 			if($tags !== null) {
 				$reply->data = $tags;
 			}

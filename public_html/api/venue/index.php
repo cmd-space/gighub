@@ -65,22 +65,22 @@ try {
 				$reply->data = $venue;
 			}
 		} else if(empty($venueCity) === false) {
-			$venue = Venue::getVenueByVenueCity($pdo, $venueCity);
+			$venue = Venue::getVenueByVenueCity($pdo, $venueCity)->toArray();
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
 		} else if(empty($venueName) === false) {
-			$venue = Venue::getVenueByVenueName($pdo, $venueName);
+			$venue = Venue::getVenueByVenueName($pdo, $venueName)->toArray();
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
 		} else if(empty($venueStreet1) === false) {
-			$venue = Venue::getVenueByVenueStreet1($pdo, $venueStreet1);
+			$venue = Venue::getVenueByVenueStreet1($pdo, $venueStreet1)->toArray();
 			if($venue !== null) {
 				$reply->data = $venue;
 			}
 		} else if(empty($venueZip) === false) {
-			$venue = Venue::getVenueByVenueZip($pdo, $venueZip);
+			$venue = Venue::getVenueByVenueZip($pdo, $venueZip)->toArray();
 			if($venue !== null) {
 				$reply->data = $venue;
 			}

@@ -28,8 +28,8 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 				<?php if(empty($_SESSION["profile"]) === false) { ?>
 				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/profile/<?php echo $_SESSION['profile']->getProfileId(); ?>">Profile1</a></li>
 				<?php } ?>
-				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed">Feed</a></li>
-				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/post">post</a></li>
+				<li class="active links"><a href="#https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed">Feed</a></li>
+				<li class="active links"><a href="#https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/post">post</a></li>
 
 
 			</ul>
@@ -38,12 +38,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 				<ul class="nav navbar-nav navbar-right">
 					<li class="active links"><a href="#">Sign Out</a></li>
 				</ul>
-				<form class="navbar-form navbar-right">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="search GigHub">
-					</div>
-					<button type="submit" class="btn btn-default active links submit">Submit</button>
-				</form>
+
 			</div>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->

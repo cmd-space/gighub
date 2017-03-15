@@ -25,17 +25,19 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 			<ul class="nav navbar-nav">
 
 				<?php if(empty($_SESSION["profile"]) === false) { ?>
-				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/profile/<?php echo $_SESSION['profile']->getProfileId(); ?>">Profile</a></li>
+				<li class="active links"><a routerLink="/profile/<?php echo $_SESSION['profile']->getProfileId(); ?>">Profile</a></li>
 				<?php } ?>
-				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed">Feed</a></li>
+				<li class="active links"><a routerLink="/feed">Feed</a></li>
 <!--				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/post">post</a></li>-->
 			</ul>
 
+			<?php if(empty($_SESSION["profile"]) === false) { ?>
 			<div class="formandsignout">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active links"><a href="#">Sign Out</a></li>
+					<li class="active links"><a routerLink="#">Sign Out</a></li>
 				</ul>
 			</div>
+			<?php } ?>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>

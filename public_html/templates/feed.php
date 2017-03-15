@@ -15,3 +15,5 @@
 		</div>
 	</div>
 </body>
+
+<!-- TODO: better layout, possibly two cols in a row, look at thumbnail bootstrap class for image, date in title-->

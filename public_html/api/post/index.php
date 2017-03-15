@@ -59,8 +59,8 @@ try {
 		//TODO: make get bys match what is in the INPUT gets
 
 		//gets a post by content
-		if(empty($postId) === false) {
-			$post = Post::getPostByPostId($pdo, $postId);
+		if(empty($id) === false) {
+			$post = Post::getPostByPostId($pdo, $id);
 			if($post !== null) {
 				$reply->data = $post;
 			}

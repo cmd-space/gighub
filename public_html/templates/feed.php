@@ -3,14 +3,13 @@
 	<div class="container" id="feed">
 		<div class="row" *ngFor="let post of posts">
 			<div class="col-md-2"></div>
-			<div class="col-md-8 pull-left">
+			<div class="col-md-8">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">{{ post.postTitle }}</h3>
-						<p></p>
 					</div>
-					<img src="" alt="">
-					Feed content
+					<p style="color: black;">{{ post.postContent }}</p>
+					<p style="color: black;">{{ post.postEventDate['date'] | date: 'MM/dd/yyyy' }}</p>
 				</div>
 			</div>
 		</div>

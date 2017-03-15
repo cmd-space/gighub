@@ -50,7 +50,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 					 <div class="form-group">
 						 <label for="profileUserName">Profile User Name</label>
 						 <input class="form-control" type="text" id="profileUserName" name="profileUserName"
-								  placeholder="current user name here..." [(ngModel)]="profile.profileUserName"
+								  placeholder="{{ profile.profileUserName }}" [(ngModel)]="profile.profileUserName"
 								  #profileUserName="ngModel" required>
 						 <div [hidden]="profileUserName.valid || profileUserName.pristine" class="alert alert-danger"
 								role="alert">

@@ -16,6 +16,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 			<p class="text-center">{{ post.postEventDate }}</p>
 		</div>
 	</div>
+	<pre>{{ post | json }}</pre>
 	<?php
 	if ( empty( $_SESSION['profile'] ) === false ) {
 		?>

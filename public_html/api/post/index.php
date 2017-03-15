@@ -60,9 +60,9 @@ try {
 
 		//gets a post by content
 		if(empty($postId) === false) {
-			$postId = Post::getPostByPostId($pdo, $postId);
-			if($postId !== null) {
-				$reply->data = $postId;
+			$post = Post::getPostByPostId($pdo, $postId);
+			if($post !== null) {
+				$reply->data = $post;
 			}
 		} else if(empty($postProfileId) === false) {
 			$posts = Post::getPostByPostProfileId($pdo, $postProfileId)->toArray();

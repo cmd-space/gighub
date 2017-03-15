@@ -23,7 +23,7 @@ export const routes: Routes = [
 	{path: "about", component: AboutComponent},
 	{path: "post/:postId", component: PostComponent},
 	{path: "contact", component: ContactComponent},
-	{path: "profile", component: ProfileComponent},
+	// {path: "profile", component: ProfileComponent},
 	{path: "profile/:profileId", component: ViewProfileComponent},
 	{path: "file-upload", component: FileUploadComponent},
 	{path: "", component: HomeComponent},

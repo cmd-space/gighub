@@ -23,7 +23,7 @@ export class PostComponent implements OnInit {
 	getPostByPostId() : void {
 		this.route.params
 			.switchMap((params : Params) => this.postService.getPostByPostId(+params["postId"]))
-			.subscribe(reply => this.post= reply);
+			.subscribe(post => this.post = post);
 	}
 
 	putPost() : void {

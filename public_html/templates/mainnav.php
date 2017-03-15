@@ -15,21 +15,20 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 				<span class="icon-bar"></span>
 			</button>
 		</div>
-		<div class="logo">
-			<div class="col-xs-12 text-center">
-				<img class="logo-image" src="images/logowhitehorizontal.png"/>
-
-			</div>
-		</div>
+<!--		<div class="logo">-->
+<!--			<div class="col-xs-12 text-center">-->
+				<img class="logo-image logo center-block" src="images/logowhitehorizontal.png"/>
+<!--			</div>-->
+<!--		</div>-->
 		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="navbar-collapse">
 			<ul class="nav navbar-nav">
 
 				<?php if(empty($_SESSION["profile"]) === false) { ?>
-				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/profile/<?php echo $_SESSION['profile']->getProfileId(); ?>">Profile1</a></li>
+				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/profile/<?php echo $_SESSION['profile']->getProfileId(); ?>">Profile</a></li>
 				<?php } ?>
-				<li class="active links"><a href="#https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed">Feed</a></li>
-				<li class="active links"><a href="#https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/post">post</a></li>
+				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed">Feed</a></li>
+				<li class="active links"><a href="https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/post">post</a></li>
 
 
 			</ul>
@@ -38,7 +37,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 				<ul class="nav navbar-nav navbar-right">
 					<li class="active links"><a href="#">Sign Out</a></li>
 				</ul>
-
 			</div>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->

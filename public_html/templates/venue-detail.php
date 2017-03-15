@@ -8,7 +8,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 <main-nav></main-nav>
 <div class="container">
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
 			<h1 class="text-center">{{ venue.venueName }}</h1>
 			<img src="https://www.fillmurray.com/140/200" alt="ALL the BMs" class="img-responsive center-block">
 			<h2 class="text-center">{{venue.venueStreet1}}</h2>
@@ -20,7 +21,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 	</div>
 
 	<?php
-	if ( empty( $_SESSION['venue'] ) === false ) {
+	if ( empty( $_SESSION['profile'] ) === false ) {
 		?>
 
 		 <div class="row">
@@ -31,6 +32,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 
 		 <!-- Venue Image Block-->
 		 <div class="row">
+			<div class="col-md-4"></div>
 			 <div class="col-md-4">
 				 <form #venueForm="ngForm" name="venueForm" id="venueForm" (ngSubmit)="putVenue()" novalidate>
 					 <div class="form-group">
@@ -41,9 +43,9 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 
 					 <!-- Venue name Block-->
 					 <div class="form-group">
-						 <label for="venueName"> Venue Name</label>
+						 <label for="venueName">Venue Name</label>
 						 <input class="form-control" type="text" id="venueName" name="venueName"
-								  placeholder="current venue name here..." [(ngModel)]="venue.venueName" #venueName="ngModel"
+								  placeholder="{{ venue.venueName }}" [(ngModel)]="venue.venueName" #venueName="ngModel"
 								  required>
 						 <div [hidden]="venueName.valid || venueName.pristine" class="alert alert-danger" role="alert">
 							 <p *ngIf="venueName.errors?.required">Flop</p>
@@ -66,8 +68,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 						 <label for="venueStreet2">Street Address 2</label>
 						 <input class="form-control" type="text" id="venueStreet2" name="venueStreet2"
 								  placeholder="Optional Secondary Street Address..." [(ngModel)]="venue.venueStreet2"
-								  #venueStreet2="ngmModel" required>
-						 <div [hidden]="venueStreet2.valid || venueStreet2.prestine" class="alert alert-danger" role="alert">
+								  #venueStreet2="ngModel" required>
+						 <div [hidden]="venueStreet2.valid || venueStreet2.pristine" class="alert alert-danger" role="alert">
 							 <p *ngIf="venueStreet2.errors?.required">Flop</p>
 						 </div>
 					 </div>
@@ -78,7 +80,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 						 <input class="form-control" type="text" id="venueCity" name="venueCity"
 								  placeholder="Current user city name..." [(ngModel)]="venue.venueCity" #venueCity="ngModel"
 								  required>
-						 <div [hidden]="venueCity.valid || venueCity.prestine" class="alert alert-danger" role="alert">
+						 <div [hidden]="venueCity.valid || venueCity.pristine" class="alert alert-danger" role="alert">
 							 <p *ngIf="venueCity.errors?.required">Flop</p>
 						 </div>
 					 </div>
@@ -87,10 +89,10 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 					 <div class="form-group">
 						 <label for="venueState">State</label>
 						 <input class="form-control" type="text" id="venueState" name="venueState"
-								  placeholder="Current user state initials..." [(ngModel)]="venue.venueCity"
+								  placeholder="{{ venue.venueState }}" [(ngModel)]="venue.venueState"
 								  #venueState="ngModel" required>
-						 <div [hidden]="venueState.valid || venueState.prestine" class="alert alert-danger" role="alert">
-							 <p *ngIf="venueState.errors?.required">Flop</p>
+						 <div [hidden]="venueState.valid || venueState.pristine" class="alert alert-danger" role="alert">
+							 <p *ngIf="venueState.errors?.required">Please enter a valid state</p>
 						 </div>
 					 </div>
 
@@ -98,9 +100,9 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 					 <div class="form-group">
 						 <label for="venueZip">Zip Code</label>
 						 <input class="form-control" type="text" id="venueZip" name="venueZip"
-								  placeholder="Venues zip code is..." [(ngModel)]="venue.venueZip" #venueZip="ngModel" required>
-						 <div *ngIf="venueZip.valid || venueZip.prestine" class="alert alert-danger" role="alert">
-							 <p *ngIf="venueZip.errors?.required">Flop</p>
+								  placeholder="{{ venue.venueZip }}" [(ngModel)]="venue.venueZip" #venueZip="ngModel" required>
+						 <div [hidden]="venueZip.valid || venueZip.pristine" class="alert alert-danger" role="alert">
+							 <p *ngIf="venueZip.errors?.required">Please enter a valid zip</p>
 						 </div>
 					 </div>
 

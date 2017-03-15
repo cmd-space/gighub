@@ -17,7 +17,8 @@ import {PostComponent} from "./components/post-component";
 export const allAppComponents = [HomeComponent, MainNavComponent, AboutComponent, ContactComponent, FeedComponent, FacebookLoginComponent, VenueComponent, VenueDetailComponent, ProfileComponent, ViewProfileComponent, NotFoundComponent, FileUploadComponent, FileSelectDirective, PostComponent];
 
 export const routes: Routes = [
-	{path: "feed", component: FeedComponent},
+	{path: "feed/", component: FeedComponent},
+	{path: "feed/**", redirectTo: ""},
 	{path: "venue", component: VenueComponent},
 	{path: "venue/:venueId", component: VenueDetailComponent},
 	{path: "about", component: AboutComponent},

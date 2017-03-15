@@ -39,8 +39,7 @@
 				<p><strong>Mason Crane</strong></p>
 			</div>
 			<div class="col-md-6">
-				<p>Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.
-				</p>
+				<p>I had a lot of fun working on this project with Joe, Dante and Brandon. It's been an incredible learning experience.<a href="https://bootcamp-coders.cnm.edu">Deep Dive Coding Bootcamp</a> has really allowed me the time and experiences to realize that I enjoy teaching and helping others. This project is a way for us to help fans, venues and artists collaborate with one another and forge new connections and relationships. I'm looking forward to continue working on GigHub to make this site even more useful.</p>
 			</div>
 		</div>
 	</div>

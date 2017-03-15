@@ -32,10 +32,7 @@ export class ProfileComponent implements OnInit {
 
 	get(): void {
 		this.logoutService.get()
-			.subscribe(status => {this.status = status;
-				if(status.apiStatus === 200) {
+			.subscribe(status => this.status = status);
 					this.router.navigate(['']);
-				}
-				});
 	}
 }

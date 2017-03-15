@@ -6,7 +6,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 ?>
 
 <main-nav></main-nav>
-<div class="container">
+<body>
+<div class="container" id="venue-detail">
 	<div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
@@ -124,3 +125,4 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 	<?php } ?>
 	}
 </div>
+</body>

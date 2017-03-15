@@ -30,7 +30,7 @@
 				<p><strong>Joesph Ramirez</strong></p>
 			</div>
 			<div class="col-md-6">
-				<p>Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.Filler...Lots and lots of filler.
+				<p>Before I became part of the GigHub Crew, I had very little experience in coding. My first project was creating a calculator using Xcode. After completing a small project, I wanted to learn more about backend and frontend coding. Deep Dive Coding was introduced to me by an alumni of COHORT 14. During my time in this Boot-camp, I have become motivated to become fluent in Php, HTML, Bootstrap languages and also excited to learn many new programming languages. I not only want to continue developing GigHub, but I am going to use my skills the skills that I learn to take the project to new heights.
 				</p>
 			</div>
 		</div>

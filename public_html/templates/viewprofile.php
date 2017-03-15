@@ -18,7 +18,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE ) {
 		</div>
 	</div>
 	<?php
-	if ( empty( $_SESSION['profile'] ) === false ) {
+	if ( empty( $_SESSION['profile'] ) === false && $_SESSION ) {
 		?>
 		 <div class="row">
 			 <div class="col-xs-12">

@@ -8,6 +8,7 @@ import {VenueService} from "./services/venue-service";
 import {ProfileService} from "./services/profile-service";
 import {PostService} from "./services/post-service";
 import {ImageService} from "./services/image-service";
+import {LogoutService} from "./services/logout-service";
 
 const moduleDeclarations = [AppComponent];
 
@@ -15,6 +16,6 @@ const moduleDeclarations = [AppComponent];
 	imports:      [BrowserModule, FormsModule, HttpModule, routing],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
-	providers:    [appRoutingProviders, VenueService, ProfileService, PostService, ImageService]
+	providers:    [appRoutingProviders, VenueService, ProfileService, PostService, ImageService, LogoutService]
 })
 export class AppModule {}

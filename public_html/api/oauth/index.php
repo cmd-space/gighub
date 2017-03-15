@@ -114,7 +114,7 @@ if(!empty($profile)) {
 	$profile_id = $_SESSION['profile']->getProfileId();
 	// User is logged in with a long-lived access token.
 	// You can redirect them to a members-only page.
-	header( 'Location: https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed/' );
+	header( 'Location: https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed' );
 } else {
 	// generate unique-ish username to be changed by user later
 	$uniqueUserName = uniqid('user');
@@ -129,5 +129,5 @@ if(!empty($profile)) {
 
 	// User is logged in with a long-lived access token.
 	// You can redirect them to profile to update new profile
-	header( 'Location: https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed/' . $newId );
+	header( 'Location: https://bootcamp-coders.cnm.edu/~mcrane2/gighub/public_html/feed');
 }

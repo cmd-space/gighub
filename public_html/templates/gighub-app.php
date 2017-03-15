@@ -12,6 +12,8 @@
 				</div>
 
 				<div class="col-md-6 c text-right-sm ">
+					<li class="active links"><a routerLink="/about">Contact Us | About The GigHub Crew</a></li>
+
 					Contact Us | About The GigHub Crew
 				</div>
 			</div>
